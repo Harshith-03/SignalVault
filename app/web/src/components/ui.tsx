@@ -2,7 +2,7 @@
  * Design-system primitives. Every page composes these instead of hand-rolling card, button or input
  * styles, so radius, padding, type and interaction states stay consistent (tokens live in index.css).
  */
-import { useState, type ComponentPropsWithoutRef, type ElementType, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ComponentPropsWithoutRef, type ElementType, type ReactNode } from "react";
 import { AlertTriangle, ArrowRight, Check, ChevronDown, Copy, Inbox, PlugZap, RefreshCw, Search, X } from "lucide-react";
 import { Link, type LinkProps } from "react-router-dom";
 import type { ApiError } from "../api/client";
@@ -19,7 +19,7 @@ export function PageHeader({ title, subtitle, actions, eyebrow }: {
     <header className="mb-6 flex flex-col gap-4 sm:mb-8 md:flex-row md:items-end md:justify-between">
       <div className="min-w-0">
         {eyebrow && <div className="mb-2 text-micro font-semibold uppercase tracking-[0.07em] text-ink-3">{eyebrow}</div>}
-        <h1 className="font-display text-[26px] leading-[1.15] font-semibold tracking-[-0.02em] text-ink sm:text-title">{title}</h1>
+        <h1 className="font-display text-[24px] leading-[1.15] font-semibold tracking-[-0.02em] text-ink sm:text-title">{title}</h1>
         {subtitle && <div className="mt-2 max-w-[70ch] text-body text-ink-3">{subtitle}</div>}
       </div>
       {actions && <div className="flex flex-wrap items-center gap-2 md:shrink-0">{actions}</div>}
@@ -219,7 +219,7 @@ export function Segmented<T extends string>({ value, onChange, options, size = "
               title={o.title}
               onClick={() => onChange(o.value)}
               className={cx(
-                "press inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full font-medium",
+                "press inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full font-medium focus-visible:outline-offset-[-2px]",
                 size === "sm" ? "h-7 px-2.5 text-caption" : "h-8 px-3 text-[13px]",
                 active ? "bg-surface text-ink shadow-xs" : "text-ink-2 hover:text-ink",
               )}
@@ -249,7 +249,7 @@ export function Tabs<T extends string>({ value, onChange, options, label }: {
             aria-selected={active}
             onClick={() => onChange(o.value)}
             className={cx(
-              "press inline-flex h-9 shrink-0 items-center gap-2 rounded-full border px-3.5 text-[13px] font-medium",
+              "press inline-flex h-9 shrink-0 items-center gap-2 rounded-full border px-3.5 text-[13px] font-medium focus-visible:outline-offset-[-2px]",
               active
                 ? "border-brand/40 bg-brand-tint text-ink"
                 : "border-line bg-surface text-ink-2 hover:border-line-strong hover:text-ink",
@@ -304,22 +304,33 @@ export function Field({ label, hint, children }: { label: string; hint?: ReactNo
   );
 }
 
+/**
+ * The typed text lives in local state. When `value` comes from the URL, React Router applies the
+ * update in a transition, so binding the input straight to it drops keystrokes while typing fast.
+ * We resync only when `value` changes from outside (Clear filters, back/forward).
+ */
 export function SearchInput({ value, onChange, placeholder, label, className }: {
   value: string; onChange: (v: string) => void; placeholder: string; label: string; className?: string;
 }) {
+  const [text, setText] = useState(value);
+  const written = useRef(value);
+  useEffect(() => {
+    if (value !== written.current) { written.current = value; setText(value); }
+  }, [value]);
+  const update = (v: string) => { written.current = v; setText(v); onChange(v); };
   return (
     <label className={cx("relative flex items-center", className)}>
       <Search size={15} aria-hidden className="pointer-events-none absolute left-3 text-ink-3" />
       <input
         type="search"
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
+        value={text}
+        onChange={(e) => update(e.target.value)}
         placeholder={placeholder}
         aria-label={label}
         className={cx(FIELD, "h-9 w-full pl-9 pr-8 text-[13px] [&::-webkit-search-cancel-button]:hidden")}
       />
-      {value && (
-        <button type="button" aria-label="Clear search" onClick={() => onChange("")}
+      {text && (
+        <button type="button" aria-label="Clear search" onClick={() => update("")}
           className="absolute right-1.5 flex h-6 w-6 items-center justify-center rounded-full text-ink-3 hover:bg-surface-3 hover:text-ink">
           <X size={13} />
         </button>

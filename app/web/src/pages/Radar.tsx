@@ -166,7 +166,7 @@ function ArchitectureStrip({ modes, lastRun }: { modes: Partial<Record<RadarProv
       className="rounded-card border border-line bg-surface p-[var(--pad-card)] shadow-xs"
       aria-label="Radar architecture"
     >
-      <ol className="grid items-stretch gap-2 @4xl:grid-cols-[1fr_auto_1fr_auto_1fr] @4xl:gap-3">
+      <ol className="grid items-stretch gap-2 @2xl:grid-cols-[1fr_auto_1fr_auto_1fr] @2xl:gap-2.5">
         {steps.map((s, idx) => (
           <Fragment key={s.title}>
             <li className={cx("rounded-panel p-4", s.tone === "online" ? "bg-surface-3/60" : "bg-good-soft")}>
@@ -181,8 +181,8 @@ function ArchitectureStrip({ modes, lastRun }: { modes: Partial<Record<RadarProv
             </li>
             {idx < steps.length - 1 && (
               <li className="flex items-center justify-center text-ink-3" aria-hidden>
-                <ArrowDown size={16} className="@4xl:hidden" />
-                <ArrowRight size={18} className="hidden @4xl:block" />
+                <ArrowDown size={16} className="@2xl:hidden" />
+                <ArrowRight size={16} className="hidden @2xl:block" />
               </li>
             )}
           </Fragment>

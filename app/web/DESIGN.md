@@ -42,13 +42,13 @@ Tailwind through `@theme inline` (`bg-surface`, `text-ink-3`, `border-line` and 
 | `--surface-2` | `#FAF9F5` | `#21231C` | Wells, table heads, quiet fills |
 | `--surface-3` | `#EAE9DF` | `#2B2E25` | Secondary surface, selected rows, tracks |
 | `--line` / `--line-strong` | `#E6E4DA` / `#D3D1C4` | `#2F3229` / `#43473A` | Hairlines / control borders |
-| `--ink` / `--ink-2` / `--ink-3` | `#292D24` / `#4B5044` / `#676C60` | `#EDEEE5` / `#C8CABC` / `#A0A394` | Text: primary / secondary / muted (all AA on the page and on cards) |
+| `--ink` / `--ink-2` / `--ink-3` | `#292D24` / `#4B5044` / `#64695D` | `#EDEEE5` / `#C8CABC` / `#A0A394` | Text: primary / secondary / muted (all AA on the page and on cards) |
 | `--brand` | `#506727` | `#AFC47A` | Primary actions, active state, focus |
 | `--brand-soft` / `--brand-tint` | `#DCE2AC` / `#EEF1DB` | `#2E3721` / `#252C1B` | Sage accent surfaces |
 | `--accent` | `#9DAF6B` | `#9DAF6B` | Decorative olive (icons, the logo dial) |
 | `--hero` / `--on-hero` | `#46592A` / `#F3F5E4` | `#323D20` / `#EEF2DC` | The one deep-olive hero card |
 
-The starting `#777C70` muted text measured 4.2:1 on `#F5F4EE`, below AA. It is refined to `#676C60` (4.9:1 on the page, 5.4:1 on cards).
+The starting `#777C70` muted text measured 4.2:1 on `#F5F4EE`, below AA. It is refined to `#64695D`: 5.1:1 on the page, 5.6:1 on cards and 4.6:1 on the secondary surface. Every text-on-fill pair in both themes measures at least 4.5:1, including the primary button, the hero, status chips and product chips.
 
 **Status colours** are reserved, and always paired with an icon and a label:
 - good: olive green;

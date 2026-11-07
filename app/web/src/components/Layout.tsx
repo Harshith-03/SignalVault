@@ -124,7 +124,7 @@ function NavItem({ to, icon, children, count, urgent, end, onNavigate }: {
       end={end}
       onClick={onNavigate}
       className={({ isActive }) => cx(
-        "press group flex h-10 items-center gap-3 rounded-control px-3 text-body transition-colors",
+        "press group flex h-10 items-center gap-3 rounded-control px-3 text-body transition-colors focus-visible:outline-offset-[-2px]",
         isActive ? "bg-surface font-semibold text-ink shadow-xs" : "font-medium text-ink-2 hover:bg-surface-3/70 hover:text-ink",
       )}
     >

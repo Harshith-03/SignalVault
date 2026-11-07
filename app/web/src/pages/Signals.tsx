@@ -62,6 +62,7 @@ export default function Signals() {
         <div className="flex flex-col gap-3 @4xl:flex-row @4xl:items-center">
           <div className="flex flex-wrap items-center gap-2">
             <Segmented<ProductFilter>
+              className="hidden sm:block"
               label="Product"
               value={product}
               onChange={setProduct}

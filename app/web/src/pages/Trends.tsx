@@ -137,7 +137,7 @@ export default function Trends() {
             <div className="scroll-thin -mx-[var(--pad-card)] overflow-x-auto px-[var(--pad-card)] pb-1" role="region" aria-label="Heatmap: aspects by speaker" tabIndex={0}>
               <div
                 className="grid min-w-[720px] gap-1.5"
-                style={{ gridTemplateColumns: `minmax(132px, 150px) repeat(${speakersToShow.length}, minmax(76px, 1fr))` }}
+                style={{ gridTemplateColumns: `minmax(112px, 150px) repeat(${speakersToShow.length}, minmax(76px, 1fr))` }}
               >
                 <div className="sticky left-0 z-10 bg-surface" />
                 {speakersToShow.map((s) => (

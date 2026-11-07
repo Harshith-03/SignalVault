@@ -105,7 +105,7 @@ export default function ItemDetail() {
           )}
         </Panel>
 
-        <div className="scroll-thin space-y-4 sm:space-y-6 @5xl:sticky @5xl:top-[84px] @5xl:-m-1 @5xl:max-h-[calc(100vh-100px)] @5xl:overflow-y-auto @5xl:p-1">
+        <div className="scroll-thin order-first space-y-4 sm:space-y-6 @5xl:order-none @5xl:sticky @5xl:top-[84px] @5xl:-m-1 @5xl:max-h-[calc(100vh-100px)] @5xl:overflow-y-auto @5xl:p-1">
           <Panel>
             <PanelTitle>Labels</PanelTitle>
             <LabelSummary pred={pred} />
