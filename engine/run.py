@@ -18,6 +18,7 @@ from pathlib import Path
 
 from . import config
 from .pipeline import analyze_item, default_fewshot
+from .safety import detect_case, is_candidate
 from .prompts import PROMPT_VERSION
 from .schema import ASPECTS, EnrichedPrediction, Item
 
@@ -62,9 +63,16 @@ def run(split: str, model: str, limit: int | None, sources: set[str] | None, tag
     cache_dir.mkdir(parents=True, exist_ok=True)
     fs = default_fewshot()
     preds, t0, llm_calls = [], time.time(), 0
+    cases = []
     for i, it in enumerate(items, 1):
         p = analyze_item(it, model=model, fewshot=fs)     # raw model output is cached inside llm.chat_json
         llm_calls += p.meta.model not in ("rules", "fallback")
+        if is_candidate(it, p):
+            c = detect_case(it, p, model=model)
+            if c:
+                cases.append(c)
+                if "reportable_case_candidate" not in p.meta.flags and c.valid_case_candidate:
+                    p.meta.flags.append("reportable_case_candidate")
         preds.append(p)
         if i % 10 == 0 or i == len(items):
             print(f"  {i}/{len(items)}  {time.time() - t0:.0f}s", flush=True)
@@ -74,6 +82,8 @@ def run(split: str, model: str, limit: int | None, sources: set[str] | None, tag
     out.write_text("".join(p.model_dump_json() + "\n" for p in preds), encoding="utf-8")
     sub = config.OUTPUTS / f"predictions_{stem}.jsonl"
     sub.write_text("".join(json.dumps(p.to_submission(), ensure_ascii=False) + "\n" for p in preds), encoding="utf-8")
+    (config.OUTPUTS / f"safety_{stem}.json").write_text(
+        json.dumps([c.model_dump() for c in cases], indent=1, ensure_ascii=False), encoding="utf-8")
     spi = secs / max(len(items), 1)
     kwh = secs / 3600 * config.LAPTOP_WATTS / 1000
     metrics = {"split": split, "tag": tag, "model": model, "prompt_version": PROMPT_VERSION, "items": len(items),
@@ -102,7 +112,17 @@ def merge() -> None:
                                                    encoding="utf-8")
     (config.OUTPUTS / "texts.json").write_text(json.dumps({k: texts[k] for k in enriched if k in texts}),
                                                encoding="utf-8")
-    print(f"merged {len(enriched)} items -> outputs/enriched.jsonl")
+    # safety inbox: batch cases + any live cases from /api/analyze (transcripts) already in safety.json
+    cases = {}
+    live = config.OUTPUTS / "safety.json"
+    if live.exists():
+        cases.update({c["case_id"]: c for c in json.loads(live.read_text(encoding="utf-8")) if c["source"] == "transcript"})
+    for split in ("unlabeled", "dev", "test"):
+        p = config.OUTPUTS / f"safety_{split}.json"
+        if p.exists():
+            cases.update({c["case_id"]: c for c in json.loads(p.read_text(encoding="utf-8"))})
+    live.write_text(json.dumps(list(cases.values()), indent=1, ensure_ascii=False), encoding="utf-8")
+    print(f"merged {len(enriched)} items -> outputs/enriched.jsonl; {len(cases)} safety cases -> outputs/safety.json")
 
 
 if __name__ == "__main__":

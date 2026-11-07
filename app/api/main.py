@@ -37,7 +37,7 @@ from pydantic import BaseModel
 
 from engine import config, pipeline
 from engine.schema import (RESTRICTED_MASK, AnalyzeRequest, AnalyzeResponse, Card, Criterion, DataFileHash,
-                           EnrichedPrediction, Metrics, PrivacyStatus, SafetyCase, SafetyUpdate, TrendPoint)
+                           EnrichedPrediction, Item, Metrics, PrivacyStatus, SafetyCase, SafetyUpdate, TrendPoint)
 from insights.cards import CAVEAT_CASE, build_cards
 from insights.trends import LAST_STATS, build_trends
 from privacy import audit, hashes, netguard, redact
@@ -206,7 +206,7 @@ def metrics():
 
 
 @app.post("/api/analyze", response_model=AnalyzeResponse)
-def analyze(req: AnalyzeRequest):
+def analyze(req: AnalyzeRequest, x_sv_role: Optional[str] = Header(None)):
     red = redact.redact(req.text, req.source)
     pred = pipeline.analyze_text(req)          # engine sees the ORIGINAL text (spans must be verbatim)
     cards_ = build_cards([pred], {pred.item_id: req.text})
@@ -214,7 +214,27 @@ def analyze(req: AnalyzeRequest):
         audit.append(pred, req.text, RUN_ID)   # stores the hash of the input only, never the text
     except OSError:
         pass                                   # an unwritable log must not break the analysis
-    return AnalyzeResponse(redaction=red, prediction=pred, cards=cards_)
+    case = None
+    try:
+        from engine.safety import detect_case
+        item = Item(item_id=pred.item_id, source=req.source, title=req.title or "Pasted text", product=req.product,
+                    published=pred.meta.published, text=req.text)
+        case = detect_case(item, pred)
+        if case:
+            _store_case(case)                  # local only (gitignored outputs/); patient detail stays restricted
+    except Exception:                          # safety triage must never break the main analysis
+        case = None
+    return AnalyzeResponse(redaction=red, prediction=pred, cards=[_mask_card(c, _role(x_sv_role)) for c in cards_],
+                           safety_case=_mask(case, _role(x_sv_role)) if case else None)
+
+
+def _store_case(case: SafetyCase) -> None:
+    path = config.OUTPUTS / "safety.json"
+    existing = json.loads(path.read_text(encoding="utf-8")) if path.exists() else \
+        _load_json("safety.json")              # first live case: start from whatever the inbox shows now
+    existing = [c for c in existing if c.get("case_id") != case.case_id] + [case.model_dump()]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(existing, indent=1, ensure_ascii=False), encoding="utf-8")
 
 
 def _role(x_sv_role: Optional[str]) -> str:

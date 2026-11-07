@@ -48,6 +48,15 @@ EXTRA RULES (important):
 5. Lab/preclinical/mechanism studies about OUR product or resistance to it: signal_type efficacy (not none), actionable no.
 """
 
+_V1_LINES = [l for l in V1_RULES.strip().splitlines()[1:] if l.strip()]   # numbered rules 1..5
+VARIANTS = {"v0": [], "v1": [1, 2, 3, 4, 5], "v1a": [1], "v1b": [1, 3]}   # ablations: one change at a time
+
+
+def v1_rules(version: str) -> str:
+    picks = VARIANTS.get(version, [])
+    return ("\nEXTRA RULES (important):\n" + "\n".join(_V1_LINES[i - 1] for i in picks) + "\n") if picks else ""
+
+
 USER_TEMPLATE = """{hints}
 {examples}
 Now label this item. Return JSON only.

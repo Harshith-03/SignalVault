@@ -15,7 +15,7 @@ from collections import Counter
 import requests
 
 from . import config
-from .prompts import EXAMPLE_TEMPLATE, PROMPT_VERSION, SYSTEM_PROMPT, USER_TEMPLATE, V1_RULES
+from .prompts import EXAMPLE_TEMPLATE, PROMPT_VERSION, SYSTEM_PROMPT, USER_TEMPLATE, v1_rules
 from .schema import ASPECTS, SIGNAL_TYPES, SPEAKERS, Item
 
 MAX_TEXT_CHARS = 7000
@@ -102,7 +102,7 @@ def build_messages(item: Item, rules, examples) -> list[dict]:
                                 product={"A": "A (Tagrisso)", "B": "B (Rybrevant/Lazcluze)", "both": "both A and B"}
                                 .get(item.product or "", "unknown"),
                                 title=item.title, text=(item.text or "")[:MAX_TEXT_CHARS])
-    system = SYSTEM_PROMPT + (V1_RULES if PROMPT_VERSION != "v0" else "")
+    system = SYSTEM_PROMPT + v1_rules(PROMPT_VERSION)
     return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
 
