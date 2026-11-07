@@ -2,7 +2,9 @@
 and must fix OBSERVED failures (house rule: write the prompt after seeing errors, change one thing at a time)."""
 from __future__ import annotations
 
-PROMPT_VERSION = "v0"
+import os
+
+PROMPT_VERSION = os.getenv("SIGNALVAULT_PROMPT", "v1")
 
 SYSTEM_PROMPT = """You label public evidence items for drug-launch teams. Products: A = Tagrisso (osimertinib). B = Rybrevant / Rybrevant Faspro (amivantamab) and Lazcluze (lazertinib). Setting: EGFR-mutated NSCLC.
 Label what the TEXT says, never outside knowledge.
@@ -34,6 +36,16 @@ speaker = who holds the opinion: pubmed -> researcher; press release -> company;
 quote: the SHORTEST phrase (usually 3-15 words) copied CHARACTER-FOR-CHARACTER from ONE sentence of the text that justifies the aspect and its polarity. Never paraphrase, never join sentences, never cross "…".
 
 Source rules: pubmed: authors' caveats (retrospective, small sample, further studies needed) = evidence_quality -1; case reports usually signal safety or efficacy with actionable no; PK/modelling/lab studies with no clinical judgment: none or expert_opinion, actionable no; lab studies of OUR product = efficacy, actionable no. fda_label: signal regulatory; new/broader indication = efficacy +1; new boxed warning = safety -2; added warning/monitoring = safety -1; premedication/dosing changes = convenience; table rows/renumbering/wording only -> signal none, no aspects. press_release: the company is positive about itself; label what it says. news about a different drug where ours is only a comparator -> competitor_move or none. HTA bodies (NICE, HAS) on cost -> access_cost, speaker regulator. New schedule/formulation keeping efficacy and safety: efficacy 0 and safety 0 (regulator) plus convenience.
+"""
+
+# v1 additions — each fixes a failure observed on dev with v0 (see prompt_log.txt)
+V1_RULES = """
+EXTRA RULES (important):
+1. QUOTE LENGTH: copy only the judgment words, typically 4-12 words, e.g. "significantly improved progression-free survival", "a manageable safety profile", "retrospective cohort study". STOP before numbers, confidence intervals, hazard ratios, comparator lists and patient-population descriptions.
+2. SECONDARY JUDGMENTS COUNT: an efficacy paper that also says "manageable safety"/"well tolerated" gets safety +1; "consistent with the known safety profile" gets safety 0; an intro sentence judging our product ("Improved efficacy has been shown for amivantamab") gets efficacy.
+3. MILDER POLARITY: +2/-2 only for explicit strong words (statistically significant AND clinically meaningful, practice-changing, unprecedented, boxed warning, fatal toxicity). Real-world, retrospective or single-case findings are at most +1/-1. A single case report of an adverse event is safety -1.
+4. ACTIONABLE for pubmed: "yes" only for new phase 3 / pivotal results or a new important safety risk for our product; reviews, case reports, real-world and lab studies are "no".
+5. Lab/preclinical/mechanism studies about OUR product or resistance to it: signal_type efficacy (not none), actionable no.
 """
 
 USER_TEMPLATE = """{hints}

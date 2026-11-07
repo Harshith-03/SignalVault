@@ -63,14 +63,8 @@ def run(split: str, model: str, limit: int | None, sources: set[str] | None, tag
     fs = default_fewshot()
     preds, t0, llm_calls = [], time.time(), 0
     for i, it in enumerate(items, 1):
-        key = hashlib.sha256(f"{model}|{PROMPT_VERSION}|{it.source}|{it.text}".encode()).hexdigest()[:24]
-        cp = cache_dir / f"{it.item_id}-{key}.json"
-        if cp.exists():
-            p = EnrichedPrediction.model_validate_json(cp.read_text(encoding="utf-8"))
-        else:
-            p = analyze_item(it, model=model, fewshot=fs)
-            cp.write_text(p.model_dump_json(), encoding="utf-8")
-            llm_calls += p.meta.model not in ("rules",)
+        p = analyze_item(it, model=model, fewshot=fs)     # raw model output is cached inside llm.chat_json
+        llm_calls += p.meta.model not in ("rules", "fallback")
         preds.append(p)
         if i % 10 == 0 or i == len(items):
             print(f"  {i}/{len(items)}  {time.time() - t0:.0f}s", flush=True)

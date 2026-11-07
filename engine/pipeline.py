@@ -25,7 +25,7 @@ from langgraph.graph import END, START, StateGraph
 from . import config
 from .llm import FewShot, LLMError, label
 from .prompts import PROMPT_VERSION
-from .rules import SOURCE_SPEAKER, RuleResult, apply_rules
+from .rules import SOURCE_SPEAKER, RuleResult, apply_rules, evidence_caveat
 from .schema import (ASPECTS, AnalyzeRequest, Aspect, AspectMeta, EnrichedPrediction, Item, Meta, iso_week)
 from .transcript import parse_turns, role_at
 from .verify import locate
@@ -34,6 +34,7 @@ STUB = False
 CONF = {"high": 0.85, "medium": 0.65, "low": 0.45}
 AGE_RE = re.compile(r"\b\d{1,3}[- ]year[- ]old\b|\bcase report\b|\bwe (report|present|describe) a\b", re.I)
 OFFLABEL_RE = re.compile(r"\boff[- ]label\b", re.I)
+PIVOTAL_RE = re.compile(r"phase (3|iii)|randomi[sz]ed", re.I)
 
 
 class State(TypedDict, total=False):
@@ -130,6 +131,17 @@ def n_finalize(s: State) -> dict:
         # abstain: aspects below threshold become null (scorer rewards precision on matched aspects)
         for a in [a for a, m in metas.items() if m.confidence < config.ASPECT_MIN_CONF]:
             aspects.pop(a); metas.pop(a); notes.append(f"abstained {a}: low confidence")
+        # guide: authors' caveats ("retrospective") = evidence_quality -1
+        cav = evidence_caveat(item)
+        if cav and "evidence_quality" not in aspects:
+            loc = locate(cav, item.text)
+            if loc:
+                aspects["evidence_quality"] = Aspect(polarity=-1, speaker="researcher", span=loc.span)
+                metas["evidence_quality"] = AspectMeta(start=loc.start, end=loc.end, confidence=0.9, origin="rule")
+                notes.append("rule: retrospective caveat -> evidence_quality -1")
+        # guide: small/retrospective studies usually not actionable; papers need phase 3 / randomized evidence
+        if item.source == "pubmed" and actionable == "yes" and not PIVOTAL_RE.search(item.text or ""):
+            actionable = "no"; notes.append("rule: pubmed without phase 3/randomized evidence -> actionable no")
 
     flags = []
     text = item.text or ""

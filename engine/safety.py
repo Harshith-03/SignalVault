@@ -11,14 +11,12 @@ in FDA's database and are never flagged for resubmission. Every criterion quote 
 """
 from __future__ import annotations
 
-import json
 import re
 from datetime import date, timedelta
 from typing import Optional
 
-import requests
-
 from . import config
+from .llm import LLMError, chat_json
 from .schema import Criterion, EnrichedPrediction, Item, SafetyCase
 from .transcript import parse_turns, turn_at
 from .verify import locate
@@ -84,10 +82,8 @@ def detect_case(item: Item, pred: EnrichedPrediction, model: str | None = None,
             "messages": [{"role": "user", "content": PROMPT.format(source=item.source, text=text[:7000])}],
             "options": {"temperature": 0, "seed": 7, "num_ctx": config.NUM_CTX, "num_predict": 400}}
     try:
-        r = requests.post(f"{config.OLLAMA_URL}/api/chat", json=body, timeout=300)
-        r.raise_for_status()
-        raw = json.loads(r.json()["message"]["content"])
-    except (requests.RequestException, ValueError, KeyError):
+        raw, _ = chat_json(body, required="adverse_event_quote")
+    except LLMError:
         return None
     patient = _crit(raw.get("patient_quote", ""), text, lambda s: bool(PATIENT_ID.search(s)))
     drug = _crit(raw.get("suspect_drug_quote", ""), text, lambda s: bool(OUR_DRUGS.search(s)))

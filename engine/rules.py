@@ -106,11 +106,27 @@ def _ctgov(item: Item) -> RuleResult:
                       {"status": status, "phases": phases, "new_registration": new_reg, "ours": ours})
 
 
+EARNINGS = re.compile(r"\b(Q[1-4]|quarter|full[- ]year)\b.*\b(results|earnings)\b|\breports? (Q[1-4]|first|second|third|fourth)",
+                      re.I)
+# guide: authors' caveats = evidence_quality -1 (pubmed). Measured on dev: 3/3 hits correct.
+RETRO = re.compile(r"\b(?:[Aa] )?[Rr]etrospective(?:ly)?(?: (?!of\b|the\b|in\b|for\b)[a-zA-Z\-]+){1,3}")
+
+
+def evidence_caveat(item: Item) -> Optional[str]:
+    if item.source != "pubmed":
+        return None
+    m = RETRO.search(item.text or "")
+    return m.group(0) if m else None
+
+
 def apply_rules(item: Item) -> RuleResult:
     src = item.source
     if src == "fda_event":
         return _faers(item)
     if src == "ctgov":
         return _ctgov(item)
+    if src == "press_release" and EARNINGS.search(item.title or ""):   # ruling 5
+        return RuleResult(True, "competitor_move", "no", {}, "company", ["competitor_move"],
+                          ["ruling5: earnings release -> competitor_move, actionable no, no aspects"])
     return RuleResult(False, speaker=SOURCE_SPEAKER.get(src), allowed_signals=SOURCE_SIGNALS.get(src),
                       hits=[f"source:{src}"])

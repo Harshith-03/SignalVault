@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import re
@@ -14,7 +15,7 @@ from collections import Counter
 import requests
 
 from . import config
-from .prompts import EXAMPLE_TEMPLATE, SYSTEM_PROMPT, USER_TEMPLATE
+from .prompts import EXAMPLE_TEMPLATE, PROMPT_VERSION, SYSTEM_PROMPT, USER_TEMPLATE, V1_RULES
 from .schema import ASPECTS, SIGNAL_TYPES, SPEAKERS, Item
 
 MAX_TEXT_CHARS = 7000
@@ -101,7 +102,8 @@ def build_messages(item: Item, rules, examples) -> list[dict]:
                                 product={"A": "A (Tagrisso)", "B": "B (Rybrevant/Lazcluze)", "both": "both A and B"}
                                 .get(item.product or "", "unknown"),
                                 title=item.title, text=(item.text or "")[:MAX_TEXT_CHARS])
-    return [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": user}]
+    system = SYSTEM_PROMPT + (V1_RULES if PROMPT_VERSION != "v0" else "")
+    return [{"role": "system", "content": system}, {"role": "user", "content": user}]
 
 
 def label(item: Item, rules, examples, model: str | None = None) -> tuple[dict, int]:
@@ -109,6 +111,17 @@ def label(item: Item, rules, examples, model: str | None = None) -> tuple[dict, 
             "think": False, "keep_alive": "30m",
             "format": output_schema(rules.allowed_signals, rules.speaker),
             "options": {"temperature": 0, "seed": 7, "num_ctx": config.NUM_CTX, "num_predict": 700}}
+    return chat_json(body, required="signal_type")
+
+
+def chat_json(body: dict, required: str) -> tuple[dict, int]:
+    """POST to local Ollama with JSON-schema output; raw responses cached by exact request hash
+    (so post-processing/rule changes always re-run, while model calls are free on re-runs)."""
+    key = hashlib.sha256(json.dumps(body, sort_keys=True, ensure_ascii=False).encode()).hexdigest()[:32]
+    cache = config.OUTPUTS / "cache" / "llm" / f"{key}.json"
+    if cache.exists():
+        hit = json.loads(cache.read_text(encoding="utf-8"))
+        return hit["data"], hit["ms"]
     last = None
     for attempt in range(config.MAX_ATTEMPTS):
         t0 = time.time()
@@ -117,10 +130,13 @@ def label(item: Item, rules, examples, model: str | None = None) -> tuple[dict, 
             r.raise_for_status()
             content = r.json()["message"]["content"]
             data = json.loads(content)
-            if not isinstance(data, dict) or "signal_type" not in data:
+            if not isinstance(data, dict) or required not in data:
                 raise ValueError("schema not followed")
-            return data, int((time.time() - t0) * 1000)
-        except (requests.RequestException, ValueError, KeyError) as e:   # ValueError covers JSONDecodeError
+            ms = int((time.time() - t0) * 1000)
+            cache.parent.mkdir(parents=True, exist_ok=True)
+            cache.write_text(json.dumps({"data": data, "ms": ms}, ensure_ascii=False), encoding="utf-8")
+            return data, ms
+        except (requests.RequestException, ValueError, KeyError, TypeError) as e:   # ValueError covers JSONDecodeError
             last = e
             body["options"]["seed"] = 7 + attempt + 1
     raise LLMError(f"local model failed after {config.MAX_ATTEMPTS} attempts: {last}")

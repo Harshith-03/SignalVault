@@ -1,0 +1,23 @@
+PROMPT LOG — every revision fixes OBSERVED failures on dev (60 gold items, leave-one-out few-shot k=3).
+Scores = official scoring/score.py composite on dev. Dev is small: treat differences < ~0.01 as noise.
+
+[baseline] rules only (no model)                                composite 0.643
+  ctgov + FAERS rules from the labeling guide; everything else 'none'.
+
+[v0] condensed labeling guide as system prompt; JSON-schema output; 3 nearest dev examples (same source preferred)
+  qwen3.5:2b 0.732 | qwen3.5:4b 0.768 | qwen3:4b-instruct-2507 0.794 (picked; human-reviewed subset 0.800)
+  Observed failures (qwen3:4b-instruct):
+   F1 quotes too long: median 13 words vs 9 gold (stats, CIs, comparator lists dragged in)
+   F2 missed authors' caveats ("retrospective cohort study") -> evidence_quality -1 missing 4x
+   F3 polarity too strong on papers (+2 where gold +1; -2 for a single case report)
+   F4 actionable 'yes' on real-world / review papers
+   F5 missed secondary judgments ("manageable safety profile" in an efficacy paper)
+   F6 earnings release not labeled competitor_move (ruling 5); lab study labeled none (ruling 2)
+  Post-processing tried on cached outputs:
+   - trimming long quotes by rule: WORSE (0.787-0.789; token-F1 loses overlapping words) -> rejected
+   - retrospective regex -> evidence_quality -1: +0.009 (3/3 hits correct) -> kept as rule
+   - earnings title -> competitor_move: +0.016 (ruling 5) -> kept as rule
+   - pubmed actionable needs phase 3/randomized: +0.002 (guide: small/retrospective usually no) -> kept
+
+[v1] v0 + V1_RULES (quote length 4-12 words; secondary judgments; milder polarity; pubmed actionable; lab studies)
+  -> results below

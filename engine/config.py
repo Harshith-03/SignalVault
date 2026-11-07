@@ -45,9 +45,9 @@ GOLD_DEV = DATA / "dev.jsonl"
 
 # ---- model (local Ollama; the scored run must work with the network off)
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434")
-MODEL = os.getenv("SIGNALVAULT_MODEL", "qwen3.5:4b")
+MODEL = os.getenv("SIGNALVAULT_MODEL", "qwen3:4b-instruct-2507-q4_K_M")
 NUM_CTX = int(os.getenv("SIGNALVAULT_NUM_CTX", "8192"))
-PROMPT_VERSION = "v0"
+# prompt version lives in engine/prompts.py (env SIGNALVAULT_PROMPT)
 
 # ---- decision thresholds (tuned on dev, out-of-fold)
 MAX_ATTEMPTS = 2          # bounded repair loop
