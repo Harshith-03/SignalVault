@@ -118,6 +118,14 @@ def health():
     return {"ok": True, "engine_stub": pipeline.STUB, "using_fixtures": not (config.OUTPUTS / "enriched.jsonl").exists()}
 
 
+def _review_decisions() -> dict[str, str]:
+    path = config.OUTPUTS / "reviews.json"
+    try:
+        return {k: v.get("decision", "") for k, v in json.loads(path.read_text(encoding="utf-8")).items()}
+    except (OSError, ValueError):
+        return {}
+
+
 def _mask_card(card: Card, role: str) -> Card:
     """Need-to-know: patient demographics in quotes from case reports / transcripts are PV-only."""
     if role == "pharmacovigilance" or not (card.source == "transcript" or CAVEAT_CASE in card.caveats):
@@ -132,7 +140,12 @@ def _mask_card(card: Card, role: str) -> Card:
 def cards(product: Optional[str] = None, signal: Optional[str] = None, owner: Optional[str] = None,
           status: Optional[str] = None, actionable: Optional[bool] = None, x_sv_role: Optional[str] = Header(None)):
     role = _role(x_sv_role)
-    out = [_mask_card(c, role) for c in _all_cards()]
+    decisions = _review_decisions()
+    out = []
+    for c in _all_cards():
+        if c.card_id in decisions:   # a human decision is final: accepted -> auto, rejected -> abstained
+            c = c.model_copy(update={"review_status": "auto" if decisions[c.card_id] == "accept" else "abstained"})
+        out.append(_mask_card(c, role))
     return [c for c in out if (product is None or c.product == product) and (signal is None or c.signal_type == signal)
             and (owner is None or c.owner == owner) and (status is None or c.review_status == status)
             and (actionable is None or c.actionable == actionable)]
