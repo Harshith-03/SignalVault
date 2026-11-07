@@ -1,0 +1,202 @@
+{
+ "_synthetic": true,
+ "_note": "SYNTHETIC replay fixture: invented text shaped exactly like the documented API response, for offline tests and demos when no API key is configured. Not real articles: every title starts with [SYNTHETIC] and every text says so. Replace with real recordings via `python -m surge.radar discover --record` (public content only).",
+ "_shape": "POST https://api.tavily.com/search response",
+ "responses": [
+  {
+   "request": {
+    "query": "amivantamab subcutaneous FDA approval",
+    "topic": "news",
+    "search_depth": "basic",
+    "max_results": 10,
+    "start_date": "2026-10-08",
+    "include_published_date": true,
+    "include_answer": false,
+    "include_raw_content": false
+   },
+   "response": {
+    "query": "amivantamab subcutaneous FDA approval",
+    "follow_up_questions": null,
+    "answer": null,
+    "images": [],
+    "results": [
+     {
+      "title": "[SYNTHETIC] Johnson & Johnson sample release: subcutaneous amivantamab label update",
+      "url": "https://www.jnj.com/media-center/press-releases/synthetic-radar-sample-amivantamab-subcutaneous",
+      "content": "SYNTHETIC SAMPLE (not a real article). The subcutaneous formulation of amivantamab (Rybrevant Faspro) received an updated US label in this sample. The company said administration takes minutes instead of hours and infusion-related reactions were less frequent than with the intravenous form.",
+      "score": 0.91,
+      "published_date": "Tue, 03 Nov 2026 14:00:00 GMT"
+     },
+     {
+      "title": "[SYNTHETIC] Oncologists weigh infusion time savings with subcutaneous amivantamab",
+      "url": "https://news.example.org/oncology/synthetic-amivantamab-sc-infusion-time",
+      "content": "SYNTHETIC SAMPLE (not a real article). Community oncologists in this sample said subcutaneous Rybrevant could free chair time, while payers asked whether the price matches the intravenous version.",
+      "score": 0.84,
+      "published_date": "Thu, 29 Oct 2026 14:00:00 GMT"
+     },
+     {
+      "title": "[SYNTHETIC] Lung cancer screening uptake rises in sample survey",
+      "url": "https://news.example.org/screening/synthetic-uptake",
+      "content": "SYNTHETIC SAMPLE (not a real article). Low-dose CT screening uptake rose in this invented survey; no specific therapy is discussed.",
+      "score": 0.31,
+      "published_date": "Tue, 20 Oct 2026 14:00:00 GMT"
+     }
+    ],
+    "response_time": 1.0,
+    "request_id": "synthetic-tavily-q1"
+   }
+  },
+  {
+   "request": {
+    "query": "amivantamab lazertinib MARIPOSA overall survival",
+    "topic": "general",
+    "search_depth": "basic",
+    "max_results": 10,
+    "start_date": "2026-10-08",
+    "include_published_date": true,
+    "include_answer": false,
+    "include_raw_content": false
+   },
+   "response": {
+    "query": "amivantamab lazertinib MARIPOSA overall survival",
+    "follow_up_questions": null,
+    "answer": null,
+    "images": [],
+    "results": [
+     {
+      "title": "[SYNTHETIC] Overall survival with amivantamab plus lazertinib: a sample MARIPOSA analysis",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/synthetic-0001/",
+      "content": "SYNTHETIC SAMPLE (not a real article). In this invented abstract, amivantamab plus lazertinib was associated with longer overall survival than osimertinib in first-line EGFR-mutant NSCLC; the authors call for longer follow-up.",
+      "score": 0.88,
+      "published_date": "Sun, 25 Oct 2026 14:00:00 GMT"
+     }
+    ],
+    "response_time": 1.1,
+    "request_id": "synthetic-tavily-q2"
+   }
+  },
+  {
+   "request": {
+    "query": "osimertinib FLAURA2 overall survival",
+    "topic": "general",
+    "search_depth": "basic",
+    "max_results": 10,
+    "start_date": "2026-10-08",
+    "include_published_date": true,
+    "include_answer": false,
+    "include_raw_content": false
+   },
+   "response": {
+    "query": "osimertinib FLAURA2 overall survival",
+    "follow_up_questions": null,
+    "answer": null,
+    "images": [],
+    "results": [
+     {
+      "title": "[SYNTHETIC] FLAURA2 sample update: osimertinib plus chemotherapy overall survival",
+      "url": "https://news.example.org/oncology/synthetic-flaura2-os",
+      "content": "SYNTHETIC SAMPLE (not a real article). Investigators in this sample reported an overall survival benefit for osimertinib (Tagrisso) plus chemotherapy, with more haematological toxicity than monotherapy.",
+      "score": 0.86,
+      "published_date": "Sat, 31 Oct 2026 14:00:00 GMT"
+     }
+    ],
+    "response_time": 1.2,
+    "request_id": "synthetic-tavily-q3"
+   }
+  },
+  {
+   "request": {
+    "query": "Tagrisso osimertinib label update",
+    "topic": "news",
+    "search_depth": "basic",
+    "max_results": 10,
+    "start_date": "2026-10-08",
+    "include_published_date": true,
+    "include_answer": false,
+    "include_raw_content": false
+   },
+   "response": {
+    "query": "Tagrisso osimertinib label update",
+    "follow_up_questions": null,
+    "answer": null,
+    "images": [],
+    "results": [
+     {
+      "title": "[SYNTHETIC] AstraZeneca sample release: Tagrisso label update",
+      "url": "https://www.astrazeneca.com/media-centre/press-releases/2026/synthetic-radar-sample-tagrisso-label.html",
+      "content": "SYNTHETIC SAMPLE (not a real article). AstraZeneca announced in this sample that the Tagrisso (osimertinib) prescribing information was updated with longer-term survival data.",
+      "score": 0.9,
+      "published_date": "Mon, 02 Nov 2026 14:00:00 GMT"
+     }
+    ],
+    "response_time": 1.3,
+    "request_id": "synthetic-tavily-q4"
+   }
+  },
+  {
+   "request": {
+    "query": "osimertinib amivantamab EGFR NSCLC guideline",
+    "topic": "news",
+    "search_depth": "basic",
+    "max_results": 10,
+    "start_date": "2026-10-08",
+    "include_published_date": true,
+    "include_answer": false,
+    "include_raw_content": false
+   },
+   "response": {
+    "query": "osimertinib amivantamab EGFR NSCLC guideline",
+    "follow_up_questions": null,
+    "answer": null,
+    "images": [],
+    "results": [
+     {
+      "title": "[SYNTHETIC] Sample guideline note: first-line options for EGFR-mutant NSCLC",
+      "url": "https://news.example.org/guidelines/synthetic-egfr-first-line",
+      "content": "SYNTHETIC SAMPLE (not a real article). A sample guideline note lists osimertinib and amivantamab plus lazertinib among preferred first-line options and asks clinicians to weigh toxicity and administration burden.",
+      "score": 0.8,
+      "published_date": "Tue, 27 Oct 2026 14:00:00 GMT"
+     }
+    ],
+    "response_time": 1.4,
+    "request_id": "synthetic-tavily-q5"
+   }
+  },
+  {
+   "request": {
+    "query": "Rybrevant Lazcluze safety",
+    "topic": "news",
+    "search_depth": "basic",
+    "max_results": 10,
+    "start_date": "2026-10-08",
+    "include_published_date": true,
+    "include_answer": false,
+    "include_raw_content": false
+   },
+   "response": {
+    "query": "Rybrevant Lazcluze safety",
+    "follow_up_questions": null,
+    "answer": null,
+    "images": [],
+    "results": [
+     {
+      "title": "[SYNTHETIC] Clinician describes clot on amivantamab plus lazertinib (sample)",
+      "url": "https://news.example.org/safety/synthetic-vte-report",
+      "content": "SYNTHETIC SAMPLE (not a real article). A thoracic oncologist interviewed for this sample said a 64-year-old man developed a pulmonary embolism two months after starting amivantamab plus lazertinib (Rybrevant plus Lazcluze) and was hospitalised.",
+      "score": 0.77,
+      "published_date": "Sun, 01 Nov 2026 14:00:00 GMT"
+     },
+     {
+      "title": "[SYNTHETIC] Johnson & Johnson sample release: subcutaneous amivantamab label update",
+      "url": "https://www.jnj.com/media-center/press-releases/synthetic-radar-sample-amivantamab-subcutaneous",
+      "content": "SYNTHETIC SAMPLE (not a real article). The subcutaneous formulation of amivantamab (Rybrevant Faspro) received an updated US label in this sample. The company said administration takes minutes instead of hours and infusion-related reactions were less frequent than with the intravenous form.",
+      "score": 0.52,
+      "published_date": "Tue, 03 Nov 2026 14:00:00 GMT"
+     }
+    ],
+    "response_time": 1.5,
+    "request_id": "synthetic-tavily-q6"
+   }
+  }
+ ]
+}

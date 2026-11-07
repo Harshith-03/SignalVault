@@ -106,7 +106,7 @@ def discover(days: int = 30, max_results: int = 10, replay: bool = False, record
     old = [h for h in old if h.get("mode") == modes.get(h.get("provider"))]   # never mix synthetic with live
     snap: dict[tuple, dict] = {}
     for h in old + new_hits:                                                  # newest copy of a page wins
-        snap[(h["provider"], h["norm_url"], h["content_sha256"])] = h
+        snap[(h["provider"], h["query"], h["norm_url"], h["content_sha256"])] = h
     hits = list(snap.values())
     items, prov, stats = build_items(hits, packet_urls())
 
