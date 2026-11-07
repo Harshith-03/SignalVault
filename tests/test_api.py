@@ -18,6 +18,11 @@ def client(tmp_path, monkeypatch):
     from app.api import main
     monkeypatch.setattr(config, "OUTPUTS", tmp_path)
     monkeypatch.setattr(hashes, "model_digest", lambda model, *a, **k: "sha256:test")
+    # Hermetic: never call the local LLM from API tests (main's engine is real, not a stub, after merge).
+    monkeypatch.setattr(main.pipeline, "analyze_text", lambda req: make_pred(
+        "TX-API", signal="expert_opinion", source=req.source, product=req.product, text=req.text,
+        aspects={"convenience": (2, "hcp", "It takes minutes instead of hours")}
+        if "It takes minutes instead of hours" in req.text else {}))
     main._CACHE.clear()
     with TestClient(main.app) as c:
         yield c
