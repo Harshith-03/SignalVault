@@ -17,6 +17,7 @@ Endpoints (frozen; see CONTRACTS.md §6):
     GET  /api/safety?status=           -> list[SafetyCase]   (header X-SV-Role; non-PV roles get masked patient data)
     POST /api/safety/{case_id}  SafetyUpdate                 (PV role only, else 403)
     GET  /api/privacy/details          -> netguard detail (last blocked hosts), audit head, NER model (added)
+    GET  /api/radar                    -> Public Evidence Radar snapshot (read-only; files written by surge CLI)
 
 Privacy wiring: netguard is installed at startup (loopback only); transcripts are redacted before
 display; /api/cards masks patient demographics in citation quotes for every role except
@@ -303,3 +304,72 @@ def review(card_id: str, body: ReviewDecision):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, indent=1), encoding="utf-8")
     return {"ok": True, "card_id": card_id}
+
+
+# ---------------------------------------------------------------- Public Evidence Radar (Surge), read-only
+# The radar's discovery runs in a SEPARATE process (`python -m surge.radar discover`), the only component that
+# goes online. This endpoint only reads the local snapshot files it left behind: it never imports surge or a
+# network client, so the API process stays loopback-only under the netguard.
+RADAR_HINT = ("No radar run yet. Run `python -m surge.radar discover` (online, public drug/trial queries only; "
+              "add --replay to use recorded fixtures), then `python -m surge.radar analyze` (offline, local model).")
+
+
+def _jsonl(path: Path) -> list[dict]:
+    try:
+        return [json.loads(l) for l in path.read_text(encoding="utf-8").splitlines() if l.strip()]
+    except (OSError, ValueError):
+        return []
+
+
+def _json_list(path: Path) -> list:
+    try:
+        v = json.loads(path.read_text(encoding="utf-8"))
+        return v if isinstance(v, list) else []
+    except (OSError, ValueError):
+        return []
+
+
+def _radar_preds(path: Path) -> dict[str, dict]:
+    """RD-* predictions from an enriched file, keyed by item_id (cached on mtime)."""
+    return _cached(f"radar:{path}", path, lambda: {r["item_id"]: r for r in _jsonl(path)
+                                                   if str(r.get("item_id", "")).startswith("RD-")})
+
+
+@app.get("/api/radar")
+def radar():
+    d = config.OUTPUTS / "radar"
+    rows = _jsonl(d / "items.jsonl")
+    runs = _jsonl(d / "runs.jsonl")
+    last = next((r for r in reversed(runs) if r.get("kind") == "discover"), None)
+    if not rows and last is None:
+        return {"last_run": None, "modes": {}, "providers": {"tavily": 0, "exa": 0}, "corroborated": 0, "items": [],
+                "queries": [], "queries_total": 0, "stats": {}, "hint": RADAR_HINT}
+    in_app = _radar_preds(config.OUTPUTS / "enriched.jsonl")
+    local = _radar_preds(config.OUTPUTS / "enriched_radar.jsonl")
+    items = []
+    for r in rows:
+        p = in_app.get(r["item_id"]) or local.get(r["item_id"])
+        it = {k: r.get(k) for k in ("item_id", "title", "url", "source", "product", "published", "providers",
+                                    "corroborated", "corroboration", "queries", "retrieved_at", "content_sha256",
+                                    "mode")}
+        it.update(query=(r.get("queries") or [None])[0], analysed=p is not None, in_app=r["item_id"] in in_app)
+        if p:
+            meta = p.get("meta") or {}
+            it.update(signal_type=p.get("signal_type"), actionable=p.get("actionable"),
+                      review_status=meta.get("review_status"), why_actionable=meta.get("why_actionable"),
+                      flags=meta.get("flags", []))
+        items.append(it)
+    log = _jsonl(d / "queries.jsonl")
+    shown = [q for q in log if last and q.get("run_id") == last.get("run_id")]
+    queries = [{k: q.get(k) for k in ("provider", "query", "kind", "mode", "n_results", "error", "ts")} for q in shown]
+    stats = {k: (last or {}).get(k) for k in ("requests", "new_results", "hits", "known_in_packet", "off_topic",
+                                              "duplicates_merged", "days", "max_results")}
+    stats.update(items=len(items), analysed=sum(i["analysed"] for i in items),
+                 actionable=sum(i.get("actionable") == "yes" for i in items),
+                 in_app=sum(i["in_app"] for i in items),
+                 safety_cases=len(_json_list(config.OUTPUTS / "safety_radar.json")))
+    return {"last_run": last and last.get("ts"), "modes": (last or {}).get("modes", {}),
+            "providers": {p: sum(p in (i["providers"] or []) for i in items) for p in ("tavily", "exa")},
+            "corroborated": sum(bool(i["corroborated"]) for i in items), "items": items, "queries": queries,
+            "queries_total": len(log), "stats": stats,
+            "hint": None if items else "The last radar run found no new items."}

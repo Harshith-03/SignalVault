@@ -52,6 +52,54 @@ export interface Health {
   using_fixtures: boolean;
 }
 
+/** GET /api/radar: the Public Evidence Radar snapshot (written by the separate `surge.radar` CLI). */
+export type RadarProvider = "tavily" | "exa";
+export type RadarMode = "live" | "replay";
+export interface RadarItem {
+  item_id: string;
+  title: string;
+  url: string | null;
+  source: string;
+  product: Product | null;
+  published: string | null;
+  providers: RadarProvider[];
+  corroborated: boolean;
+  corroboration: "same_url" | "same_title" | "same_content" | null;
+  query: string | null;
+  queries: string[];
+  retrieved_at: string;
+  content_sha256: string;
+  mode: RadarMode;
+  analysed: boolean;
+  in_app: boolean;
+  signal_type?: SignalType;
+  actionable?: "yes" | "no";
+  review_status?: ReviewStatus;
+  why_actionable?: string;
+  flags?: Flag[];
+}
+export interface RadarQuery {
+  provider: RadarProvider;
+  query: string;
+  kind: "news" | "research";
+  mode: RadarMode;
+  n_results: number;
+  error: string | null;
+  ts: string;
+}
+export interface RadarResponse {
+  last_run: string | null;
+  modes: Partial<Record<RadarProvider, RadarMode>>;
+  providers: Record<RadarProvider, number>;
+  corroborated: number;
+  items: RadarItem[];
+  queries: RadarQuery[];
+  queries_total: number;
+  stats: Partial<Record<"requests" | "new_results" | "hits" | "known_in_packet" | "off_topic" | "duplicates_merged"
+    | "days" | "max_results" | "items" | "analysed" | "actionable" | "in_app" | "safety_cases", number | null>>;
+  hint: string | null;
+}
+
 /** Mirrors engine.schema constants. */
 export const RESTRICTED_MASK = "[restricted: pharmacovigilance only]";
 export const ASPECTS: AspectName[] = ["efficacy", "safety", "convenience", "access_cost", "evidence_quality"];

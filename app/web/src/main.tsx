@@ -21,6 +21,7 @@ const Analyze = lazy(() => import("./pages/Analyze"));
 const Review = lazy(() => import("./pages/Review"));
 const Safety = lazy(() => import("./pages/Safety"));
 const Privacy = lazy(() => import("./pages/Privacy"));
+const Radar = lazy(() => import("./pages/Radar"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 function PageFallback() {
@@ -50,6 +51,7 @@ createRoot(document.getElementById("root")!).render(
               <Route index element={page(<Overview />)} />
               <Route path="signals" element={page(<Signals />)} />
               <Route path="trends" element={page(<Trends />)} />
+              <Route path="radar" element={page(<Radar />)} />
               <Route path="items/:itemId" element={page(<ItemDetail />)} />
               <Route path="analyze" element={page(<Analyze />)} />
               <Route path="review" element={page(<Review />)} />

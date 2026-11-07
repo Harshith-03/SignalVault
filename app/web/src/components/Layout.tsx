@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Check, ChevronDown, FileSearch, Gauge, Inbox, LineChart, ListChecks, Lock, LockOpen, Moon,
-  Rows3, ShieldCheck, Sun, UserRound,
+  Radar, Rows3, ShieldCheck, Sun, UserRound,
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { NavLink, Outlet, useLocation } from "react-router-dom";
@@ -55,6 +55,7 @@ export function Layout() {
           <NavItem to="/" icon={<Gauge size={16} />} end>Overview</NavItem>
           <NavItem to="/signals" icon={<Rows3 size={16} />}>Signals</NavItem>
           <NavItem to="/trends" icon={<LineChart size={16} />}>Trends</NavItem>
+          <NavItem to="/radar" icon={<Radar size={16} />}>Radar</NavItem>
           <NavSection>Workflows</NavSection>
           <NavItem to="/analyze" icon={<FileSearch size={16} />}>Analyze</NavItem>
           <NavItem to="/review" icon={<ListChecks size={16} />} count={reviewCount}>Review queue</NavItem>

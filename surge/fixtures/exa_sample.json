@@ -1,0 +1,216 @@
+{
+ "_synthetic": true,
+ "_note": "SYNTHETIC replay fixture: invented text shaped exactly like the documented API response, for offline tests and demos when no API key is configured. Not real articles: every title starts with [SYNTHETIC] and every text says so. Replace with real recordings via `python -m surge.radar discover --record` (public content only).",
+ "_shape": "POST https://api.exa.ai/search response",
+ "responses": [
+  {
+   "request": {
+    "query": "amivantamab subcutaneous FDA approval",
+    "type": "auto",
+    "numResults": 10,
+    "category": "news",
+    "startPublishedDate": "2026-10-08T00:00:00.000Z",
+    "contents": {
+     "text": {
+      "maxCharacters": 2000
+     },
+     "highlights": {
+      "maxCharacters": 600
+     }
+    }
+   },
+   "response": {
+    "requestId": "synthetic-exa-q1",
+    "results": [
+     {
+      "id": "https://www.jnj.com/media-center/press-releases/synthetic-radar-sample-amivantamab-subcutaneous?utm_source=synthetic&utm_medium=replay",
+      "url": "https://www.jnj.com/media-center/press-releases/synthetic-radar-sample-amivantamab-subcutaneous?utm_source=synthetic&utm_medium=replay",
+      "title": "[SYNTHETIC] Johnson & Johnson sample release: subcutaneous amivantamab label update",
+      "publishedDate": "2026-11-03T14:00:00.000Z",
+      "author": "Synthetic Sample",
+      "text": "SYNTHETIC SAMPLE (not a real article). The subcutaneous formulation of amivantamab (Rybrevant Faspro) received an updated US label in this sample. The company said administration takes minutes instead of hours and infusion-related reactions were less frequent than with the intravenous form.",
+      "highlights": [
+       "The subcutaneous formulation of amivantamab (Rybrevant Faspro) received an updated US label in this sample. The company said administration takes minutes instea"
+      ]
+     },
+     {
+      "id": "https://wire.example.com/health/2026/10/29/synthetic-amivantamab-sc",
+      "url": "https://wire.example.com/health/2026/10/29/synthetic-amivantamab-sc",
+      "title": "[SYNTHETIC] Oncologists weigh infusion time savings with subcutaneous amivantamab - Wire Example",
+      "publishedDate": "2026-10-29T14:00:00.000Z",
+      "author": "Synthetic Sample",
+      "text": "SYNTHETIC SAMPLE (not a real article). Syndicated copy: community oncologists said subcutaneous Rybrevant could free chair time.",
+      "highlights": [
+       "Syndicated copy: community oncologists said subcutaneous Rybrevant could free chair time."
+      ]
+     }
+    ],
+    "searchTime": 725,
+    "costDollars": {
+     "total": 0.0
+    }
+   }
+  },
+  {
+   "request": {
+    "query": "amivantamab lazertinib MARIPOSA overall survival",
+    "type": "auto",
+    "numResults": 10,
+    "category": "research paper",
+    "startPublishedDate": "2026-10-08T00:00:00.000Z",
+    "contents": {
+     "text": {
+      "maxCharacters": 2000
+     },
+     "highlights": {
+      "maxCharacters": 600
+     }
+    }
+   },
+   "response": {
+    "requestId": "synthetic-exa-q2",
+    "results": [
+     {
+      "id": "https://pubmed.ncbi.nlm.nih.gov/synthetic-0001",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/synthetic-0001",
+      "title": "[SYNTHETIC] Overall survival with amivantamab plus lazertinib: a sample MARIPOSA analysis",
+      "publishedDate": "2026-10-25T14:00:00.000Z",
+      "author": "Synthetic Sample",
+      "text": "SYNTHETIC SAMPLE (not a real article). In this invented abstract, amivantamab plus lazertinib was associated with longer overall survival than osimertinib in first-line EGFR-mutant NSCLC; the authors call for longer follow-up.",
+      "highlights": [
+       "In this invented abstract, amivantamab plus lazertinib was associated with longer overall survival than osimertinib in first-line EGFR-mutant NSCLC; the authors"
+      ]
+     }
+    ],
+    "searchTime": 750,
+    "costDollars": {
+     "total": 0.0
+    }
+   }
+  },
+  {
+   "request": {
+    "query": "osimertinib FLAURA2 overall survival",
+    "type": "auto",
+    "numResults": 10,
+    "category": "research paper",
+    "startPublishedDate": "2026-10-08T00:00:00.000Z",
+    "contents": {
+     "text": {
+      "maxCharacters": 2000
+     },
+     "highlights": {
+      "maxCharacters": 600
+     }
+    }
+   },
+   "response": {
+    "requestId": "synthetic-exa-q3",
+    "results": [
+     {
+      "id": "https://journal.example.org/articles/synthetic-flaura2-ctdna",
+      "url": "https://journal.example.org/articles/synthetic-flaura2-ctdna",
+      "title": "[SYNTHETIC] Biomarker sub-study of osimertinib in FLAURA2 (sample preprint)",
+      "publishedDate": "2026-10-18T14:00:00.000Z",
+      "author": "Synthetic Sample",
+      "text": "SYNTHETIC SAMPLE (not a real article). This invented preprint reports that ctDNA clearance on osimertinib tracked with progression-free survival; evidence is exploratory and not peer reviewed.",
+      "highlights": [
+       "This invented preprint reports that ctDNA clearance on osimertinib tracked with progression-free survival; evidence is exploratory and not peer reviewed."
+      ]
+     }
+    ],
+    "searchTime": 775,
+    "costDollars": {
+     "total": 0.0
+    }
+   }
+  },
+  {
+   "request": {
+    "query": "Tagrisso osimertinib label update",
+    "type": "auto",
+    "numResults": 10,
+    "category": "news",
+    "startPublishedDate": "2026-10-08T00:00:00.000Z",
+    "contents": {
+     "text": {
+      "maxCharacters": 2000
+     },
+     "highlights": {
+      "maxCharacters": 600
+     }
+    }
+   },
+   "response": {
+    "requestId": "synthetic-exa-q4",
+    "results": [],
+    "searchTime": 800,
+    "costDollars": {
+     "total": 0.0
+    }
+   }
+  },
+  {
+   "request": {
+    "query": "osimertinib amivantamab EGFR NSCLC guideline",
+    "type": "auto",
+    "numResults": 10,
+    "category": "news",
+    "startPublishedDate": "2026-10-08T00:00:00.000Z",
+    "contents": {
+     "text": {
+      "maxCharacters": 2000
+     },
+     "highlights": {
+      "maxCharacters": 600
+     }
+    }
+   },
+   "response": {
+    "requestId": "synthetic-exa-q5",
+    "results": [
+     {
+      "id": "https://mirror.example.net/synthetic-roundup-copy",
+      "url": "https://mirror.example.net/synthetic-roundup-copy",
+      "title": "[SYNTHETIC] Roundup mirror copy",
+      "publishedDate": "2026-10-27T14:00:00.000Z",
+      "author": "Synthetic Sample",
+      "text": "SYNTHETIC SAMPLE (not a real article). A sample guideline note lists osimertinib and amivantamab plus lazertinib among preferred first-line options and asks clinicians to weigh toxicity and administration burden.",
+      "highlights": [
+       "A sample guideline note lists osimertinib and amivantamab plus lazertinib among preferred first-line options and asks clinicians to weigh toxicity and administr"
+      ]
+     }
+    ],
+    "searchTime": 825,
+    "costDollars": {
+     "total": 0.0
+    }
+   }
+  },
+  {
+   "request": {
+    "query": "Rybrevant Lazcluze safety",
+    "type": "auto",
+    "numResults": 10,
+    "category": "news",
+    "startPublishedDate": "2026-10-08T00:00:00.000Z",
+    "contents": {
+     "text": {
+      "maxCharacters": 2000
+     },
+     "highlights": {
+      "maxCharacters": 600
+     }
+    }
+   },
+   "response": {
+    "requestId": "synthetic-exa-q6",
+    "results": [],
+    "searchTime": 850,
+    "costDollars": {
+     "total": 0.0
+    }
+   }
+  }
+ ]
+}
