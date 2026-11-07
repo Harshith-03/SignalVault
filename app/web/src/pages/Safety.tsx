@@ -90,9 +90,9 @@ export default function Safety() {
       ) : (
         <>
           <div className="mb-6 grid grid-cols-4 gap-4">
-            <Stat label="Open cases" value={inView.filter(OPEN).length} icon={<ShieldAlert size={16} />} accent={inView.some(OPEN) ? "var(--crit)" : undefined} sub="New or in triage" />
+            <Stat label="Open cases" value={inView.filter(OPEN).length} icon={<ShieldAlert size={16} />} tone={inView.some(OPEN) ? "crit" : "neutral"} sub="New or in triage" />
             <Stat label="Valid case candidates" value={inView.filter((c) => c.valid_case_candidate).length} icon={<BadgeCheck size={16} />} sub="All four criteria present" />
-            <Stat label="Due within 7 days" value={dueSoon} icon={<Timer size={16} />} accent={dueSoon ? "var(--warn)" : undefined} sub="Open cases only" />
+            <Stat label="Due within 7 days" value={dueSoon} icon={<Timer size={16} />} tone={dueSoon ? "warn" : "neutral"} sub="Open cases only" />
             <Stat label="Already reported" value={inView.filter((c) => c.already_reported).length} icon={<Database size={16} />} sub="FAERS: no new report needed" />
           </div>
 

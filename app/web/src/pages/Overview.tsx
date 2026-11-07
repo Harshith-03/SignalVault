@@ -80,7 +80,7 @@ export default function Overview() {
                 label="Open safety cases"
                 value={safety.error ? "—" : safety.loading && !safety.data ? "…" : openCases.length}
                 icon={<ShieldAlert size={16} />}
-                accent={openCases.length ? "var(--crit)" : undefined}
+                tone={openCases.length ? "crit" : "neutral"}
                 sub={<span className="inline-flex items-center gap-1">{cases.filter((c) => c.valid_case_candidate).length} valid case candidates <ArrowRight size={12} /></span>}
               />
             </Link>

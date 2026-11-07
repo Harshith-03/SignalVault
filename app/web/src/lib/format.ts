@@ -80,7 +80,7 @@ export function fmtPolarity(v: number, digits = 1): string {
   return (v > 0 ? "+" : "−") + s;
 }
 
-/** Diverging red (−2) → grey (0) → teal (+2), mixed in OKLab from theme tokens. */
+/** Diverging plum (−2) → warm grey (0) → olive (+2), mixed in OKLab from theme tokens. */
 export function polarityFill(v: number): string {
   const x = Math.max(-2, Math.min(2, v));
   const a = Math.abs(x);
@@ -88,7 +88,11 @@ export function polarityFill(v: number): string {
   if (a <= 1) return `color-mix(in oklab, var(${near}) ${Math.round(a * 100)}%, var(--pol-0))`;
   return `color-mix(in oklab, var(${far}) ${Math.round((a - 1) * 100)}%, var(${near}))`;
 }
-export const polarityInk = (v: number) => (Math.abs(v) >= 1.5 ? "var(--ink-inverse)" : "var(--ink)");
+/**
+ * Each theme's ramp is tuned so the theme's ink clears 4.5:1 on every step (see DESIGN.md), which
+ * avoids the unreadable crossover a light→dark ramp has where neither ink nor inverse ink works.
+ */
+export const polarityInk = (_v: number) => "var(--ink)";
 
 export function polarityWord(v: number): string {
   if (v >= 1.5) return "strongly positive";

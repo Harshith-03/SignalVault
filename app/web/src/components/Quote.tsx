@@ -11,20 +11,22 @@ import { CopyButton } from "./ui";
 export function Quote({ text, aspect, meta, url }: { text: string; aspect?: string; meta?: ReactNode; url?: string | null }) {
   const host = hostOf(url);
   return (
-    <figure
-      className="rounded-xl border border-line bg-surface-2/60 py-3 pl-4 pr-3"
-      style={{ borderLeft: `3px solid ${aspect ? aspectColor(aspect) : "var(--line-strong)"}` }}
-    >
-      <blockquote className="text-[13.5px] leading-relaxed text-ink">
+    <figure className="relative rounded-panel border border-line bg-surface-2 py-3 pl-4.5 pr-3">
+      <span
+        aria-hidden
+        className="absolute bottom-3 left-1.5 top-3 w-[3px] rounded-full"
+        style={{ background: aspect ? aspectColor(aspect) : "var(--line-strong)" }}
+      />
+      <blockquote className="break-words text-[13.5px] leading-relaxed text-ink">
         <span className="select-none text-ink-3">“</span>{text}<span className="select-none text-ink-3">”</span>
       </blockquote>
       {(meta || host) && (
         <figcaption className="mt-2.5 flex flex-wrap items-center gap-1.5">
           {meta}
           {host && url && (
-            <span className="ml-auto inline-flex items-center gap-1 font-mono text-[11px] text-ink-3" title={url}>
-              <Link2 size={11} />
-              {host}
+            <span className="ml-auto inline-flex min-w-0 items-center gap-1 font-mono text-micro text-ink-3" title={url}>
+              <Link2 size={11} className="shrink-0" />
+              <span className="truncate">{host}</span>
               <CopyButton text={url} label="Copy source URL" />
             </span>
           )}

@@ -3,111 +3,175 @@
 /* Dark mode follows the explicit toggle stored on <html data-theme>. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
-/* ---------------------------------------------------------------- design tokens
-   Every colour the UI uses is a role token, so light/dark swap in one place. */
+/* ================================================================ design tokens
+   The single source of truth (see DESIGN.md). Every colour the UI uses is a role token,
+   so light/dark swap in one place and components never carry raw hex. */
 :root {
   color-scheme: light;
-  --bg: #f6f7f9;
+
+  /* surfaces: warm ivory page, white cards, tonal wells */
+  --bg: #f5f4ee;
   --surface: #ffffff;
-  --surface-2: #f2f4f7;
-  --surface-3: #e8ebf0;
-  --line: #e3e6eb;
-  --line-strong: #cfd4dc;
-  --ink: #0e1420;
-  --ink-2: #3d4554;
-  --ink-3: #697184;
+  --surface-2: #faf9f5;
+  --surface-3: #eae9df;
+  --line: #e6e4da;
+  --line-strong: #d3d1c4;
+  --scrim: rgb(41 45 36 / 0.32);
+
+  /* ink: all three clear WCAG AA on --bg, --surface and --surface-2 */
+  --ink: #292d24;
+  --ink-2: #4b5044;
+  --ink-3: #64695d;
   --ink-inverse: #ffffff;
-  --brand: #0e1420;
-  --focus: #2a78d6;
 
-  /* products (validated categorical slots 1–2) */
-  --prod-a: #2a78d6;
-  --prod-a-soft: #e6f0fb;
-  --prod-b: #e0622c;
-  --prod-b-soft: #fdeee6;
-  --prod-both: #6b7385;
-  --prod-both-soft: #eef0f4;
+  /* brand: olive for action + selection, sage for soft accents */
+  --brand: #506727;
+  --brand-hover: #445821;
+  --on-brand: #ffffff;
+  --brand-soft: #dce2ac;
+  --brand-tint: #eef1db;
+  --accent: #9daf6b;
+  --hero: #46592a;
+  --on-hero: #f3f5e4;
+  --on-hero-2: #cfd8a8;
+  --focus: #506727;
 
-  /* status (never reused as a series colour; always paired with icon + label) */
-  --good: #0b8a3e;
-  --good-soft: #e5f5eb;
-  --warn: #a96500;
-  --warn-soft: #fff4dc;
-  --crit: #c4302b;
-  --crit-soft: #fdeceb;
-  --info: #2a62b8;
-  --info-soft: #e8f0fb;
+  /* products (validated categorical pair; B also dashed + square markers) */
+  --prod-a: #16689a;
+  --prod-a-soft: #e3edf4;
+  --prod-b: #c0603a;
+  --prod-b-soft: #f7e7df;
+  --prod-both: #6b7064;
+  --prod-both-soft: #ecebe3;
 
-  /* polarity, diverging red → grey → teal */
-  --pol-n2: #b4271f;
-  --pol-n1: #ec9a90;
-  --pol-0: #e4e6ea;
-  --pol-p1: #86cfbf;
-  --pol-p2: #0c7f6b;
+  /* status (reserved meaning; always paired with icon + label) */
+  --good: #3e6a1f;
+  --good-soft: #e7edd5;
+  --warn: #875b06;
+  --warn-soft: #f5eacd;
+  --crit: #ae3a2c;
+  --crit-soft: #f7e2dc;
+  --info: #44607a;
+  --info-soft: #e4eaee;
 
-  /* aspects (identity, used for quote highlights) */
-  --asp-efficacy: #6250d6;
-  --asp-safety: #d23c3b;
-  --asp-convenience: #12946a;
-  --asp-access_cost: #c98500;
-  --asp-evidence_quality: #c94f86;
+  /* polarity, diverging plum (−2) → warm grey (0) → olive (+2). The ramp stays light enough
+     that plain ink clears 4.5:1 on every step, so labels never flip colour mid-scale. */
+  --pol-n2: #c47ca2;
+  --pol-n1: #e6bdd0;
+  --pol-0: #ebe9e1;
+  --pol-p1: #cfdb9e;
+  --pol-p2: #8fa656;
 
-  --shadow-sm: 0 1px 2px rgb(16 24 40 / 0.05);
-  --shadow-md: 0 1px 2px rgb(16 24 40 / 0.04), 0 4px 16px -4px rgb(16 24 40 / 0.08);
-  --shadow-lg: 0 24px 48px -12px rgb(16 24 40 / 0.18);
+  /* aspects (identity, used for quote highlights; always with a label) */
+  --asp-efficacy: #5b55b0;
+  --asp-safety: #b8452f;
+  --asp-convenience: #2f8466;
+  --asp-access_cost: #a87510;
+  --asp-evidence_quality: #b0487e;
+
+  /* chart chrome */
+  --grid: #ecebe3;
+  --axis: #d3d1c4;
+
+  /* elevation: restrained, warm-tinted */
+  --shadow-xs: 0 1px 0 rgb(41 45 36 / 0.03), 0 1px 2px rgb(41 45 36 / 0.04);
+  --shadow-sm: 0 1px 2px rgb(41 45 36 / 0.05), 0 6px 16px -6px rgb(41 45 36 / 0.12);
+  --shadow-lg: 0 2px 6px rgb(41 45 36 / 0.06), 0 24px 48px -16px rgb(41 45 36 / 0.22);
+
+  --pad-card: 1.25rem;
 }
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #0b0e14;
-  --surface: #121620;
-  --surface-2: #181d29;
-  --surface-3: #212736;
-  --line: #232a38;
-  --line-strong: #323a4b;
-  --ink: #eef1f6;
-  --ink-2: #b8bfcc;
-  --ink-3: #8a93a5;
-  --ink-inverse: #0b0e14;
-  --brand: #eef1f6;
-  --focus: #6aa5ee;
 
-  --prod-a: #4b93ea;
-  --prod-a-soft: #15243a;
-  --prod-b: #f07a45;
-  --prod-b-soft: #34201a;
-  --prod-both: #9aa2b4;
-  --prod-both-soft: #222836;
+  --bg: #141511;
+  --surface: #1c1e18;
+  --surface-2: #21231c;
+  --surface-3: #2b2e25;
+  --line: #2f3229;
+  --line-strong: #43473a;
+  --scrim: rgb(0 0 0 / 0.5);
 
-  --good: #3ccf7a;
-  --good-soft: #0f2a1c;
-  --warn: #f3b440;
-  --warn-soft: #2e2410;
-  --crit: #f06b62;
-  --crit-soft: #351717;
-  --info: #79a8f0;
-  --info-soft: #152238;
+  --ink: #edeee5;
+  --ink-2: #c8cabc;
+  --ink-3: #a0a394;
+  --ink-inverse: #141511;
 
-  --pol-n2: #e5534b;
-  --pol-n1: #8a3b35;
-  --pol-0: #3a4152;
-  --pol-p1: #1f6a5c;
-  --pol-p2: #35c2a5;
+  --brand: #afc47a;
+  --brand-hover: #bfd28b;
+  --on-brand: #172009;
+  --brand-soft: #2e3721;
+  --brand-tint: #232a1a;
+  --accent: #9daf6b;
+  --hero: #313d20;
+  --on-hero: #eef2dc;
+  --on-hero-2: #b9c690;
+  --focus: #afc47a;
 
-  --asp-efficacy: #9085e9;
-  --asp-safety: #ef6a68;
-  --asp-convenience: #38c08f;
-  --asp-access_cost: #e0a52b;
-  --asp-evidence_quality: #e47fac;
+  --prod-a: #3a8fcb;
+  --prod-a-soft: #1a2833;
+  --prod-b: #d56f40;
+  --prod-b-soft: #35231a;
+  --prod-both: #a0a394;
+  --prod-both-soft: #2b2e25;
 
-  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
-  --shadow-md: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
-  --shadow-lg: 0 24px 48px -12px rgb(0 0 0 / 0.6);
+  --good: #aecb7e;
+  --good-soft: #253019;
+  --warn: #e5b65c;
+  --warn-soft: #34290f;
+  --crit: #f08e7c;
+  --crit-soft: #3b211b;
+  --info: #a3b8cc;
+  --info-soft: #222a31;
+
+  --pol-n2: #84406a;
+  --pol-n1: #5a3449;
+  --pol-0: #36382f;
+  --pol-p1: #435429;
+  --pol-p2: #567129;
+
+  --asp-efficacy: #a09ae8;
+  --asp-safety: #ee8670;
+  --asp-convenience: #5bc29a;
+  --asp-access_cost: #e0ae45;
+  --asp-evidence_quality: #e58ab6;
+
+  --grid: #2a2d24;
+  --axis: #43473a;
+
+  --shadow-xs: 0 1px 0 rgb(0 0 0 / 0.25);
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.35), 0 8px 20px -8px rgb(0 0 0 / 0.55);
+  --shadow-lg: 0 2px 6px rgb(0 0 0 / 0.35), 0 24px 56px -16px rgb(0 0 0 / 0.7);
 }
 
 @theme inline {
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "DM Sans Variable", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Mono", monospace;
+
+  /* named type styles (size + line height); weights stay 400/500/600 */
+  --text-display: 3rem;
+  --text-display--line-height: 1;
+  --text-metric: 2rem;
+  --text-metric--line-height: 1;
+  --text-title: 1.75rem;
+  --text-title--line-height: 1.15;
+  --text-heading: 1rem;
+  --text-heading--line-height: 1.3;
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.55;
+  --text-support: 0.8125rem;
+  --text-support--line-height: 1.45;
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1.4;
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.35;
+
+  /* radii */
+  --radius-chip: 8px;
+  --radius-control: 12px;
+  --radius-panel: 16px;
+  --radius-card: 20px;
 
   --color-bg: var(--bg);
   --color-surface: var(--surface);
@@ -120,6 +184,14 @@
   --color-ink-3: var(--ink-3);
   --color-ink-inverse: var(--ink-inverse);
   --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-on-brand: var(--on-brand);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-tint: var(--brand-tint);
+  --color-accent: var(--accent);
+  --color-hero: var(--hero);
+  --color-on-hero: var(--on-hero);
+  --color-on-hero-2: var(--on-hero-2);
   --color-focus: var(--focus);
   --color-prod-a: var(--prod-a);
   --color-prod-a-soft: var(--prod-a-soft);
@@ -136,8 +208,8 @@
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
 
+  --shadow-xs: var(--shadow-xs);
   --shadow-sm: var(--shadow-sm);
-  --shadow-md: var(--shadow-md);
   --shadow-lg: var(--shadow-lg);
 }
 
@@ -148,25 +220,33 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    background: var(--bg);
+    -webkit-tap-highlight-color: transparent;
   }
   body {
     background: var(--bg);
     color: var(--ink);
-    min-width: 1024px;
+    font-size: var(--text-body);
+    line-height: 1.55;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
   }
   ::selection {
-    background: color-mix(in srgb, var(--focus) 25%, transparent);
+    background: color-mix(in srgb, var(--brand) 22%, transparent);
   }
   :focus-visible {
     outline: 2px solid var(--focus);
     outline-offset: 2px;
-    border-radius: 6px;
   }
-  button {
+  button, [role="button"], summary {
     cursor: pointer;
   }
   button:disabled {
     cursor: not-allowed;
+  }
+  @media (max-width: 1023.98px) {
+    :root { --pad-card: 1rem; }
   }
 }
 
@@ -174,16 +254,42 @@
   .tnum {
     font-variant-numeric: tabular-nums;
   }
+  /* Inter's stylistic sets don't apply to DM Sans; reset them for display text. */
+  .font-display {
+    font-family: var(--font-display);
+    font-feature-settings: normal;
+  }
+  /* "No data" is hatched so it can never be mistaken for a neutral 0. */
   .hatch {
     background-image: repeating-linear-gradient(
       135deg,
       transparent 0 5px,
-      color-mix(in srgb, var(--ink-3) 18%, transparent) 5px 6px
+      color-mix(in srgb, var(--ink-3) 22%, transparent) 5px 6px
     );
   }
   .scroll-thin {
     scrollbar-width: thin;
     scrollbar-color: var(--line-strong) transparent;
+  }
+  /* Interactive cards lift a little on hover so they read as clickable. */
+  .lift {
+    transition: transform 160ms ease-out, box-shadow 160ms ease-out, border-color 160ms ease-out, background-color 160ms ease-out;
+  }
+  .lift:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+  }
+  .press {
+    transition: transform 120ms ease-out, background-color 120ms ease-out, color 120ms ease-out, border-color 120ms ease-out, opacity 120ms ease-out;
+  }
+  .press:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -192,10 +298,11 @@
   100% { background-position: 400px 0; }
 }
 .skeleton {
-  background: linear-gradient(90deg, var(--surface-2) 0%, var(--surface-3) 50%, var(--surface-2) 100%);
+  background: linear-gradient(90deg, var(--surface-3) 0%, color-mix(in srgb, var(--surface-3) 45%, var(--surface)) 50%, var(--surface-3) 100%);
   background-size: 800px 100%;
-  animation: sv-shimmer 1.4s ease-in-out infinite;
-  border-radius: 8px;
+  animation: sv-shimmer 1.6s ease-in-out infinite;
+  border-radius: var(--radius-chip);
+  opacity: 0.8;
 }
 @keyframes sv-pulse {
   0%, 100% { opacity: 1; }
@@ -206,4 +313,8 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .skeleton, .live-dot { animation: none; }
+  .lift, .press { transition: none; }
+  .lift:hover { transform: none; }
+  .press:active:not(:disabled) { transform: none; }
+  html { scroll-behavior: auto; }
 }

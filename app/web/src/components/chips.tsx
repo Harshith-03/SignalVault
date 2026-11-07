@@ -10,6 +10,10 @@ import {
 } from "../lib/format";
 import { Chip, cx } from "./ui";
 
+/**
+ * Product identity mark. A is a circle and B a square everywhere (matching the chart markers),
+ * so product never relies on colour alone; "both" is split half and half.
+ */
 export function ProductDot({ product, size = 8 }: { product: Product | null | undefined; size?: number }) {
   if (product === "both") {
     return (
@@ -23,8 +27,12 @@ export function ProductDot({ product, size = 8 }: { product: Product | null | un
   return (
     <span
       aria-hidden
-      className="inline-block shrink-0 rounded-full"
-      style={{ width: size, height: size, background: product ? `var(--prod-${product.toLowerCase()})` : "var(--ink-3)" }}
+      className="inline-block shrink-0"
+      style={{
+        width: size, height: size,
+        borderRadius: product === "B" ? Math.max(1.5, size / 4) : 999,
+        background: product ? `var(--prod-${product.toLowerCase()})` : "var(--ink-3)",
+      }}
     />
   );
 }
@@ -34,7 +42,7 @@ export function ProductChip({ product, full }: { product: Product | null | undef
   return (
     <span
       title={PRODUCT_NAMES[product]}
-      className="inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-[12px] font-semibold text-ink"
+      className="inline-flex h-6 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-caption font-semibold text-ink"
       style={{ background: `var(--prod-${product.toLowerCase()}-soft)` }}
     >
       <ProductDot product={product} size={7} />
@@ -47,11 +55,11 @@ export function PolarityChip({ value, digits = 0, n }: { value: number; digits?:
   return (
     <span
       title={`Polarity ${fmtPolarity(value, digits)} (${polarityWord(value)}) on a −2..+2 scale`}
-      className="tnum inline-flex h-6 shrink-0 items-center gap-1 rounded-full px-2 text-[12px] font-semibold"
+      className="tnum inline-flex h-6 shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 text-caption font-semibold"
       style={{ background: polarityFill(value), color: polarityInk(value) }}
     >
       {fmtPolarity(value, digits)}
-      {n !== undefined && <span className="font-medium opacity-75">· n={n}</span>}
+      {n !== undefined && <span className="font-medium opacity-80">· n={n}</span>}
     </span>
   );
 }
@@ -100,10 +108,10 @@ export function AspectChip({ aspect }: { aspect: string }) {
 export function ConfidenceBand({ level }: { level: Confidence }) {
   const filled = level === "high" ? 3 : level === "medium" ? 2 : 1;
   return (
-    <span className="inline-flex items-center gap-2 text-[12px] font-medium text-ink-2" title={`Confidence: ${level}`}>
-      <span className="flex gap-0.5" aria-hidden>
+    <span className="inline-flex items-center gap-2 whitespace-nowrap text-caption font-medium text-ink-2" title={`Confidence: ${level}`}>
+      <span className="flex items-end gap-[3px]" aria-hidden>
         {[0, 1, 2].map((i) => (
-          <span key={i} className={cx("h-3 w-1.5 rounded-sm", i < filled ? "bg-ink-2" : "bg-surface-3")} />
+          <span key={i} className={cx("w-[5px] rounded-[2px]", i < filled ? "bg-brand" : "bg-surface-3")} style={{ height: 6 + i * 3 }} />
         ))}
       </span>
       <span><span className="capitalize">{level}</span> confidence</span>
@@ -117,8 +125,9 @@ export function ReviewChip({ status }: { status: ReviewStatus }) {
   return <Chip className="border-transparent bg-surface-3 text-ink-2" icon={<CircleHelp size={12} />}>Abstained</Chip>;
 }
 
+/** Deep olive = actionable, the same tone as the Overview hero, so the meaning carries across pages. */
 export function ActionableChip({ actionable }: { actionable: boolean }) {
   return actionable
-    ? <Chip className="border-transparent bg-ink text-ink-inverse" icon={<Gavel size={12} />}>Actionable</Chip>
+    ? <Chip className="border-transparent bg-hero text-on-hero" icon={<Gavel size={12} />}>Actionable</Chip>
     : <Chip icon={<Users size={12} className="text-ink-3" />}>For awareness</Chip>;
 }

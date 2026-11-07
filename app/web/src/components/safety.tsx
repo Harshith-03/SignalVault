@@ -16,7 +16,7 @@ export function CountdownBadge({ due }: { due: string }) {
   const tone = d <= 3 ? "bg-crit-soft text-crit" : d <= 7 ? "bg-warn-soft text-warn" : "bg-info-soft text-info";
   const label = d < 0 ? `Overdue by ${-d}d` : d === 0 ? "Due today" : `${d} day${d === 1 ? "" : "s"} left`;
   return (
-    <span className={cx("tnum inline-flex h-6 items-center gap-1.5 rounded-full px-2.5 text-[12px] font-semibold", tone)} title={`Due ${fmtDate(due)}`}>
+    <span className={cx("tnum inline-flex h-6 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 text-caption font-semibold", tone)} title={`Due ${fmtDate(due)}`}>
       <Timer size={12} />{label}
     </span>
   );
@@ -26,7 +26,7 @@ const STATUS_STYLE: Record<CaseStatus, string> = {
   new: "border-transparent bg-crit-soft text-crit",
   in_triage: "border-transparent bg-warn-soft text-warn",
   sent_to_pv: "border-transparent bg-good-soft text-good",
-  not_a_case: "border-line bg-surface-2 text-ink-3",
+  not_a_case: "border-transparent bg-surface-3 text-ink-2",
 };
 const STATUS_ICON: Record<CaseStatus, ReactNode> = {
   new: <Siren size={12} />,
@@ -43,7 +43,7 @@ export function LockBadge() {
     <motion.span
       initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="inline-flex items-center gap-1.5 rounded-lg border border-dashed border-line-strong bg-surface-2 px-2.5 py-1.5 text-[12.5px] font-medium text-ink-2"
+      className="inline-flex items-center gap-1.5 rounded-control border border-dashed border-line-strong bg-surface-2 px-2.5 py-1.5 text-[12.5px] font-medium text-ink-2"
       title={RESTRICTED_MASK}
     >
       <Lock size={13} className="text-ink-3" />
@@ -67,10 +67,10 @@ function CriterionRow({ label, hint, icon, c }: { label: string; hint: string; i
         {c.present ? <CheckCircle2 size={18} /> : <XCircle size={18} />}
       </span>
       <div className="min-w-0 flex-1">
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
           <span className="text-ink-3">{icon}</span>
           <span className="text-[13.5px] font-semibold text-ink">{label}</span>
-          <span className="text-[12px] text-ink-3">· {c.present ? hint : "not found in source"}</span>
+          <span className="text-caption text-ink-3">· {c.present ? hint : "not found in source"}</span>
         </div>
         <div className="mt-1.5">
           <AnimatePresence mode="wait" initial={false}>
@@ -82,7 +82,8 @@ function CriterionRow({ label, hint, icon, c }: { label: string; hint: string; i
               transition={{ duration: 0.22 }}
             >
               {restricted ? <LockBadge /> : c.quote ? (
-                <blockquote className="rounded-lg border-l-[3px] border-line-strong bg-surface-2/70 py-1.5 pl-3 pr-2 text-[13px] text-ink">
+                <blockquote className="relative break-words rounded-control bg-surface-2 py-2 pl-4 pr-3 text-[13px] text-ink ring-1 ring-inset ring-line">
+                  <span aria-hidden className="absolute bottom-2 left-1.5 top-2 w-[3px] rounded-full bg-line-strong" />
                   <span className="text-ink-3">“</span>{c.quote}<span className="text-ink-3">”</span>
                   {c.start != null && c.end != null && (
                     <span className="ml-2 font-mono text-[10.5px] text-ink-3" title="Character offsets in the source text">@{c.start}–{c.end}</span>
@@ -105,17 +106,21 @@ export function SafetyCaseCard({ sc, canAct, busy, onStatus }: {
   sc: SafetyCase; canAct: boolean; busy?: boolean; onStatus?: (s: CaseStatus) => void;
 }) {
   const met = CRITERIA.filter((k) => sc[k.key].present).length;
+  const urgent = sc.status === "new" && sc.valid_case_candidate;
   return (
     <motion.article
-      layout
+      layout="position"
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      className={cx("rounded-2xl border bg-surface shadow-sm", sc.status === "new" && sc.valid_case_candidate ? "border-crit/35" : "border-line")}
+      className={cx(
+        "min-w-0 overflow-hidden rounded-card border bg-surface shadow-xs",
+        urgent ? "border-crit/30" : "border-line",
+      )}
     >
-      <div className="flex flex-wrap items-center gap-1.5 border-b border-line px-5 py-3.5">
+      <div className="flex flex-wrap items-center gap-1.5 border-b border-line px-[var(--pad-card)] py-3.5">
         <CaseStatusChip status={sc.status} />
         {sc.valid_case_candidate ? (
-          <Chip className="border-transparent bg-ink text-ink-inverse" icon={<BadgeCheck size={12} />}>Valid case candidate</Chip>
+          <Chip className="border-transparent bg-hero text-on-hero" icon={<BadgeCheck size={12} />}>Valid case candidate</Chip>
         ) : (
           <Chip icon={<CircleDashed size={12} className="text-ink-3" />}>Incomplete · {met} of 4 criteria</Chip>
         )}
@@ -124,22 +129,22 @@ export function SafetyCaseCard({ sc, canAct, busy, onStatus }: {
         )}
         <ProductChip product={sc.product} />
         <Chip>{sourceLabel(sc.source)}</Chip>
-        <span className="ml-auto font-mono text-[11.5px] text-ink-3">{sc.case_id}</span>
+        <span className="ml-auto font-mono text-micro text-ink-3">{sc.case_id}</span>
       </div>
 
-      <div className="grid grid-cols-[1fr_260px] gap-6 px-5 py-4">
+      <div className="grid gap-5 px-[var(--pad-card)] py-4 @3xl:grid-cols-[minmax(0,1fr)_272px] @3xl:gap-6">
         <div className="min-w-0">
-          <h3 className="text-[15.5px] font-semibold leading-snug tracking-[-0.01em] text-ink">{sc.title || "Untitled case"}</h3>
-          <div className="mt-1 flex items-center gap-2 text-[12px] text-ink-3">
-            Item <Link className="font-mono text-ink-2 hover:underline" to={`/items/${encodeURIComponent(sc.item_id)}`}>{sc.item_id}</Link>
-            <span>·</span> Detector confidence {fmtPct(sc.confidence)}
+          <h3 className="font-display text-[16px] font-semibold leading-snug tracking-[-0.01em] text-ink">{sc.title || "Untitled case"}</h3>
+          <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-caption text-ink-3">
+            <span>Item <Link className="font-mono text-brand hover:underline" to={`/items/${encodeURIComponent(sc.item_id)}`}>{sc.item_id}</Link></span>
+            <span aria-hidden>·</span> <span>Detector confidence {fmtPct(sc.confidence)}</span>
           </div>
           <ul className="mt-2 divide-y divide-line">
             {CRITERIA.map((k) => <CriterionRow key={k.key} label={k.label} hint={k.hint} icon={k.icon} c={sc[k.key]} />)}
           </ul>
         </div>
 
-        <aside className="space-y-4 rounded-xl bg-surface-2/70 p-4 text-[12.5px]">
+        <aside className="min-w-0 space-y-4 self-start rounded-panel bg-surface-3/50 p-4 text-[12.5px]">
           <div>
             <div className="mb-1.5 flex items-center gap-1.5 font-medium text-ink-3"><CalendarClock size={13} />Reporting clock</div>
             <dl className="grid grid-cols-[64px_1fr] gap-y-1.5">
@@ -149,31 +154,31 @@ export function SafetyCaseCard({ sc, canAct, busy, onStatus }: {
             </dl>
             <div className="mt-2.5">
               {sc.due && sc.status !== "not_a_case" && sc.status !== "sent_to_pv" ? <CountdownBadge due={sc.due} /> : (
-                <span className="text-[12px] text-ink-3">
+                <span className="text-caption text-ink-3">
                   {sc.already_reported ? "Already in a regulator database." : sc.status === "sent_to_pv" ? "Handed to PV." : sc.status === "not_a_case" ? "Closed as not a case." : "Clock starts once criteria are met."}
                 </span>
               )}
             </div>
-            <div className="mt-2 text-[11px] leading-snug text-ink-3">Policy: 15 days serious / 90 non-serious from day 0 (pending verification).</div>
+            <div className="mt-2 text-micro text-ink-3">Policy: 15 days serious / 90 non-serious from day 0 (pending verification).</div>
           </div>
           <div className="border-t border-line pt-3.5">
             <div className="mb-1 font-medium text-ink-3">Seriousness</div>
             <div className={cx("text-[13px] font-semibold", sc.serious === "yes" ? "text-crit" : "text-ink")}>
               {sc.serious === "unknown" ? "Unknown · PV to confirm" : sc.serious === "yes" ? "Serious" : "Not serious"}
             </div>
-            {sc.seriousness_quote && <div className="mt-1 text-ink-2">“{sc.seriousness_quote}”</div>}
+            {sc.seriousness_quote && <div className="mt-1 break-words text-ink-2">“{sc.seriousness_quote}”</div>}
           </div>
           {(sc.events ?? []).length > 0 && (
             <div className="border-t border-line pt-3.5">
               <div className="mb-1.5 font-medium text-ink-3">Event terms (verbatim)</div>
-              <div className="flex flex-wrap gap-1">{sc.events!.map((e) => <Chip key={e}>{e}</Chip>)}</div>
+              <div className="flex flex-wrap gap-1">{sc.events!.map((e) => <Chip key={e} wrap className="border-line bg-surface text-ink-2">{e}</Chip>)}</div>
             </div>
           )}
         </aside>
       </div>
 
       {(sc.caveats ?? []).length > 0 && (
-        <ul className="space-y-1.5 px-5 pb-4">
+        <ul className="space-y-1.5 px-[var(--pad-card)] pb-4">
           {sc.caveats!.map((c, i) => (
             <li key={i} className="flex items-start gap-2 text-[12.5px] text-ink-2">
               <AlertTriangle size={13} className="mt-0.5 shrink-0 text-warn" />{c}
@@ -183,17 +188,17 @@ export function SafetyCaseCard({ sc, canAct, busy, onStatus }: {
       )}
 
       {onStatus && (
-        <div className="flex items-center gap-2 border-t border-line px-5 py-3">
+        <div className="flex flex-wrap items-center gap-2 border-t border-line bg-surface-2 px-[var(--pad-card)] py-3">
           {canAct ? (
             <>
-              <span className="mr-1 text-[12px] font-medium text-ink-3">Set status</span>
+              <span className="mr-1 text-caption font-medium text-ink-3">Set status</span>
               <Button size="sm" disabled={busy || sc.status === "in_triage"} onClick={() => onStatus("in_triage")} icon={<CircleDashed size={13} />}>In triage</Button>
               <Button size="sm" variant="good" disabled={busy || sc.status === "sent_to_pv"} onClick={() => onStatus("sent_to_pv")} icon={<Send size={13} />}>Sent to PV</Button>
               <Button size="sm" variant="ghost" disabled={busy || sc.status === "not_a_case"} onClick={() => onStatus("not_a_case")} icon={<ArchiveX size={13} />}>Not a case</Button>
             </>
           ) : (
-            <span className="inline-flex items-center gap-2 text-[12.5px] text-ink-3">
-              <Lock size={13} />Only Pharmacovigilance can change a case's status. Switch role in the top bar.
+            <span className="inline-flex items-start gap-2 text-[12.5px] text-ink-3">
+              <Lock size={13} className="mt-0.5 shrink-0" />Only Pharmacovigilance can change a case's status. Switch role in the top bar.
             </span>
           )}
         </div>

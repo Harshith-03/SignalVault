@@ -1,4 +1,5 @@
 import "@fontsource-variable/inter";
+import "@fontsource-variable/dm-sans";
 import "@fontsource-variable/jetbrains-mono";
 import "./index.css";
 
@@ -26,11 +27,11 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 function PageFallback() {
   return (
-    <div>
-      <Skeleton className="h-8 w-64" />
-      <Skeleton className="mt-3 h-4 w-96" />
-      <div className="mt-8 grid grid-cols-4 gap-4">
-        {[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-28 rounded-2xl" />)}
+    <div aria-busy="true" aria-label="Loading page">
+      <Skeleton className="h-8 w-56 max-w-full" />
+      <Skeleton className="mt-3 h-4 w-96 max-w-full" />
+      <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+        {[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-32 rounded-card" />)}
       </div>
     </div>
   );

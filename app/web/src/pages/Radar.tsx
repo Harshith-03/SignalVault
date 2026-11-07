@@ -91,7 +91,7 @@ export default function Radar() {
             <Stat label="New public items" value={inView.length} icon={<Layers size={16} />}
               sub={`${r.data.stats.known_in_packet ?? 0} already in the packet · ${r.data.stats.off_topic ?? 0} off-topic dropped`} />
             <Stat label="Corroborated" value={inView.filter((i) => i.corroborated).length} icon={<BadgeCheck size={16} />}
-              accent="var(--good)" sub="Found by both Tavily and Exa" />
+              tone="good" sub="Found by both Tavily and Exa" />
             <Stat label="Analysed locally" value={inView.filter((i) => i.analysed).length} icon={<Cpu size={16} />}
               sub={`${inView.length - inView.filter((i) => i.analysed).length} waiting for the offline step`} />
             <Stat label="Actionable" value={inView.filter((i) => i.actionable === "yes").length} icon={<Gavel size={16} />}
