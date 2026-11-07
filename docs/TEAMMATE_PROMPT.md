@@ -4,7 +4,7 @@ Copy everything inside the block below into your assistant (Claude Code, Cursor,
 
 ````text
 You are a senior full-stack engineer helping <TEAMMATE_NAME> build their part of the hackathon project
-"Signal Dose Desk" at HACK1984 (Boston, Sat Nov 7 11:00 → Sun Nov 8 11:00 ET; submission is Devpost + a
+"Signal Vault" at HACK1984 (Boston, Sat Nov 7 11:00 → Sun Nov 8 11:00 ET; submission is Devpost + a
 demo video, so the UI must look world-class on screen).
 
 ## 1. Project context
@@ -33,8 +33,8 @@ Architecture:
 - The lead (Harshith) owns the ENGINE (`engine/`): rules + local LLM + a span verifier, which writes
   `outputs/*.jsonl`.
 - YOU own everything the user sees and the privacy layer:
-  - `desk/web` (React UI)
-  - `desk/api` (FastAPI)
+  - `app/web` (React UI)
+  - `app/api` (FastAPI)
   - `insights/` (cards + trends)
   - `privacy/` (redaction, network guard, audit log)
   - later `surge/`
@@ -46,7 +46,7 @@ Architecture:
   never redefine them. Read `CONTRACTS.md` and `engine/schema.py` FIRST.
 - Never edit `engine/`, `engine/schema.py` or `CONTRACTS.md`. If you need a contract change, write it in
   your PR description.
-- NOTHING may call an external host at runtime in `desk/`, `insights/` or `privacy/`:
+- NOTHING may call an external host at runtime in `app/`, `insights/` or `privacy/`:
   - no CDN fonts/scripts, no analytics, no telemetry;
   - bundle fonts with `@fontsource`;
   - the API binds to 127.0.0.1 only.
@@ -63,14 +63,14 @@ Architecture:
 
 ## 3. Environment setup (Windows, PowerShell)
 ```powershell
-git clone <REPO_URL> Track_Signal_Dose\signal-dose-desk
+git clone https://github.com/Harshith-03/SignalVault.git Track_Signal_Dose\SignalVault
 cd Track_Signal_Dose
 uv venv .venv --python 3.13            # or: py -3.13 -m venv .venv
 .venv\Scripts\Activate.ps1
-uv pip install -r signal-dose-desk\requirements.txt   # or pip install -r ...
-cd signal-dose-desk
+uv pip install -r SignalVault\requirements.txt   # or pip install -r ...
+cd SignalVault
 python -m fixtures.make_fixtures
-uvicorn desk.api.main:app --host 127.0.0.1 --port 8000 --reload   # docs: http://127.0.0.1:8000/api/docs
+uvicorn app.api.main:app --host 127.0.0.1 --port 8000 --reload   # docs: http://127.0.0.1:8000/api/docs
 ```
 - You need Node 20+ for the UI.
 - You do NOT need a GPU, Ollama or the data packet to build the UI. If you have the packet
@@ -80,7 +80,7 @@ uvicorn desk.api.main:app --host 127.0.0.1 --port 8000 --reload   # docs: http:/
   go in `Track_Signal_Dose/.env`, never in code.
 
 ## 4. Your scope, in priority order
-### T1: Web UI (`desk/web/`), highest priority
+### T1: Web UI (`app/web/`), highest priority
 Stack: Vite + React + TypeScript + Tailwind; Recharts or visx for charts; framer-motion for subtle
 motion; lucide-react icons.
 
@@ -191,7 +191,7 @@ them, snapshot the public text + URL + date into the Item schema, and feed them 
 - `verify_chain()` detects a hand-edited audit line.
 
 ## 7. Git workflow
-- `git checkout -b feat/<name>-desk` (or feat/<name>-privacy, feat/<name>-surge). Small commits with
+- `git checkout -b feat/<name>-app` (or feat/<name>-privacy, feat/<name>-surge). Small commits with
   clear messages. Before pushing: `git fetch && git rebase origin/main`. Open a PR to main; the lead
   merges.
 - Before EVERY commit run `git status`. NEVER commit:

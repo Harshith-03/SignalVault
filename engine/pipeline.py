@@ -1,4 +1,4 @@
-"""Public engine API (lead-owned). STUB: returns deterministic mock output so the desk can be built now.
+"""Public engine API (lead-owned). STUB: returns deterministic mock output so the app can be built now.
 
 Contract (do not change signatures):
     analyze_item(item: Item) -> EnrichedPrediction

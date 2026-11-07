@@ -11,7 +11,7 @@ transcript ─┼─► route_by_source ─┬─ rules (ctgov, fda_event, fda_l
             │   ─► outputs/enriched.jsonl + predictions_test.jsonl + audit.jsonl (hash-chain)│
             │                                                                                 │
             │  insights: cards + trends   privacy: redact, netguard, audit                    │
-            │  desk/api (FastAPI 127.0.0.1) ─► desk/web (React, no CDN)                        │
+            │  app/api (FastAPI 127.0.0.1) ─► app/web (React, no CDN)                        │
             └─────────────────────────────────────────────────────────────────────────────────┘
             ┌──── ONLINE, optional, public data only (Surge stretch) ────┐
             │ surge/: Tavily + Exa discover NEW public items ─► snapshot ─┼─► fed into the offline engine
@@ -25,8 +25,8 @@ transcript ─┼─► route_by_source ─┬─ rules (ctgov, fda_event, fda_l
 | L2 | Rules + LLM labeler + span verifier + LangGraph + run CLI + leakage-safe eval | Lead | `engine/*` | L1 | Sat 19:00 |
 | L3 | System prompt from observed failures; thresholds; test predictions v1 | Lead | `engine/prompts.py`, `prompt_log.txt` | L2 | Sat 23:00 |
 | L4 | Transcript adapter (speaker turns, chunking), synthetic transcript tests | Lead | `engine/transcript.py` | L2 | Sun 02:00 |
-| T1 | **Web UI**: Overview, Signal Feed (cards), Trends, Item detail with highlighted quotes, Analyze (paste a transcript), Privacy, Review queue | Teammate | `desk/web/*` | L1 fixtures | v1 Sat 20:00, polish Sun 04:00 |
-| T2 | Desk API extensions; `insights/cards.py`, `insights/trends.py` | Teammate | `desk/api/*`, `insights/*` | L1 | Sat 18:00 |
+| T1 | **Web UI**: Overview, Signal Feed (cards), Trends, Item detail with highlighted quotes, Analyze (paste a transcript), Privacy, Review queue | Teammate | `app/web/*` | L1 fixtures | v1 Sat 20:00, polish Sun 04:00 |
+| T2 | App API extensions; `insights/cards.py`, `insights/trends.py` | Teammate | `app/api/*`, `insights/*` | L1 | Sat 18:00 |
 | T3 | Privacy: `redact.py` (offline NER + regex), `netguard.py`, `audit.py` (hash chain) | Teammate | `privacy/*` | L1 | Sat 23:00 |
 | T4 | Surge "Public Evidence Radar" (Tavily + Exa → public snapshots → engine), **only if gates pass** | Teammate | `surge/*` | L2, T1 | Sun 05:00–08:00 |
 | S1 | README, model card, Devpost text, 2-min pitch, video | Shared | `README.md`, `docs/*` | all | Sun 10:00 |

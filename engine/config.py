@@ -20,7 +20,7 @@ REPO = Path(__file__).resolve().parents[1]
 
 
 def _find_packet() -> Path:
-    env = os.getenv("SIGNAL_DOSE_PACKET")
+    env = os.getenv("SIGNALVAULT_PACKET")
     if env:
         return Path(env)
     for parent in [REPO, *REPO.parents]:
@@ -33,7 +33,7 @@ def _find_packet() -> Path:
 PACKET = _find_packet()
 DATA = PACKET / "data"
 SCORER = PACKET / "scoring" / "score.py"
-OUTPUTS = Path(os.getenv("SIGNAL_DOSE_OUTPUTS", REPO / "outputs"))
+OUTPUTS = Path(os.getenv("SIGNALVAULT_OUTPUTS", REPO / "outputs"))
 FIXTURES = REPO / "fixtures"
 
 SPLITS = {
@@ -45,8 +45,8 @@ GOLD_DEV = DATA / "dev.jsonl"
 
 # ---- model (local Ollama; the scored run must work with the network off)
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434")
-MODEL = os.getenv("SIGNAL_DOSE_MODEL", "qwen3.5:4b")
-NUM_CTX = int(os.getenv("SIGNAL_DOSE_NUM_CTX", "8192"))
+MODEL = os.getenv("SIGNALVAULT_MODEL", "qwen3.5:4b")
+NUM_CTX = int(os.getenv("SIGNALVAULT_NUM_CTX", "8192"))
 PROMPT_VERSION = "v0"
 
 # ---- decision thresholds (tuned on dev, out-of-fold)

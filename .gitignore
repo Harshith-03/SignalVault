@@ -41,7 +41,7 @@ __pycache__/
 
 # ---- node / frontend ----
 node_modules/
-desk/web/dist/
+app/web/dist/
 .vite/
 
 # ---- OS / editor ----

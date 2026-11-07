@@ -1,4 +1,4 @@
-"""Generate SYNTHETIC mock data for the desk UI (no packet text, safe to commit).
+"""Generate SYNTHETIC mock data for the app UI (no packet text, safe to commit).
 
     python -m fixtures.make_fixtures
 

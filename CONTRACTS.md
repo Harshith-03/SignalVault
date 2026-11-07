@@ -21,7 +21,7 @@
 - `polarity` is an int from −2 to 2.
 - `span` must be an exact substring of `text`. The engine verifies this before output.
 
-## 3. EnrichedPrediction: the engine's output for the desk
+## 3. EnrichedPrediction: the engine's output for the app
 A Prediction plus `meta`:
 ```json
 "meta": {"source": "pubmed", "published": "2026-03-14", "week": "2026-W11", "product": "A", "title": "…", "url": "…",
@@ -33,7 +33,7 @@ A Prediction plus `meta`:
 ```
 - `flags` can contain: `pv_possible_ae`, `off_label`, `single_report_no_causality`, `case_report_demographics`, `pii_redacted`, `competitor`.
 - Files:
-  - `outputs/enriched.jsonl`: all splits the desk shows.
+  - `outputs/enriched.jsonl`: all splits the app shows.
   - `outputs/predictions_test.jsonl`: the submission.
   - `outputs/texts.json`: `{item_id: text}`. This file is local only and stays gitignored.
 
@@ -60,7 +60,7 @@ A Prediction plus `meta`:
 - **A week with no observations is absent.** It is never shown as 0 (neutral).
 - The UI must show `n` next to every mean.
 
-## 6. Desk API (FastAPI, `127.0.0.1:8000`, see `desk/api/main.py`)
+## 6. App API (FastAPI, `127.0.0.1:8000`, see `app/api/main.py`)
 | Method | Path | Returns |
 |---|---|---|
 | GET | `/api/health` | `{ok, engine_stub, using_fixtures}` |

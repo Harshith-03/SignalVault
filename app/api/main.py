@@ -1,6 +1,6 @@
-"""Signal Dose Desk API (teammate-owned; lead wires the engine). Localhost only.
+"""Signal Vault API (teammate-owned; lead wires the engine). Localhost only.
 
-    uvicorn desk.api.main:app --host 127.0.0.1 --port 8000 --reload
+    uvicorn app.api.main:app --host 127.0.0.1 --port 8000 --reload
 
 Reads outputs/ when the engine has produced files, otherwise fixtures/ (synthetic mock data),
 so the web UI can be built before the engine exists. Response shapes = engine/schema.py.
@@ -31,7 +31,7 @@ from engine.schema import (AnalyzeRequest, AnalyzeResponse, Card, EnrichedPredic
                            TrendPoint)
 from privacy import audit, netguard, redact
 
-app = FastAPI(title="Signal Dose Desk API", docs_url="/api/docs", openapi_url="/api/openapi.json")
+app = FastAPI(title="Signal Vault API", docs_url="/api/docs", openapi_url="/api/openapi.json")
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
                    allow_methods=["*"], allow_headers=["*"])
 

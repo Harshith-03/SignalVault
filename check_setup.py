@@ -24,7 +24,7 @@ for mod in ["langgraph", "langchain", "langchain_ollama", "pydantic", "dotenv", 
     except ImportError:
         report(f"package {mod}", False, "pip install -r requirements.txt")
 
-report(f"packet at {config.PACKET}", config.SCORER.exists(), "get SignalDose_Packet from the organisers; set SIGNAL_DOSE_PACKET")
+report(f"packet at {config.PACKET}", config.SCORER.exists(), "get SignalDose_Packet from the organisers; set SIGNALVAULT_PACKET")
 for name, path in config.SPLITS.items():
     report(f"split {name}: {path.name}", path.exists(), "run: python tools/rehydrate.py data/*.jsonl (needs internet once)")
 

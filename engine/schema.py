@@ -6,7 +6,7 @@ Mirrors CONTRACTS.md. If the two disagree, this file wins.
 Flow:
     Item ──engine.analyze_item──► EnrichedPrediction ──► Prediction (scorer JSONL)
                                          │
-                     insights.build_cards / build_trends ──► Card, TrendPoint ──► desk API ──► web UI
+                     insights.build_cards / build_trends ──► Card, TrendPoint ──► app API ──► web UI
                                          │
                                  privacy.audit ──► AuditRecord (no raw text)
 """
@@ -70,7 +70,7 @@ class Prediction(BaseModel):
         return self.model_dump(include={"item_id", "signal_type", "actionable", *ASPECTS})
 
 
-# ---------------------------------------------------------------- engine output for the desk
+# ---------------------------------------------------------------- engine output for the app
 class AspectMeta(BaseModel):
     start: int = Field(description="char offset of span in Item.text")
     end: int
