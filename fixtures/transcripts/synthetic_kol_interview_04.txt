@@ -1,0 +1,15 @@
+[SYNTHETIC TRANSCRIPT, invented for testing; all names and details are fictional]
+KOL interview (1:1, double-blinded market research), 21 October 2026. Respondent: thoracic oncologist at an academic centre. The names of the interviewer and the respondent are withheld.
+
+Q: How has first-line practice changed for EGFR-mutant patients over the past year?
+A: More of my colleagues now offer amivantamab plus lazertinib to fit, younger patients with high-risk features. The MARIPOSA overall survival data convinced a lot of people. For older or frailer patients, osimertinib monotherapy is still my default; it is very well tolerated.
+Q: How do you weigh the evidence behind each option?
+A: FLAURA2 and MARIPOSA are both large randomised phase 3 trials, so the evidence is strong. What I'd like is head-to-head data; cross-trial comparisons are shaky.
+Q: Any safety experiences you would like to share?
+A: Yes. I personally treated a 58-year-old man, a retired teacher, who started amivantamab and lazertinib in August. About five weeks in, he developed a deep vein thrombosis and then a pulmonary embolism, and he was hospitalised for four days. We had not started prophylactic anticoagulation. He recovered and is back on treatment with apixaban.
+Q: Did you report it?
+A: My fellow, Dr. Wendy Notreal, filed it with the safety office at Brookfield University Hospital. You can follow up with her on 555-019-8823.
+Q: And convenience?
+A: The subcutaneous formulation is a big improvement; infusion reactions were the main complaint. Tagrisso is still the easiest: one tablet, no chair time.
+Q: Cost and access?
+A: Prior authorization for the combination takes two to three weeks at our centre. Osimertinib goes through in a day or two.

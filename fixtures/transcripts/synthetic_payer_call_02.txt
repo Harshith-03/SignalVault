@@ -1,0 +1,13 @@
+[SYNTHETIC TRANSCRIPT, invented for testing; all names, plans and numbers are fictional]
+Market access call, 02 November 2026, 10:00-10:40 ET.
+Participants: Gary Invented (Medical Director, Northwind Example Health Plan); Linda Fauxname (pharmacy benefits manager, same plan); Omar Pretendson (field reimbursement manager, moderator).
+
+[00:00:12] Omar Pretendson: Thanks for making time. We want to understand how your plan handles first-line EGFR therapy.
+[00:00:31] Gary Invented: Sure. Osimertinib is on our preferred tier; prior authorization is a one-page form and most approvals come back within 48 hours.
+[00:01:05] Gary Invented: The amivantamab plus lazertinib combination is a different story. The list price is roughly double, and the committee wants the overall survival data to mature before we take it off step therapy.
+[00:01:48] Linda Fauxname: From the pharmacy side, Lazcluze being oral helps, but Rybrevant still needs chair time or a clinic visit for the injection, so we get billed under both the medical and the pharmacy benefit. Members complain about paying two copays.
+[00:02:20] Omar Pretendson: Has the subcutaneous formulation changed that?
+[00:02:34] Linda Fauxname: A little. The administration cost per visit drops, which our actuaries liked. Honestly, Tagrisso remains the cost-effective default for us.
+[00:03:10] Gary Invented: One more thing: our appeals team overturned a prior-auth denial for the combination last week; the case file number was 448812906. The overall survival benefit was persuasive on appeal, but the trial was open-label, so the committee still has questions about the evidence.
+[00:03:45] Linda Fauxname: You can send the dossier to linda.fauxname@northwind-example.org or call the PA desk at (555) 013-4470.
+[00:04:02] Omar Pretendson: Thank you both.
