@@ -116,7 +116,15 @@ def _all_trends() -> list[TrendPoint]:
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "engine_stub": pipeline.STUB, "using_fixtures": not (config.OUTPUTS / "enriched.jsonl").exists()}
+    try:   # every analysed item (incl. signal 'none', which gets no card), counted per product
+        by_product: dict[str, int] = {}
+        for p in _load_preds():
+            k = p.meta.product or "unknown"
+            by_product[k] = by_product.get(k, 0) + 1
+    except Exception:
+        by_product = {}
+    return {"ok": True, "engine_stub": pipeline.STUB, "using_fixtures": not (config.OUTPUTS / "enriched.jsonl").exists(),
+            "items_by_product": by_product}
 
 
 def _review_decisions() -> dict[str, str]:

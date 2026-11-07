@@ -14,7 +14,7 @@ import { Quote } from "../components/Quote";
 import { Button, EmptyState, ErrorState, PageHeader, Panel, PanelTitle, Segmented, Select, Skeleton } from "../components/ui";
 import {
   ASPECT_LABELS, PRODUCT_NAMES, SPEAKER_LABELS, fmtDate, fmtPolarity, polarityFill, polarityInk, polarityWord,
-  shortWeek, weekLabel, weekRange,
+  axisWeek, shortWeek, weekLabel, weekRange,
 } from "../lib/format";
 import { useThemeColors } from "../lib/useThemeColors";
 import { useApp } from "../state/app";
@@ -213,7 +213,7 @@ export default function Trends() {
                       <CartesianGrid vertical={false} stroke={colors.grid} />
                       <XAxis
                         dataKey="week"
-                        tickFormatter={shortWeek}
+                        tickFormatter={axisWeek}
                         tick={{ fontSize: 12, fill: colors["ink-3"] }}
                         tickLine={false}
                         axisLine={false}

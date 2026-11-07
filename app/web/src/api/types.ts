@@ -50,6 +50,8 @@ export interface Health {
   ok: boolean;
   engine_stub: boolean;
   using_fixtures: boolean;
+  /** every analysed item (including signal "none", which has no card), keyed by product A | B | both */
+  items_by_product?: Record<string, number>;
 }
 
 /** GET /api/radar: the Public Evidence Radar snapshot (written by the separate `surge.radar` CLI). */

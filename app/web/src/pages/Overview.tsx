@@ -36,9 +36,14 @@ export default function Overview() {
   const metrics = useApi(() => api.metrics(), []);
   const trends = useApi(() => api.trends(), []);
   const safety = useApi(() => api.safety(), [role]);
+  const health = useApi(() => api.health(), []);
 
   const view = useMemo(() => (cards.data ?? []).filter((c) => matchesProduct(product, c.product)), [cards.data, product]);
-  const items = new Set(view.map((c) => c.item_id)).size;
+  // all analysed items (incl. signal "none", which produce no card); fall back to items with a card
+  const byProduct = health.data?.items_by_product;
+  const items = byProduct
+    ? Object.entries(byProduct).reduce((n, [k, v]) => n + (matchesProduct(product, k as Card["product"]) ? v : 0), 0)
+    : new Set(view.map((c) => c.item_id)).size;
   const actionable = view.filter((c) => c.actionable).length;
   const reviewQ = view.filter((c) => c.review_status === "review" && !decisions[c.card_id]).length;
   const cases = (safety.data ?? []).filter((c) => matchesProduct(product, c.product));

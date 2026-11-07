@@ -90,7 +90,7 @@ function CriterionRow({ label, hint, icon, c }: { label: string; hint: string; i
                   )}
                 </blockquote>
               ) : c.present ? (
-                <span className="text-[12.5px] text-ink-3">Present in a structured field; no verbatim quote.</span>
+                <span className="text-[12.5px] text-ink-3">Present without a verbatim quote: for a literature case, the article's authors are the identifiable reporter.</span>
               ) : (
                 <span className="text-[12.5px] text-ink-3">No evidence for this criterion in the text.</span>
               )}
@@ -159,7 +159,7 @@ export function SafetyCaseCard({ sc, canAct, busy, onStatus }: {
                 </span>
               )}
             </div>
-            <div className="mt-2 text-micro text-ink-3">Policy: 15 days serious / 90 non-serious from day 0 (pending verification).</div>
+            <div className="mt-2 text-micro text-ink-3">Policy: 15 days serious / 90 non-serious from day 0 (EU GVP Module VI, ICH E2D(R1)); unknown seriousness uses 15. PV confirms.</div>
           </div>
           <div className="border-t border-line pt-3.5">
             <div className="mb-1 font-medium text-ink-3">Seriousness</div>

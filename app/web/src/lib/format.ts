@@ -156,6 +156,11 @@ export function weekRange(from: string, to: string): string[] {
 }
 
 export const shortWeek = (w: string) => w.replace(/^\d{4}-/, "");
+/** Axis tick: "W01 ’25". The year matters once a range crosses January. */
+export const axisWeek = (w: string) => {
+  const m = /^(\d{4})-(W\d{2})$/.exec(w);
+  return m ? `${m[2]} ’${m[1].slice(2)}` : w;
+};
 
 export function weekLabel(w: string): string {
   const d = isoWeekToDate(w);
