@@ -1,0 +1,614 @@
+[
+ {
+  "product": "A",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W26",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-010",
+    "quote": "continues to demonstrate improved survival",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-010",
+    "published": "2026-06-23"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W34",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-022",
+    "quote": "continues to demonstrate improved survival",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-022",
+    "published": "2026-08-22"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W43",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-034",
+    "quote": "continues to demonstrate improved survival",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-034",
+    "published": "2026-10-21"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "efficacy",
+  "speaker": "hcp",
+  "week": "2026-W24",
+  "mean_polarity": 0.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-007",
+    "quote": "the rival regimen outperformed the current standard in progression-free survival",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-007",
+    "published": "2026-06-08"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "efficacy",
+  "speaker": "hcp",
+  "week": "2026-W32",
+  "mean_polarity": -1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-019",
+    "quote": "the rival regimen outperformed the current standard in progression-free survival",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-019",
+    "published": "2026-08-07"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "efficacy",
+  "speaker": "hcp",
+  "week": "2026-W41",
+  "mean_polarity": 0.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-031",
+    "quote": "the rival regimen outperformed the current standard in progression-free survival",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-031",
+    "published": "2026-10-06"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "evidence_quality",
+  "speaker": "researcher",
+  "week": "2026-W23",
+  "mean_polarity": 0.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-006",
+    "quote": "retrospective single-centre analysis",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-006",
+    "published": "2026-06-03"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "evidence_quality",
+  "speaker": "researcher",
+  "week": "2026-W31",
+  "mean_polarity": -1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-018",
+    "quote": "retrospective single-centre analysis",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-018",
+    "published": "2026-08-02"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "evidence_quality",
+  "speaker": "researcher",
+  "week": "2026-W40",
+  "mean_polarity": -1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-030",
+    "quote": "retrospective single-centre analysis",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-030",
+    "published": "2026-10-01"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "safety",
+  "speaker": "hcp",
+  "week": "2026-W21",
+  "mean_polarity": 0.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-003",
+    "quote": "Rash, Diarrhoea",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-003",
+    "published": "2026-05-19"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "safety",
+  "speaker": "hcp",
+  "week": "2026-W29",
+  "mean_polarity": -1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-015",
+    "quote": "Rash, Diarrhoea",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-015",
+    "published": "2026-07-18"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "safety",
+  "speaker": "hcp",
+  "week": "2026-W38",
+  "mean_polarity": -2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-027",
+    "quote": "Rash, Diarrhoea",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-027",
+    "published": "2026-09-16"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "safety",
+  "speaker": "researcher",
+  "week": "2026-W19",
+  "mean_polarity": -1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-001",
+    "quote": "Interstitial lung disease occurred more frequently than expected in this cohort.",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-001",
+    "published": "2026-05-09"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "safety",
+  "speaker": "researcher",
+  "week": "2026-W28",
+  "mean_polarity": -1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-013",
+    "quote": "Interstitial lung disease occurred more frequently than expected in this cohort.",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-013",
+    "published": "2026-07-08"
+   }
+  ]
+ },
+ {
+  "product": "A",
+  "aspect": "safety",
+  "speaker": "researcher",
+  "week": "2026-W36",
+  "mean_polarity": 0.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-025",
+    "quote": "Interstitial lung disease occurred more frequently than expected in this cohort.",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-025",
+    "published": "2026-09-06"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "access_cost",
+  "speaker": "regulator",
+  "week": "2026-W20",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-002",
+    "quote": "The health technology body recommended the regimen for routine funding.",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-002",
+    "published": "2026-05-14"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "access_cost",
+  "speaker": "regulator",
+  "week": "2026-W29",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-014",
+    "quote": "The health technology body recommended the regimen for routine funding.",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-014",
+    "published": "2026-07-13"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "access_cost",
+  "speaker": "regulator",
+  "week": "2026-W37",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-026",
+    "quote": "The health technology body recommended the regimen for routine funding.",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-026",
+    "published": "2026-09-11"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "convenience",
+  "speaker": "hcp",
+  "week": "2026-W24",
+  "mean_polarity": 2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-008",
+    "quote": "the subcutaneous option takes minutes instead of hours in our clinic",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-008",
+    "published": "2026-06-13"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "convenience",
+  "speaker": "hcp",
+  "week": "2026-W33",
+  "mean_polarity": 2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-020",
+    "quote": "the subcutaneous option takes minutes instead of hours in our clinic",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-020",
+    "published": "2026-08-12"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "convenience",
+  "speaker": "hcp",
+  "week": "2026-W41",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-032",
+    "quote": "the subcutaneous option takes minutes instead of hours in our clinic",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-032",
+    "published": "2026-10-11"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "convenience",
+  "speaker": "regulator",
+  "week": "2026-W22",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-005",
+    "quote": "may switch to an every 4-week dosing regimen",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-005",
+    "published": "2026-05-29"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "convenience",
+  "speaker": "regulator",
+  "week": "2026-W31",
+  "mean_polarity": 2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-017",
+    "quote": "may switch to an every 4-week dosing regimen",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-017",
+    "published": "2026-07-28"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "convenience",
+  "speaker": "regulator",
+  "week": "2026-W39",
+  "mean_polarity": 0.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-029",
+    "quote": "may switch to an every 4-week dosing regimen",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-029",
+    "published": "2026-09-26"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W19",
+  "mean_polarity": 2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-000",
+    "quote": "The combination showed a statistically significant overall survival benefit versus the comparator.",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-000",
+    "published": "2026-05-04"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W21",
+  "mean_polarity": -2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-004",
+    "quote": "terminated for insufficient efficacy",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-004",
+    "published": "2026-05-24"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W27",
+  "mean_polarity": 2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-012",
+    "quote": "The combination showed a statistically significant overall survival benefit versus the comparator.",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-012",
+    "published": "2026-07-03"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W30",
+  "mean_polarity": -2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-016",
+    "quote": "terminated for insufficient efficacy",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-016",
+    "published": "2026-07-23"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W36",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-024",
+    "quote": "The combination showed a statistically significant overall survival benefit versus the comparator.",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-024",
+    "published": "2026-09-01"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "efficacy",
+  "speaker": "company",
+  "week": "2026-W39",
+  "mean_polarity": -2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-028",
+    "quote": "terminated for insufficient efficacy",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-028",
+    "published": "2026-09-21"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "safety",
+  "speaker": "researcher",
+  "week": "2026-W25",
+  "mean_polarity": -1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-009",
+    "quote": "a high risk of venous thromboembolism was observed",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-009",
+    "published": "2026-06-18"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "safety",
+  "speaker": "researcher",
+  "week": "2026-W34",
+  "mean_polarity": -2.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-021",
+    "quote": "a high risk of venous thromboembolism was observed",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-021",
+    "published": "2026-08-17"
+   }
+  ]
+ },
+ {
+  "product": "B",
+  "aspect": "safety",
+  "speaker": "researcher",
+  "week": "2026-W42",
+  "mean_polarity": -1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-033",
+    "quote": "a high risk of venous thromboembolism was observed",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-033",
+    "published": "2026-10-16"
+   }
+  ]
+ },
+ {
+  "product": "both",
+  "aspect": "efficacy",
+  "speaker": "hcp",
+  "week": "2026-W26",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-011",
+    "quote": "clinicians may now offer either regimen first line",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-011",
+    "published": "2026-06-28"
+   }
+  ]
+ },
+ {
+  "product": "both",
+  "aspect": "efficacy",
+  "speaker": "hcp",
+  "week": "2026-W35",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-023",
+    "quote": "clinicians may now offer either regimen first line",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-023",
+    "published": "2026-08-27"
+   }
+  ]
+ },
+ {
+  "product": "both",
+  "aspect": "efficacy",
+  "speaker": "hcp",
+  "week": "2026-W44",
+  "mean_polarity": 1.0,
+  "n": 1,
+  "quotes": [
+   {
+    "item_id": "SYN-035",
+    "quote": "clinicians may now offer either regimen first line",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-035",
+    "published": "2026-10-26"
+   }
+  ]
+ }
+]

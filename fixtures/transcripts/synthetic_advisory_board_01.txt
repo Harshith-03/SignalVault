@@ -1,0 +1,12 @@
+[SYNTHETIC TRANSCRIPT, invented for testing; all names and details are fictional]
+Advisory board, oncology, 14 October 2026. Moderator: Jane Placeholder (Within3-style moderator).
+
+MODERATOR: Thanks everyone. Let's start with first-line EGFR treatment. Dr. Alan Fakename, what are you seeing?
+DR. ALAN FAKENAME (thoracic oncologist, Springfield General): Honestly, the subcutaneous amivantamab has changed my clinic days. It takes minutes instead of hours, and my infusion chairs are free again.
+DR. PRIYA MADEUP (community oncologist): Efficacy-wise I still reach for osimertinib first for most patients. The overall survival data for the combination are impressive, but the rash and the paronychia are a real concern for my older patients.
+MODERATOR: Any safety observations you'd like to share?
+DR. PRIYA MADEUP: One of my patients, a 71-year-old woman, developed a pulmonary embolism about six weeks into amivantamab plus lazertinib. We now start prophylactic anticoagulation for everyone.
+NURSE KIM EXAMPLE (oncology nurse navigator): Patients ask about cost a lot. Prior authorization for the combination took us almost three weeks last month. You can reach me at kim.example@example.org or 555-010-2299 if you want our PA template.
+PATIENT ADVOCATE ROB SAMPLE: For patients, a pill once a day is still the easiest thing. Coming in for injections every two weeks is a burden for people who live far away.
+DR. ALAN FAKENAME: We have also used osimertinib off-label in a patient with an uncommon mutation; the response was short.
+MODERATOR: Thank you all.

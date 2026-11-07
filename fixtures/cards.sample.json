@@ -1,0 +1,1016 @@
+[
+ {
+  "card_id": "C-SYN-000",
+  "item_id": "SYN-000",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "The combination showed a statistically significant overall survival benefit versus the comparator.",
+    "speaker": "company",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-000",
+    "start": 21,
+    "end": 119
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-05-04",
+  "week": "2026-W19",
+  "source": "press_release"
+ },
+ {
+  "card_id": "C-SYN-001",
+  "item_id": "SYN-001",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "Interstitial lung disease occurred more frequently than expected in this cohort.",
+    "speaker": "researcher",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-001",
+    "start": 21,
+    "end": 101
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-05-09",
+  "week": "2026-W19",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-002",
+  "item_id": "SYN-002",
+  "headline": "Mock headline: access pricing signal",
+  "signal_type": "access_pricing",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: access_pricing signal relevant to the launch plan.",
+  "owner": "market_access",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "access_cost",
+    "quote": "The health technology body recommended the regimen for routine funding.",
+    "speaker": "regulator",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-002",
+    "start": 21,
+    "end": 92
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-05-14",
+  "week": "2026-W20",
+  "source": "news"
+ },
+ {
+  "card_id": "C-SYN-003",
+  "item_id": "SYN-003",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "Rash, Diarrhoea",
+    "speaker": "hcp",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-003",
+    "start": 21,
+    "end": 36
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [
+   "Single spontaneous report; causality not established."
+  ],
+  "published": "2026-05-19",
+  "week": "2026-W21",
+  "source": "fda_event"
+ },
+ {
+  "card_id": "C-SYN-004",
+  "item_id": "SYN-004",
+  "headline": "Mock headline: trial update signal",
+  "signal_type": "trial_update",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: trial_update signal relevant to the launch plan.",
+  "owner": "clinical_ops",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "terminated for insufficient efficacy",
+    "speaker": "company",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-004",
+    "start": 21,
+    "end": 57
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-05-24",
+  "week": "2026-W21",
+  "source": "ctgov"
+ },
+ {
+  "card_id": "C-SYN-005",
+  "item_id": "SYN-005",
+  "headline": "Mock headline: regulatory signal",
+  "signal_type": "regulatory",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: regulatory signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "convenience",
+    "quote": "may switch to an every 4-week dosing regimen",
+    "speaker": "regulator",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-005",
+    "start": 21,
+    "end": 65
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-05-29",
+  "week": "2026-W22",
+  "source": "fda_label"
+ },
+ {
+  "card_id": "C-SYN-006",
+  "item_id": "SYN-006",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "evidence_quality",
+    "quote": "retrospective single-centre analysis",
+    "speaker": "researcher",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-006",
+    "start": 21,
+    "end": 57
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-06-03",
+  "week": "2026-W23",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-007",
+  "item_id": "SYN-007",
+  "headline": "Mock headline: competitor move signal",
+  "signal_type": "competitor_move",
+  "product": "A",
+  "actionable": true,
+  "why_it_matters": "Mock: competitor_move signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "the rival regimen outperformed the current standard in progression-free survival",
+    "speaker": "hcp",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-007",
+    "start": 21,
+    "end": 101
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-06-08",
+  "week": "2026-W24",
+  "source": "news"
+ },
+ {
+  "card_id": "C-SYN-008",
+  "item_id": "SYN-008",
+  "headline": "Mock headline: expert opinion signal",
+  "signal_type": "expert_opinion",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: expert_opinion signal relevant to the launch plan.",
+  "owner": "medical_affairs",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "convenience",
+    "quote": "the subcutaneous option takes minutes instead of hours in our clinic",
+    "speaker": "hcp",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-008",
+    "start": 21,
+    "end": 89
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-06-13",
+  "week": "2026-W24",
+  "source": "transcript"
+ },
+ {
+  "card_id": "C-SYN-009",
+  "item_id": "SYN-009",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "a high risk of venous thromboembolism was observed",
+    "speaker": "researcher",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-009",
+    "start": 21,
+    "end": 71
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-06-18",
+  "week": "2026-W25",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-010",
+  "item_id": "SYN-010",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "A",
+  "actionable": true,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "continues to demonstrate improved survival",
+    "speaker": "company",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-010",
+    "start": 22,
+    "end": 64
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-06-23",
+  "week": "2026-W26",
+  "source": "press_release"
+ },
+ {
+  "card_id": "C-SYN-011",
+  "item_id": "SYN-011",
+  "headline": "Mock headline: guideline signal",
+  "signal_type": "guideline",
+  "product": "both",
+  "actionable": true,
+  "why_it_matters": "Mock: guideline signal relevant to the launch plan.",
+  "owner": "medical_affairs",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "clinicians may now offer either regimen first line",
+    "speaker": "hcp",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-011",
+    "start": 22,
+    "end": 72
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-06-28",
+  "week": "2026-W26",
+  "source": "news"
+ },
+ {
+  "card_id": "C-SYN-012",
+  "item_id": "SYN-012",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "The combination showed a statistically significant overall survival benefit versus the comparator.",
+    "speaker": "company",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-012",
+    "start": 22,
+    "end": 120
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-07-03",
+  "week": "2026-W27",
+  "source": "press_release"
+ },
+ {
+  "card_id": "C-SYN-013",
+  "item_id": "SYN-013",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "Interstitial lung disease occurred more frequently than expected in this cohort.",
+    "speaker": "researcher",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-013",
+    "start": 22,
+    "end": 102
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-07-08",
+  "week": "2026-W28",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-014",
+  "item_id": "SYN-014",
+  "headline": "Mock headline: access pricing signal",
+  "signal_type": "access_pricing",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: access_pricing signal relevant to the launch plan.",
+  "owner": "market_access",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "access_cost",
+    "quote": "The health technology body recommended the regimen for routine funding.",
+    "speaker": "regulator",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-014",
+    "start": 22,
+    "end": 93
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-07-13",
+  "week": "2026-W29",
+  "source": "news"
+ },
+ {
+  "card_id": "C-SYN-015",
+  "item_id": "SYN-015",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "Rash, Diarrhoea",
+    "speaker": "hcp",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-015",
+    "start": 22,
+    "end": 37
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [
+   "Single spontaneous report; causality not established."
+  ],
+  "published": "2026-07-18",
+  "week": "2026-W29",
+  "source": "fda_event"
+ },
+ {
+  "card_id": "C-SYN-016",
+  "item_id": "SYN-016",
+  "headline": "Mock headline: trial update signal",
+  "signal_type": "trial_update",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: trial_update signal relevant to the launch plan.",
+  "owner": "clinical_ops",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "terminated for insufficient efficacy",
+    "speaker": "company",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-016",
+    "start": 22,
+    "end": 58
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-07-23",
+  "week": "2026-W30",
+  "source": "ctgov"
+ },
+ {
+  "card_id": "C-SYN-017",
+  "item_id": "SYN-017",
+  "headline": "Mock headline: regulatory signal",
+  "signal_type": "regulatory",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: regulatory signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "convenience",
+    "quote": "may switch to an every 4-week dosing regimen",
+    "speaker": "regulator",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-017",
+    "start": 22,
+    "end": 66
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-07-28",
+  "week": "2026-W31",
+  "source": "fda_label"
+ },
+ {
+  "card_id": "C-SYN-018",
+  "item_id": "SYN-018",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "evidence_quality",
+    "quote": "retrospective single-centre analysis",
+    "speaker": "researcher",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-018",
+    "start": 22,
+    "end": 58
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-08-02",
+  "week": "2026-W31",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-019",
+  "item_id": "SYN-019",
+  "headline": "Mock headline: competitor move signal",
+  "signal_type": "competitor_move",
+  "product": "A",
+  "actionable": true,
+  "why_it_matters": "Mock: competitor_move signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "the rival regimen outperformed the current standard in progression-free survival",
+    "speaker": "hcp",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-019",
+    "start": 22,
+    "end": 102
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-08-07",
+  "week": "2026-W32",
+  "source": "news"
+ },
+ {
+  "card_id": "C-SYN-020",
+  "item_id": "SYN-020",
+  "headline": "Mock headline: expert opinion signal",
+  "signal_type": "expert_opinion",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: expert_opinion signal relevant to the launch plan.",
+  "owner": "medical_affairs",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "convenience",
+    "quote": "the subcutaneous option takes minutes instead of hours in our clinic",
+    "speaker": "hcp",
+    "polarity": 2,
+    "url": "https://example.org/item/SYN-020",
+    "start": 22,
+    "end": 90
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-08-12",
+  "week": "2026-W33",
+  "source": "transcript"
+ },
+ {
+  "card_id": "C-SYN-021",
+  "item_id": "SYN-021",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "a high risk of venous thromboembolism was observed",
+    "speaker": "researcher",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-021",
+    "start": 22,
+    "end": 72
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-08-17",
+  "week": "2026-W34",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-022",
+  "item_id": "SYN-022",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "A",
+  "actionable": true,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "continues to demonstrate improved survival",
+    "speaker": "company",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-022",
+    "start": 22,
+    "end": 64
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-08-22",
+  "week": "2026-W34",
+  "source": "press_release"
+ },
+ {
+  "card_id": "C-SYN-023",
+  "item_id": "SYN-023",
+  "headline": "Mock headline: guideline signal",
+  "signal_type": "guideline",
+  "product": "both",
+  "actionable": true,
+  "why_it_matters": "Mock: guideline signal relevant to the launch plan.",
+  "owner": "medical_affairs",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "clinicians may now offer either regimen first line",
+    "speaker": "hcp",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-023",
+    "start": 22,
+    "end": 72
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-08-27",
+  "week": "2026-W35",
+  "source": "news"
+ },
+ {
+  "card_id": "C-SYN-024",
+  "item_id": "SYN-024",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "The combination showed a statistically significant overall survival benefit versus the comparator.",
+    "speaker": "company",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-024",
+    "start": 22,
+    "end": 120
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-09-01",
+  "week": "2026-W36",
+  "source": "press_release"
+ },
+ {
+  "card_id": "C-SYN-025",
+  "item_id": "SYN-025",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "Interstitial lung disease occurred more frequently than expected in this cohort.",
+    "speaker": "researcher",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-025",
+    "start": 22,
+    "end": 102
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-09-06",
+  "week": "2026-W36",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-026",
+  "item_id": "SYN-026",
+  "headline": "Mock headline: access pricing signal",
+  "signal_type": "access_pricing",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: access_pricing signal relevant to the launch plan.",
+  "owner": "market_access",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "access_cost",
+    "quote": "The health technology body recommended the regimen for routine funding.",
+    "speaker": "regulator",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-026",
+    "start": 22,
+    "end": 93
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-09-11",
+  "week": "2026-W37",
+  "source": "news"
+ },
+ {
+  "card_id": "C-SYN-027",
+  "item_id": "SYN-027",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "Rash, Diarrhoea",
+    "speaker": "hcp",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-027",
+    "start": 22,
+    "end": 37
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [
+   "Single spontaneous report; causality not established."
+  ],
+  "published": "2026-09-16",
+  "week": "2026-W38",
+  "source": "fda_event"
+ },
+ {
+  "card_id": "C-SYN-028",
+  "item_id": "SYN-028",
+  "headline": "Mock headline: trial update signal",
+  "signal_type": "trial_update",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: trial_update signal relevant to the launch plan.",
+  "owner": "clinical_ops",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "terminated for insufficient efficacy",
+    "speaker": "company",
+    "polarity": -2,
+    "url": "https://example.org/item/SYN-028",
+    "start": 22,
+    "end": 58
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-09-21",
+  "week": "2026-W39",
+  "source": "ctgov"
+ },
+ {
+  "card_id": "C-SYN-029",
+  "item_id": "SYN-029",
+  "headline": "Mock headline: regulatory signal",
+  "signal_type": "regulatory",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: regulatory signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "convenience",
+    "quote": "may switch to an every 4-week dosing regimen",
+    "speaker": "regulator",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-029",
+    "start": 22,
+    "end": 66
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-09-26",
+  "week": "2026-W39",
+  "source": "fda_label"
+ },
+ {
+  "card_id": "C-SYN-030",
+  "item_id": "SYN-030",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "A",
+  "actionable": false,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "evidence_quality",
+    "quote": "retrospective single-centre analysis",
+    "speaker": "researcher",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-030",
+    "start": 22,
+    "end": 58
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-10-01",
+  "week": "2026-W40",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-031",
+  "item_id": "SYN-031",
+  "headline": "Mock headline: competitor move signal",
+  "signal_type": "competitor_move",
+  "product": "A",
+  "actionable": true,
+  "why_it_matters": "Mock: competitor_move signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "the rival regimen outperformed the current standard in progression-free survival",
+    "speaker": "hcp",
+    "polarity": 0,
+    "url": "https://example.org/item/SYN-031",
+    "start": 22,
+    "end": 102
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-10-06",
+  "week": "2026-W41",
+  "source": "news"
+ },
+ {
+  "card_id": "C-SYN-032",
+  "item_id": "SYN-032",
+  "headline": "Mock headline: expert opinion signal",
+  "signal_type": "expert_opinion",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: expert_opinion signal relevant to the launch plan.",
+  "owner": "medical_affairs",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "convenience",
+    "quote": "the subcutaneous option takes minutes instead of hours in our clinic",
+    "speaker": "hcp",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-032",
+    "start": 22,
+    "end": 90
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-10-11",
+  "week": "2026-W41",
+  "source": "transcript"
+ },
+ {
+  "card_id": "C-SYN-033",
+  "item_id": "SYN-033",
+  "headline": "Mock headline: safety signal",
+  "signal_type": "safety",
+  "product": "B",
+  "actionable": true,
+  "why_it_matters": "Mock: safety signal relevant to the launch plan.",
+  "owner": "pharmacovigilance",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "safety",
+    "quote": "a high risk of venous thromboembolism was observed",
+    "speaker": "researcher",
+    "polarity": -1,
+    "url": "https://example.org/item/SYN-033",
+    "start": 22,
+    "end": 72
+   }
+  ],
+  "confidence": "high",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-10-16",
+  "week": "2026-W42",
+  "source": "pubmed"
+ },
+ {
+  "card_id": "C-SYN-034",
+  "item_id": "SYN-034",
+  "headline": "Mock headline: efficacy signal",
+  "signal_type": "efficacy",
+  "product": "A",
+  "actionable": true,
+  "why_it_matters": "Mock: efficacy signal relevant to the launch plan.",
+  "owner": "brand",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "continues to demonstrate improved survival",
+    "speaker": "company",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-034",
+    "start": 22,
+    "end": 64
+   }
+  ],
+  "confidence": "medium",
+  "review_status": "auto",
+  "caveats": [],
+  "published": "2026-10-21",
+  "week": "2026-W43",
+  "source": "press_release"
+ },
+ {
+  "card_id": "C-SYN-035",
+  "item_id": "SYN-035",
+  "headline": "Mock headline: guideline signal",
+  "signal_type": "guideline",
+  "product": "both",
+  "actionable": true,
+  "why_it_matters": "Mock: guideline signal relevant to the launch plan.",
+  "owner": "medical_affairs",
+  "recommended_action": "Review the cited evidence and decide on messaging.",
+  "citations": [
+   {
+    "aspect": "efficacy",
+    "quote": "clinicians may now offer either regimen first line",
+    "speaker": "hcp",
+    "polarity": 1,
+    "url": "https://example.org/item/SYN-035",
+    "start": 22,
+    "end": 72
+   }
+  ],
+  "confidence": "low",
+  "review_status": "review",
+  "caveats": [],
+  "published": "2026-10-26",
+  "week": "2026-W44",
+  "source": "news"
+ }
+]

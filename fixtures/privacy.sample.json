@@ -1,0 +1,23 @@
+{
+ "offline_mode": true,
+ "outbound_attempts_blocked": 0,
+ "allowed_hosts": [
+  "127.0.0.1",
+  "localhost"
+ ],
+ "model": "mock",
+ "model_digest": "sha256:mock",
+ "data_files": [
+  {
+   "path": "mock/test_inputs.full.jsonl",
+   "sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+  }
+ ],
+ "redaction_counts": {
+  "PERSON": 4,
+  "AGE": 2,
+  "DATE": 3
+ },
+ "audit_records": 36,
+ "audit_chain_ok": true
+}

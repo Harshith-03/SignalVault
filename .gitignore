@@ -1,0 +1,51 @@
+# ---- secrets ----
+.env
+.env.*
+!example.env
+*.pem
+*.key
+
+# ---- the organisers' packet: NEVER commit (not redistributable, contains a canary) ----
+SignalDose_Packet/
+**/SignalDose_Packet/
+data/
+*.full.jsonl
+dev.jsonl
+test_inputs.jsonl
+unlabeled.jsonl
+sample_submission.jsonl
+
+# ---- anything produced by running the engine (may quote packet text or private transcripts) ----
+outputs/*
+!outputs/.gitkeep
+audit/
+cache/
+transcripts_private/
+*.jsonl
+!fixtures/**/*.jsonl
+
+# ---- models / weights ----
+*.gguf
+*.safetensors
+*.bin
+
+# ---- python ----
+.venv*/
+venv*/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+.mypy_cache/
+.ruff_cache/
+
+# ---- node / frontend ----
+node_modules/
+desk/web/dist/
+.vite/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.idea/
+*.log

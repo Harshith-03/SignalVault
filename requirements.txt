@@ -1,0 +1,14 @@
+# core (engine)
+langgraph>=1.2
+langchain>=1.3
+langchain-ollama>=1.0
+pydantic>=2.8
+python-dotenv>=1.0
+rapidfuzz>=3.9
+requests>=2.32
+
+# desk API
+fastapi>=0.115
+uvicorn[standard]>=0.30
+
+# privacy (teammate adds the offline NER choice here via PR, e.g. presidio-analyzer / gliner)
