@@ -80,6 +80,11 @@ python -m engine.run --split test       # -> outputs/predictions_test.jsonl (the
 python -m engine.validate               # schema + verbatim-quote check
 python -m engine.run --split unlabeled; python -m engine.run --merge
 
+# Public Evidence Radar (Surge; the ONLY online step, a separate process, public drug-name queries only)
+python -m surge.radar discover        # Tavily + Exa (replay mode without keys)
+python -m surge.radar analyze         # local model, network guard on
+python -m surge.merge                 # run AFTER engine.run --merge
+
 # app
 uvicorn app.api.main:app --host 127.0.0.1 --port 8000
 cd app\web; npm install; npm run build; npm run preview     # http://127.0.0.1:4173

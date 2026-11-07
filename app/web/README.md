@@ -56,7 +56,7 @@ If the API is down, every page shows "API offline" with the command to start it.
 - **Polarity.** Diverging red (−2) → grey (0) → teal (+2). Values are always printed with a sign, so colour never carries the meaning alone.
 - **Product B.** Also drawn with a dashed line and square markers.
 - **Quotes.** Rendered verbatim. A highlight is drawn only when `text.slice(start, end) === span`. On redacted transcripts the quote is re-matched verbatim and labelled as such. Otherwise it is marked "Not shown · offset mismatch".
-- **Source URLs.** Shown as host text with a copy button, never as live links, so the vault never navigates out on its own.
+- **Source URLs.** Vault pages show sources as host text with a copy button. The vault never fetches them. Only the Radar page (public discovery results) offers links, and those open in a new tab: that is the user's own browser navigation, never a request the app makes.
 
 ## Offline check
 After `npm run build`, list every absolute URL in the bundle:
