@@ -5,7 +5,7 @@
  */
 import type {
   AnalyzeRequest, AnalyzeResponse, Card, CaseStatus, Health, ItemDetail, Metrics,
-  PrivacyStatus, Role, SafetyCase, TrendPoint,
+  PrivacyStatus, RadarResponse, Role, SafetyCase, TrendPoint,
 } from "./types";
 
 export type ApiErrorKind = "offline" | "forbidden" | "not_found" | "http";
@@ -82,6 +82,8 @@ export const api = {
     request<{ ok: boolean }>(`/api/review/${encodeURIComponent(cardId)}`, {
       method: "POST", body: JSON.stringify({ decision, note }),
     }),
+  /** Read-only: local snapshot files only. The radar's online step is a separate CLI process. */
+  radar: () => request<RadarResponse>("/api/radar"),
   safety: (status?: CaseStatus) => request<SafetyCase[]>(`/api/safety${qs({ status })}`),
   updateSafety: (caseId: string, status: CaseStatus, note = "") =>
     request<{ ok: boolean }>(`/api/safety/${encodeURIComponent(caseId)}`, {
