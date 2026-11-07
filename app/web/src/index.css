@@ -1,0 +1,209 @@
+@import "tailwindcss";
+
+/* Dark mode follows the explicit toggle stored on <html data-theme>. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ---------------------------------------------------------------- design tokens
+   Every colour the UI uses is a role token, so light/dark swap in one place. */
+:root {
+  color-scheme: light;
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #f2f4f7;
+  --surface-3: #e8ebf0;
+  --line: #e3e6eb;
+  --line-strong: #cfd4dc;
+  --ink: #0e1420;
+  --ink-2: #3d4554;
+  --ink-3: #697184;
+  --ink-inverse: #ffffff;
+  --brand: #0e1420;
+  --focus: #2a78d6;
+
+  /* products (validated categorical slots 1–2) */
+  --prod-a: #2a78d6;
+  --prod-a-soft: #e6f0fb;
+  --prod-b: #e0622c;
+  --prod-b-soft: #fdeee6;
+  --prod-both: #6b7385;
+  --prod-both-soft: #eef0f4;
+
+  /* status (never reused as a series colour; always paired with icon + label) */
+  --good: #0b8a3e;
+  --good-soft: #e5f5eb;
+  --warn: #a96500;
+  --warn-soft: #fff4dc;
+  --crit: #c4302b;
+  --crit-soft: #fdeceb;
+  --info: #2a62b8;
+  --info-soft: #e8f0fb;
+
+  /* polarity, diverging red → grey → teal */
+  --pol-n2: #b4271f;
+  --pol-n1: #ec9a90;
+  --pol-0: #e4e6ea;
+  --pol-p1: #86cfbf;
+  --pol-p2: #0c7f6b;
+
+  /* aspects (identity, used for quote highlights) */
+  --asp-efficacy: #6250d6;
+  --asp-safety: #d23c3b;
+  --asp-convenience: #12946a;
+  --asp-access_cost: #c98500;
+  --asp-evidence_quality: #c94f86;
+
+  --shadow-sm: 0 1px 2px rgb(16 24 40 / 0.05);
+  --shadow-md: 0 1px 2px rgb(16 24 40 / 0.04), 0 4px 16px -4px rgb(16 24 40 / 0.08);
+  --shadow-lg: 0 24px 48px -12px rgb(16 24 40 / 0.18);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b0e14;
+  --surface: #121620;
+  --surface-2: #181d29;
+  --surface-3: #212736;
+  --line: #232a38;
+  --line-strong: #323a4b;
+  --ink: #eef1f6;
+  --ink-2: #b8bfcc;
+  --ink-3: #8a93a5;
+  --ink-inverse: #0b0e14;
+  --brand: #eef1f6;
+  --focus: #6aa5ee;
+
+  --prod-a: #4b93ea;
+  --prod-a-soft: #15243a;
+  --prod-b: #f07a45;
+  --prod-b-soft: #34201a;
+  --prod-both: #9aa2b4;
+  --prod-both-soft: #222836;
+
+  --good: #3ccf7a;
+  --good-soft: #0f2a1c;
+  --warn: #f3b440;
+  --warn-soft: #2e2410;
+  --crit: #f06b62;
+  --crit-soft: #351717;
+  --info: #79a8f0;
+  --info-soft: #152238;
+
+  --pol-n2: #e5534b;
+  --pol-n1: #8a3b35;
+  --pol-0: #3a4152;
+  --pol-p1: #1f6a5c;
+  --pol-p2: #35c2a5;
+
+  --asp-efficacy: #9085e9;
+  --asp-safety: #ef6a68;
+  --asp-convenience: #38c08f;
+  --asp-access_cost: #e0a52b;
+  --asp-evidence_quality: #e47fac;
+
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.4);
+  --shadow-md: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -8px rgb(0 0 0 / 0.5);
+  --shadow-lg: 0 24px 48px -12px rgb(0 0 0 / 0.6);
+}
+
+@theme inline {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "Cascadia Mono", monospace;
+
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-inverse: var(--ink-inverse);
+  --color-brand: var(--brand);
+  --color-focus: var(--focus);
+  --color-prod-a: var(--prod-a);
+  --color-prod-a-soft: var(--prod-a-soft);
+  --color-prod-b: var(--prod-b);
+  --color-prod-b-soft: var(--prod-b-soft);
+  --color-prod-both: var(--prod-both);
+  --color-prod-both-soft: var(--prod-both-soft);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-crit: var(--crit);
+  --color-crit-soft: var(--crit-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    font-feature-settings: "cv11", "ss01", "ss03";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    min-width: 1024px;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--focus) 25%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+  button {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+@layer utilities {
+  .tnum {
+    font-variant-numeric: tabular-nums;
+  }
+  .hatch {
+    background-image: repeating-linear-gradient(
+      135deg,
+      transparent 0 5px,
+      color-mix(in srgb, var(--ink-3) 18%, transparent) 5px 6px
+    );
+  }
+  .scroll-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+}
+
+@keyframes sv-shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-2) 0%, var(--surface-3) 50%, var(--surface-2) 100%);
+  background-size: 800px 100%;
+  animation: sv-shimmer 1.4s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes sv-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.live-dot {
+  animation: sv-pulse 2.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton, .live-dot { animation: none; }
+}
