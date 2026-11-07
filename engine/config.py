@@ -55,8 +55,8 @@ ASPECT_MIN_CONF = 0.5     # below this an aspect is abstained (null)
 REVIEW_CONF = 0.7         # below this a card goes to the review queue
 FUZZY_MIN = 90            # rapidfuzz partial_ratio needed to snap a near-verbatim span
 
-# ---- safety inbox: reporting clock policy (calendar days from day 0). PENDING VERIFICATION against
-# EU GVP Module VI / 21 CFR 314.80 — see docs/SAFETY_RULES.md once written.
+# ---- safety inbox: reporting clock policy, calendar days from day 0. Verified against EU GVP Module VI Rev 2,
+# ICH E2D(R1), 21 CFR 314.80/600.80, EPHMRA 2026 — see docs/SAFETY_RULES.md. Seriousness unknown -> 15 (conservative).
 SERIOUS_DUE_DAYS = 15
 NONSERIOUS_DUE_DAYS = 90
 
