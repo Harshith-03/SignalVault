@@ -93,8 +93,8 @@ export function Chip({ children, className, title, icon, wrap }: {
     <span
       title={title}
       className={cx(
-        "inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 text-caption font-medium",
-        wrap ? "min-h-6 py-0.5 leading-snug" : "h-6 shrink-0 whitespace-nowrap leading-none",
+        "inline-flex max-w-full items-center gap-1.5 border px-2.5 text-caption font-medium",
+        wrap ? "min-h-6 rounded-chip py-1 leading-snug" : "h-6 shrink-0 whitespace-nowrap rounded-full leading-none",
         className ?? "border-transparent bg-surface-3 text-ink-2",
       )}
     >
@@ -108,7 +108,7 @@ export function Kbd({ children }: { children: ReactNode }) {
   return <code className="rounded-md border border-line bg-surface-2 px-1.5 py-0.5 font-mono text-[12px] text-ink-2">{children}</code>;
 }
 
-type IconTone = "neutral" | "brand" | "good" | "warn" | "crit" | "info" | "hero";
+type IconTone = "neutral" | "brand" | "good" | "warn" | "crit" | "info" | "hero" | "onTint" | "onTintBrand" | "onTintGood";
 const ICON_TONE: Record<IconTone, string> = {
   neutral: "bg-surface-3 text-ink-2",
   brand: "bg-brand-tint text-brand",
@@ -117,16 +117,19 @@ const ICON_TONE: Record<IconTone, string> = {
   crit: "bg-crit-soft text-crit",
   info: "bg-info-soft text-info",
   hero: "bg-on-hero/12 text-on-hero",
+  onTint: "bg-surface text-ink-2",
+  onTintBrand: "bg-surface/70 text-brand",
+  onTintGood: "bg-surface text-good",
 };
 export function IconBadge({ children, tone = "neutral", size = "md", className }: {
-  children: ReactNode; tone?: IconTone; size?: "sm" | "md" | "lg"; className?: string;
+  children: ReactNode; tone?: IconTone; size?: "sm" | "md" | "lg" | "xl"; className?: string;
 }) {
   return (
     <span
       aria-hidden
       className={cx(
         "inline-flex shrink-0 items-center justify-center rounded-full",
-        size === "sm" ? "h-7 w-7" : size === "lg" ? "h-12 w-12" : "h-8 w-8 sm:h-9 sm:w-9",
+        size === "sm" ? "h-7 w-7" : size === "lg" ? "h-12 w-12" : size === "xl" ? "h-14 w-14 sm:h-16 sm:w-16" : "h-8 w-8 sm:h-9 sm:w-9",
         ICON_TONE[tone], className,
       )}
     >
@@ -273,7 +276,7 @@ export function Select<T extends string>({ value, onChange, options, label, stac
   return (
     <label className={cx("text-caption text-ink-3", stacked ? "block" : "inline-flex items-center gap-2", className)}>
       <span className="shrink-0 font-medium">{label}</span>
-      <span className={cx("relative", stacked ? "mt-1.5 block" : "inline-block min-w-0")}>
+      <span className={cx("relative", stacked ? "mt-1.5 block" : "inline-block min-w-0 flex-1")}>
         <select
           value={value}
           onChange={(e) => onChange(e.target.value as T)}
@@ -368,7 +371,7 @@ export function ShowMore({ shown, total, hasMore, more, all, step, noun }: {
   if (!hasMore) return null;
   return (
     <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-      <span className="tnum text-support text-ink-3">Showing {shown} of {total} {noun}</span>
+      <span className="tnum text-support text-ink-3">Displaying {shown} of {total} {noun}</span>
       <div className="flex gap-2">
         <Button onClick={more}>Show {Math.min(step, total - shown)} more</Button>
         <Button variant="ghost" onClick={all}>Show all</Button>
@@ -461,7 +464,7 @@ export function Stat({ label, value, sub, icon, tone = "neutral", to, className,
     <>
       <div className="flex items-start justify-between gap-3">
         <div className={cx("pt-1 text-support font-medium", sage ? "text-ink" : "text-ink-2")}>{label}</div>
-        {icon && <IconBadge tone={sage ? "neutral" : tone} className={sage ? "bg-surface/70 text-brand" : undefined}>{icon}</IconBadge>}
+        {icon && <IconBadge tone={sage ? "onTintBrand" : tone}>{icon}</IconBadge>}
       </div>
       <div className="mt-auto pt-4 font-display text-metric font-semibold tracking-[-0.02em] text-ink">{value}</div>
       {children}
