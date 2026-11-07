@@ -9,8 +9,8 @@ import {
 } from "./chips";
 import { Quote } from "./Quote";
 
-export function InsightCard({ card, footer, compact, hideItemLink }: {
-  card: Card; footer?: ReactNode; compact?: boolean; hideItemLink?: boolean;
+export function InsightCard({ card, footer, compact, hideItemLink, actions }: {
+  card: Card; footer?: ReactNode; compact?: boolean; hideItemLink?: boolean; actions?: ReactNode;
 }) {
   const caveats = card.caveats ?? [];
   return (
@@ -20,8 +20,9 @@ export function InsightCard({ card, footer, compact, hideItemLink }: {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.98 }}
       transition={{ duration: 0.2 }}
-      className="rounded-2xl border border-line bg-surface p-5 shadow-sm transition-shadow hover:shadow-md"
+      className="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm transition-shadow hover:shadow-md"
     >
+      <div className="p-5">
       <div className="flex flex-wrap items-center gap-1.5">
         <ProductChip product={card.product} />
         <SignalChip signal={card.signal_type} />
@@ -88,6 +89,8 @@ export function InsightCard({ card, footer, compact, hideItemLink }: {
           </Link>}
         </div>
       </div>
+      </div>
+      {actions && <div className="border-t border-line bg-surface-2/70 px-5 py-3">{actions}</div>}
     </motion.article>
   );
 }

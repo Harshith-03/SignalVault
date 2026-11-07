@@ -123,16 +123,19 @@ export function Segmented<T extends string>({ value, onChange, options, size = "
   );
 }
 
-export function Select<T extends string>({ value, onChange, options, label }: {
-  value: T; onChange: (v: T) => void; options: { value: T; label: string }[]; label: string;
+export function Select<T extends string>({ value, onChange, options, label, stacked }: {
+  value: T; onChange: (v: T) => void; options: { value: T; label: string }[]; label: string; stacked?: boolean;
 }) {
   return (
-    <label className="inline-flex items-center gap-2 text-[12.5px] text-ink-3">
+    <label className={cx("text-[12.5px] text-ink-3", stacked ? "block" : "inline-flex items-center gap-2")}>
       <span className="font-medium">{label}</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
-        className="h-8 rounded-lg border border-line bg-surface px-2 pr-7 text-[13px] font-medium text-ink outline-none hover:border-line-strong focus:border-focus"
+        className={cx(
+          "rounded-lg border border-line bg-surface px-2 pr-7 text-[13px] font-medium text-ink outline-none hover:border-line-strong focus:border-focus",
+          stacked ? "mt-1 block h-9 w-full" : "h-8",
+        )}
       >
         {options.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
       </select>

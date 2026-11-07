@@ -10,6 +10,7 @@ import { AspectTable, FlagList, LabelSummary, Provenance, aspectSpans, verifyAsp
 import { SafetyCaseCard } from "../components/safety";
 import { Button, EmptyState, ErrorState, PageHeader, Panel, PanelTitle, Segmented, Select, Skeleton, cx } from "../components/ui";
 import { SAMPLE_TITLE, SAMPLE_TRANSCRIPT } from "../lib/sample";
+import { ROLE_LABELS } from "../lib/format";
 import { useApp } from "../state/app";
 
 const SOURCES = ["transcript", "news", "press_release", "pubmed", "ctgov", "fda_event", "fda_label", "fda_notice"] as const;
@@ -70,7 +71,7 @@ export default function Analyze() {
             onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
             onDragLeave={() => setDragging(false)}
             onDrop={onDrop}
-            className={cx("relative rounded-xl border transition-colors", dragging ? "border-focus bg-info-soft" : "border-line")}
+            className={cx("relative self-start rounded-xl border transition-colors", dragging ? "border-focus bg-info-soft" : "border-line")}
           >
             <textarea
               value={text}
@@ -102,7 +103,7 @@ export default function Analyze() {
               <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Optional"
                 className="mt-1 h-9 w-full rounded-lg border border-line bg-surface px-3 text-[13px] text-ink outline-none focus:border-focus" />
             </label>
-            <Select label="Source" value={source} onChange={setSource} options={SOURCES.map((s) => ({ value: s, label: SOURCE_NAMES[s] }))} />
+            <Select label="Source" stacked value={source} onChange={setSource} options={SOURCES.map((s) => ({ value: s, label: SOURCE_NAMES[s] }))} />
             <div>
               <div className="mb-1 text-[12.5px] font-medium text-ink-3">Product</div>
               <Segmented<ProductPick>
@@ -130,7 +131,7 @@ export default function Analyze() {
                 {busy ? "Analysing locally…" : "Analyze"}
               </Button>
               <div className="mt-2 flex items-center justify-center gap-1.5 text-[11.5px] text-ink-3">
-                <Lock size={11} />Sent only to 127.0.0.1 as {role.replace("_", " ")}
+                <Lock size={11} />Sent only to 127.0.0.1 as {ROLE_LABELS[role]}
               </div>
             </div>
           </div>
@@ -210,7 +211,7 @@ function Result({ res, original }: { res: AnalyzeResponse; original: string }) {
         <Panel>
           <PanelTitle
             hint={nSpans ? `${nSpans} identifier${nSpans === 1 ? "" : "s"} replaced. Highlighted tokens are redactions.` : "Redacted for display and storage only; the engine scored the original."}
-            right={<span className="inline-flex items-center gap-1.5 rounded-full bg-info-soft px-2.5 py-1 text-[12px] font-medium text-info"><EyeOff size={12} />Redacted view</span>}
+            right={<span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-info-soft px-2.5 py-1 text-[12px] font-medium text-info"><EyeOff size={12} />Redacted view</span>}
           >
             Redacted text
           </PanelTitle>

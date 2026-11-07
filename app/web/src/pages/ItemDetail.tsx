@@ -83,7 +83,7 @@ export default function ItemDetail() {
         <Panel>
           <PanelTitle
             hint={redacted ? "Transcript text is shown redacted. The engine scored the original; quotes are re-matched verbatim." : "Quotes are highlighted by their verified character offsets."}
-            right={redacted ? <span className="inline-flex items-center gap-1.5 rounded-full bg-info-soft px-2.5 py-1 text-[12px] font-medium text-info"><EyeOff size={12} />Redacted view</span> : undefined}
+            right={redacted ? <span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-info-soft px-2.5 py-1 text-[12px] font-medium text-info"><EyeOff size={12} />Redacted view</span> : undefined}
           >
             Full text
           </PanelTitle>

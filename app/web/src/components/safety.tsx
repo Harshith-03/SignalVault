@@ -158,8 +158,8 @@ export function SafetyCaseCard({ sc, canAct, busy, onStatus }: {
           </div>
           <div className="border-t border-line pt-3.5">
             <div className="mb-1 font-medium text-ink-3">Seriousness</div>
-            <div className={cx("text-[13px] font-semibold capitalize", sc.serious === "yes" ? "text-crit" : "text-ink")}>
-              {sc.serious === "unknown" ? "Unknown, PV to confirm" : sc.serious}
+            <div className={cx("text-[13px] font-semibold", sc.serious === "yes" ? "text-crit" : "text-ink")}>
+              {sc.serious === "unknown" ? "Unknown · PV to confirm" : sc.serious === "yes" ? "Serious" : "Not serious"}
             </div>
             {sc.seriousness_quote && <div className="mt-1 text-ink-2">“{sc.seriousness_quote}”</div>}
           </div>

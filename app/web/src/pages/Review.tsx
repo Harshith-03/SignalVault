@@ -99,8 +99,8 @@ function ReviewItem({ card, onDecide }: { card: Card; onDecide: (c: Card, d: "ac
   const go = async (d: "accept" | "reject") => { setBusy(true); await onDecide(card, d, note); setBusy(false); };
   return (
     <motion.div layout exit={{ opacity: 0, x: 24, transition: { duration: 0.18 } }}>
-      <InsightCard card={card} />
-      <div className="-mt-3 flex items-center gap-2 rounded-b-2xl border border-t-0 border-line bg-surface-2 px-5 pb-3 pt-6">
+      <InsightCard card={card} actions={
+      <div className="flex items-center gap-2">
         <input
           value={note}
           onChange={(e) => setNote(e.target.value)}
@@ -111,6 +111,7 @@ function ReviewItem({ card, onDecide }: { card: Card; onDecide: (c: Card, d: "ac
         <Button size="sm" variant="danger" disabled={busy} icon={<X size={13} />} onClick={() => go("reject")}>Reject</Button>
         <Button size="sm" variant="primary" disabled={busy} icon={<Check size={13} />} onClick={() => go("accept")}>Accept</Button>
       </div>
+      } />
     </motion.div>
   );
 }

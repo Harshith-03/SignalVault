@@ -4,6 +4,7 @@ import "./index.css";
 
 import { StrictMode, Suspense, lazy, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
+import { MotionConfig } from "framer-motion";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { Layout } from "./components/Layout";
@@ -40,6 +41,7 @@ const page = (el: ReactNode) => (
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <MotionConfig reducedMotion="user">
     <AppProvider>
       <ToastProvider>
         <BrowserRouter>
@@ -59,5 +61,6 @@ createRoot(document.getElementById("root")!).render(
         </BrowserRouter>
       </ToastProvider>
     </AppProvider>
+    </MotionConfig>
   </StrictMode>,
 );

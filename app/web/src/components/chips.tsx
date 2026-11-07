@@ -13,10 +13,11 @@ import { Chip, cx } from "./ui";
 export function ProductDot({ product, size = 8 }: { product: Product | null | undefined; size?: number }) {
   if (product === "both") {
     return (
-      <span className="inline-flex shrink-0" style={{ width: size * 1.6, height: size }} aria-hidden>
-        <span className="rounded-full" style={{ width: size, height: size, background: "var(--prod-a)" }} />
-        <span className="-ml-[37%] rounded-full ring-2 ring-surface" style={{ width: size, height: size, background: "var(--prod-b)" }} />
-      </span>
+      <span
+        aria-hidden
+        className="inline-block shrink-0 rounded-full"
+        style={{ width: size, height: size, background: "linear-gradient(90deg, var(--prod-a) 50%, var(--prod-b) 50%)" }}
+      />
     );
   }
   return (
@@ -105,7 +106,7 @@ export function ConfidenceBand({ level }: { level: Confidence }) {
           <span key={i} className={cx("h-3 w-1.5 rounded-sm", i < filled ? "bg-ink-2" : "bg-surface-3")} />
         ))}
       </span>
-      <span className="capitalize">{level}</span> confidence
+      <span><span className="capitalize">{level}</span> confidence</span>
     </span>
   );
 }

@@ -207,7 +207,7 @@ export default function Trends() {
                       minTickGap={16}
                     />
                     <YAxis
-                      domain={[-2, 2]}
+                      domain={[-2.3, 2.3]}
                       ticks={[-2, -1, 0, 1, 2]}
                       tickFormatter={(v: number) => fmtPolarity(v, 0)}
                       tick={{ fontSize: 11.5, fill: colors["ink-3"] }}
