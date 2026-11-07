@@ -60,17 +60,17 @@ export function AspectTable({ rows, onHover }: { rows: AspectRow[]; onHover?: (a
           key={r.aspect}
           onMouseEnter={() => onHover?.(r.aspect)}
           onMouseLeave={() => onHover?.(null)}
-          className="rounded-xl border border-line p-3 transition-colors hover:border-line-strong"
-          style={{ borderLeft: `3px solid ${aspectColor(r.aspect)}` }}
+          className="relative rounded-panel border border-line bg-surface py-3 pl-4.5 pr-3 transition-colors hover:border-line-strong hover:bg-surface-2"
         >
+          <span aria-hidden className="absolute bottom-3 left-1.5 top-3 w-[3px] rounded-full" style={{ background: aspectColor(r.aspect) }} />
           <div className="flex flex-wrap items-center gap-1.5">
             <span className="mr-1 text-[13px] font-semibold text-ink">{ASPECT_LABELS[r.aspect]}</span>
             <PolarityChip value={r.polarity} />
             <SpeakerChip speaker={r.speaker} />
             <span className="ml-auto"><VerifyBadge status={r.status} /></span>
           </div>
-          <div className="mt-2 text-[13px] leading-relaxed text-ink-2">“{r.span}”</div>
-          <div className="mt-2 flex gap-3 font-mono text-[11px] text-ink-3">
+          <div className="mt-2 break-words text-[13px] leading-relaxed text-ink-2">“{r.span}”</div>
+          <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-micro text-ink-3">
             {r.origin && <span>origin: {r.origin}</span>}
             {r.confidence !== undefined && <span>conf: {r.confidence.toFixed(2)}</span>}
             {r.start !== undefined && <span>@{r.start}–{r.end}</span>}
@@ -92,9 +92,9 @@ const FLAG_META: Record<Flag, { label: string; icon: ReactNode; tone: string }> 
   reportable_case_candidate: { label: "Reportable case candidate", icon: <ShieldAlert size={13} />, tone: "bg-crit-soft text-crit" },
   off_label: { label: "Off-label mention → Medical Affairs", icon: <Stethoscope size={13} />, tone: "bg-warn-soft text-warn" },
   single_report_no_causality: { label: "1 spontaneous report; causality not established", icon: <AlertTriangle size={13} />, tone: "bg-warn-soft text-warn" },
-  case_report_demographics: { label: "Case-report demographics withheld", icon: <EyeOff size={13} />, tone: "bg-surface-2 text-ink-2" },
+  case_report_demographics: { label: "Case-report demographics withheld", icon: <EyeOff size={13} />, tone: "bg-surface-3 text-ink-2" },
   pii_redacted: { label: "Personal data redacted", icon: <EyeOff size={13} />, tone: "bg-info-soft text-info" },
-  competitor: { label: "Competitor mention", icon: <FlagIcon size={13} />, tone: "bg-surface-2 text-ink-2" },
+  competitor: { label: "Competitor mention", icon: <FlagIcon size={13} />, tone: "bg-surface-3 text-ink-2" },
 };
 
 export function FlagList({ flags, large }: { flags: Flag[]; large?: boolean }) {
@@ -102,9 +102,9 @@ export function FlagList({ flags, large }: { flags: Flag[]; large?: boolean }) {
   return (
     <div className={cx("flex flex-wrap", large ? "gap-2" : "gap-1.5")}>
       {flags.map((f) => {
-        const m = FLAG_META[f] ?? { label: f, icon: <FlagIcon size={13} />, tone: "bg-surface-2 text-ink-2" };
+        const m = FLAG_META[f] ?? { label: f, icon: <FlagIcon size={13} />, tone: "bg-surface-3 text-ink-2" };
         return (
-          <span key={f} className={cx("inline-flex items-center gap-1.5 rounded-lg font-medium", m.tone, large ? "px-3 py-2 text-[13px]" : "px-2 py-1 text-[12px]")}>
+          <span key={f} className={cx("inline-flex items-center gap-1.5 rounded-full font-medium", m.tone, large ? "px-3.5 py-2 text-[13px]" : "px-2.5 py-1 text-caption")}>
             {m.icon}{m.label}
           </span>
         );
@@ -116,22 +116,22 @@ export function FlagList({ flags, large }: { flags: Flag[]; large?: boolean }) {
 export function LabelSummary({ pred }: { pred: EnrichedPrediction }) {
   const m = pred.meta;
   return (
-    <dl className="grid grid-cols-2 gap-3">
-      <div className="rounded-xl bg-surface-2/70 p-3">
-        <dt className="text-[12px] text-ink-3">Signal type</dt>
-        <dd className="mt-1 text-[14px] font-semibold text-ink">{SIGNAL_LABELS[pred.signal_type]}</dd>
-        <dd className="tnum mt-0.5 text-[12px] text-ink-3">confidence {fmtPct(m.signal_confidence)}</dd>
+    <dl className="grid grid-cols-1 gap-3 min-[420px]:grid-cols-2">
+      <div className="rounded-panel bg-surface-3/60 p-3.5">
+        <dt className="text-caption text-ink-3">Signal type</dt>
+        <dd className="mt-1 font-display text-[15px] font-semibold text-ink">{SIGNAL_LABELS[pred.signal_type]}</dd>
+        <dd className="tnum mt-0.5 text-caption text-ink-3">confidence {fmtPct(m.signal_confidence)}</dd>
       </div>
-      <div className="rounded-xl bg-surface-2/70 p-3">
-        <dt className="text-[12px] text-ink-3">Actionable</dt>
-        <dd className="mt-1 text-[14px] font-semibold capitalize text-ink">{pred.actionable}</dd>
-        <dd className="tnum mt-0.5 text-[12px] text-ink-3">confidence {fmtPct(m.actionable_confidence)}</dd>
+      <div className="rounded-panel bg-surface-3/60 p-3.5">
+        <dt className="text-caption text-ink-3">Actionable</dt>
+        <dd className="mt-1 font-display text-[15px] font-semibold capitalize text-ink">{pred.actionable}</dd>
+        <dd className="tnum mt-0.5 text-caption text-ink-3">confidence {fmtPct(m.actionable_confidence)}</dd>
       </div>
       {m.why_actionable && (
-        <div className="col-span-2 text-[13px] leading-relaxed text-ink-2"><span className="font-medium text-ink">Why: </span>{m.why_actionable}</div>
+        <div className="text-[13px] leading-relaxed text-ink-2 min-[420px]:col-span-2"><span className="font-medium text-ink">Why: </span>{m.why_actionable}</div>
       )}
       {m.uncertainty && (
-        <div className="col-span-2 flex items-start gap-2 rounded-lg bg-warn-soft px-3 py-2 text-[12.5px] text-ink">
+        <div className="flex items-start gap-2 rounded-control bg-warn-soft px-3 py-2 text-caption text-ink min-[420px]:col-span-2">
           <AlertTriangle size={13} className="mt-0.5 shrink-0 text-warn" />Uncertainty: {m.uncertainty}
         </div>
       )}
@@ -142,9 +142,9 @@ export function LabelSummary({ pred }: { pred: EnrichedPrediction }) {
 export function Provenance({ pred }: { pred: EnrichedPrediction }) {
   const m = pred.meta;
   return (
-    <div className="space-y-3 text-[12.5px]">
-      <div className="grid grid-cols-[110px_1fr] gap-y-1.5">
-        <span className="text-ink-3">Model</span><span className="inline-flex items-center gap-1.5 font-mono text-ink"><Cpu size={12} className="text-ink-3" />{m.model || "unknown"}</span>
+    <div className="space-y-3 text-caption">
+      <div className="grid grid-cols-[110px_minmax(0,1fr)] gap-y-2">
+        <span className="text-ink-3">Model</span><span className="inline-flex min-w-0 items-center gap-1.5 break-all font-mono text-ink"><Cpu size={12} className="text-ink-3" />{m.model || "unknown"}</span>
         <span className="text-ink-3">Prompt version</span><span className="font-mono text-ink">{m.prompt_version || "unknown"}</span>
         <span className="text-ink-3">Latency</span><span className="tnum font-mono text-ink">{m.latency_ms ? `${(m.latency_ms / 1000).toFixed(2)} s` : "unknown"}</span>
         <span className="text-ink-3">Review status</span><span className="capitalize text-ink">{m.review_status}</span>

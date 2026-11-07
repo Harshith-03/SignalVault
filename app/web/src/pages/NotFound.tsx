@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom";
-import { EmptyState } from "../components/ui";
+import { Compass, Gauge } from "lucide-react";
+import { ButtonLink, EmptyState } from "../components/ui";
 
 export default function NotFound() {
   return (
-    <EmptyState title="Page not found">
-      That address isn't part of the vault. <Link className="font-medium text-ink underline" to="/">Back to Overview</Link>
-    </EmptyState>
+    <div className="pt-6 sm:pt-12">
+      <EmptyState title="Page not found" icon={<Compass size={20} />}>
+        That address isn't part of the vault.
+        <div className="mt-5 flex justify-center">
+          <ButtonLink to="/" variant="primary" icon={<Gauge size={15} />}>Back to Overview</ButtonLink>
+        </div>
+      </EmptyState>
+    </div>
   );
 }

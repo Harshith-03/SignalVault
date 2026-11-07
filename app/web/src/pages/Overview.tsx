@@ -1,16 +1,18 @@
 import { motion } from "framer-motion";
 import {
-  ArrowRight, Clock3, Coins, FileStack, Gauge, Inbox, ListChecks, ShieldAlert, Target,
+  ArrowRight, Clock3, Coins, FileSearch, Gauge, ListChecks, ShieldAlert, ShieldCheck, Target,
 } from "lucide-react";
 import { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api/client";
-import type { Card, TrendPoint } from "../api/types";
+import type { Card, Metrics, SafetyCase, TrendPoint } from "../api/types";
 import { ASPECTS } from "../api/types";
 import { useApi } from "../api/useApi";
 import { ConfidenceBand, OwnerChip, PolarityChip, ProductDot, SignalChip } from "../components/chips";
 import { CountdownBadge } from "../components/safety";
-import { EmptyState, ErrorState, PageHeader, Panel, PanelTitle, Skeleton, Stat } from "../components/ui";
+import {
+  ButtonLink, EmptyState, ErrorState, IconBadge, PageHeader, Panel, PanelTitle, Skeleton, Stat, TextLink,
+} from "../components/ui";
 import {
   ASPECT_LABELS, PRODUCT_NAMES, dateToIsoWeek, fmtPolarity, polarityFill, polarityInk, weekLabel,
 } from "../lib/format";
@@ -46,6 +48,7 @@ export default function Overview() {
   const top = useMemo(() => topSignals(view), [view]);
   const thisWeek = dateToIsoWeek(new Date());
   const loadingTiles = cards.loading && !cards.data;
+  const loadingMetrics = metrics.loading && !metrics.data;
 
   if (cards.error?.kind === "offline") {
     return (
@@ -64,121 +67,185 @@ export default function Overview() {
         subtitle={product === "all"
           ? "Launch intelligence for Tagrisso (A) and Rybrevant / Lazcluze (B): every number below was computed on this machine."
           : `Signals for ${PRODUCT_NAMES[product]}, including items that concern both products.`}
+        actions={
+          <>
+            <ButtonLink to="/analyze" variant="primary" icon={<FileSearch size={15} />}>Analyze a transcript</ButtonLink>
+            <ButtonLink to="/review" icon={<ListChecks size={15} />}>Review queue</ButtonLink>
+          </>
+        }
       />
 
-      <div className="grid grid-cols-4 gap-4">
-        {loadingTiles ? [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-[118px] rounded-2xl" />) : (
-          <>
-            <Stat label="Items analysed" value={items} icon={<FileStack size={16} />} sub={`${view.length} insight cards`} />
-            <Stat label="Actionable signals" value={actionable} icon={<Target size={16} />}
-              sub={view.length ? `${Math.round((actionable / view.length) * 100)}% of cards` : "no cards yet"} />
-            <Link to="/review" className="block rounded-2xl outline-offset-2">
-              <Stat label="Review queue" value={reviewQ} icon={<ListChecks size={16} />} sub={<span className="inline-flex items-center gap-1">Human check before use <ArrowRight size={12} /></span>} />
-            </Link>
-            <Link to="/safety" className="block rounded-2xl">
-              <Stat
-                label="Open safety cases"
-                value={safety.error ? "—" : safety.loading && !safety.data ? "…" : openCases.length}
-                icon={<ShieldAlert size={16} />}
-                accent={openCases.length ? "var(--crit)" : undefined}
-                sub={<span className="inline-flex items-center gap-1">{cases.filter((c) => c.valid_case_candidate).length} valid case candidates <ArrowRight size={12} /></span>}
-              />
-            </Link>
-          </>
-        )}
-      </div>
+      {/* ------------------------------------------------ headline metrics (bento) */}
+      <section aria-label="Key metrics" className="grid grid-cols-2 gap-3 sm:gap-4 @3xl:grid-cols-4 @5xl:grid-cols-12">
+        <div className="col-span-2 @3xl:col-span-4 @5xl:col-span-6 @5xl:row-span-2">
+          {loadingTiles ? <Skeleton className="h-full min-h-[280px] rounded-card" /> : (
+            <HeroActionable actionable={actionable} cards={view.length} items={items} />
+          )}
+        </div>
 
-      <div className="mt-4 grid grid-cols-3 gap-4">
-        {metrics.loading && !metrics.data ? [0, 1, 2].map((i) => <Skeleton key={i} className="h-[118px] rounded-2xl" />) : (
-          <>
+        <div className="@5xl:col-span-3">
+          {loadingTiles ? <Skeleton className="h-[150px] rounded-card" /> : (
             <Stat
-              label={`Composite score · ${dev?.split ?? "dev"} split`}
-              value={dev?.composite != null ? dev.composite.toFixed(2) : "unknown"}
-              icon={<Gauge size={16} />}
-              sub={dev ? `${dev.items} labelled items · ${dev.model || "model unknown"}` : "No metrics yet"}
+              variant="sage"
+              to="/review"
+              label="Review queue"
+              value={reviewQ}
+              icon={<ListChecks size={17} />}
+              sub="Human check before use"
             />
+          )}
+        </div>
+
+        <div className="@5xl:col-span-3">
+          {loadingTiles ? <Skeleton className="h-[150px] rounded-card" /> : (
+            <SafetyTile cases={cases} open={openCases} loading={safety.loading && !safety.data} failed={!!safety.error} />
+          )}
+        </div>
+
+        <div className="@5xl:col-span-3">
+          {loadingMetrics ? <Skeleton className="h-[150px] rounded-card" /> : (
             <Stat
               label="Seconds per item"
               value={dev?.seconds_per_item != null ? dev.seconds_per_item.toFixed(2) : "unknown"}
-              icon={<Clock3 size={16} />}
+              icon={<Clock3 size={17} />}
               sub="Wall clock on this laptop"
             />
+          )}
+        </div>
+
+        <div className="@5xl:col-span-3">
+          {loadingMetrics ? <Skeleton className="h-[150px] rounded-card" /> : (
             <Stat
               label="Cost per 100 items"
               value={dev?.cost_per_100_items_usd != null ? `$${dev.cost_per_100_items_usd.toFixed(3)}` : "unknown"}
-              icon={<Coins size={16} />}
+              icon={<Coins size={17} />}
+              tone="good"
               sub="Electricity only · no API fees"
             />
-          </>
-        )}
-      </div>
-
-      <div className="mt-6 grid grid-cols-3 gap-6">
-        <div className="col-span-2">
-          <Panel padded={false}>
-            <div className="px-5 pt-5">
-              <PanelTitle
-                hint={top.label}
-                right={<Link to="/signals" className="inline-flex items-center gap-1 text-[12.5px] font-medium text-ink-2 hover:text-ink">All signals <ArrowRight size={13} /></Link>}
-              >
-                Top signals this week
-              </PanelTitle>
-            </div>
-            {cards.loading && !cards.data ? (
-              <div className="space-y-3 px-5 pb-5">{[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-14" />)}</div>
-            ) : cards.error ? (
-              <div className="px-5 pb-5"><ErrorState error={cards.error} onRetry={cards.reload} /></div>
-            ) : top.cards.length === 0 ? (
-              <div className="px-5 pb-5"><EmptyState title="No actionable signals yet">Run the engine or load fixtures to populate the feed.</EmptyState></div>
-            ) : (
-              <ul className="divide-y divide-line border-t border-line">
-                {top.cards.map((c, i) => (
-                  <motion.li key={c.card_id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.03 }}>
-                    <Link to={`/items/${encodeURIComponent(c.item_id)}`} className="group flex items-center gap-4 px-5 py-3.5 hover:bg-surface-2/60">
-                      <ProductDot product={c.product} size={9} />
-                      <div className="min-w-0 flex-1">
-                        <div className="truncate text-[14px] font-medium text-ink">{c.headline}</div>
-                        <div className="mt-1.5 flex items-center gap-1.5">
-                          <SignalChip signal={c.signal_type} />
-                          <OwnerChip owner={c.owner} />
-                        </div>
-                      </div>
-                      {c.citations[0] && <PolarityChip value={c.citations[0].polarity} />}
-                      <div className="w-[150px] shrink-0"><ConfidenceBand level={c.confidence} /></div>
-                      <ArrowRight size={15} className="shrink-0 text-ink-3 opacity-0 transition-opacity group-hover:opacity-100" />
-                    </Link>
-                  </motion.li>
-                ))}
-              </ul>
-            )}
-          </Panel>
+          )}
         </div>
+      </section>
 
-        <div className="space-y-6">
-          <SafetyCallout loading={safety.loading && !safety.data} open={openCases} />
-          <SentimentSnapshot trends={trends.data} loading={trends.loading && !trends.data} />
-        </div>
-      </div>
-
-      {dev && Object.keys(dev.scores ?? {}).length > 0 && (
-        <Panel className="mt-6">
-          <PanelTitle hint={`Scored against the organisers' labels · ${dev.measured_at ? `measured ${dev.measured_at}` : "measurement time not recorded"}`}>
-            Engine quality ({dev.split} split)
-          </PanelTitle>
-          <div className="grid grid-cols-7 gap-4">
-            {Object.entries(dev.scores ?? {}).map(([k, v]) => (
-              <div key={k}>
-                <div className="text-[12px] text-ink-3">{SCORE_LABELS[k] ?? k}</div>
-                <div className="tnum mt-1 text-[18px] font-semibold text-ink">{v == null ? "unknown" : v.toFixed(2)}</div>
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-surface-3">
-                  {v != null && <div className="h-full rounded-full bg-ink-2" style={{ width: `${Math.max(2, Math.min(1, v) * 100)}%` }} />}
-                </div>
-              </div>
-            ))}
+      {/* ------------------------------------------------ supporting insight */}
+      <div className="mt-4 grid gap-4 sm:mt-6 sm:gap-6 @5xl:grid-cols-12 @5xl:items-start">
+        <Panel padded={false} className="@5xl:col-span-7">
+          <div className="px-[var(--pad-card)] pt-[var(--pad-card)]">
+            <PanelTitle hint={top.label} right={<TextLink to="/signals">All signals</TextLink>}>
+              Top signals this week
+            </PanelTitle>
           </div>
+          {cards.loading && !cards.data ? (
+            <div className="space-y-2 px-[var(--pad-card)] pb-[var(--pad-card)]">{[0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-16 rounded-panel" />)}</div>
+          ) : cards.error ? (
+            <div className="px-[var(--pad-card)] pb-[var(--pad-card)]"><ErrorState error={cards.error} onRetry={cards.reload} /></div>
+          ) : top.cards.length === 0 ? (
+            <div className="px-[var(--pad-card)] pb-[var(--pad-card)]"><EmptyState title="No actionable signals yet">Run the engine or load fixtures to populate the feed.</EmptyState></div>
+          ) : (
+            <ul className="px-2 pb-2 sm:px-3 sm:pb-3">
+              {top.cards.map((c, i) => (
+                <motion.li key={c.card_id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.03 }}
+                  className="border-t border-line first:border-t-0">
+                  <Link
+                    to={`/items/${encodeURIComponent(c.item_id)}`}
+                    className="group my-1 flex items-start gap-3 rounded-panel px-2.5 py-3 transition-colors hover:bg-surface-2 sm:px-3"
+                  >
+                    <span className="mt-[7px]"><ProductDot product={c.product} size={9} /></span>
+                    <div className="min-w-0 flex-1">
+                      <div className="line-clamp-2 text-[14px] font-medium leading-snug text-ink group-hover:text-ink">{c.headline}</div>
+                      <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                        <SignalChip signal={c.signal_type} />
+                        <OwnerChip owner={c.owner} />
+                        <span className="ml-1"><ConfidenceBand level={c.confidence} /></span>
+                      </div>
+                    </div>
+                    {c.citations[0] && <span className="mt-0.5"><PolarityChip value={c.citations[0].polarity} /></span>}
+                    <ArrowRight size={15} className="mt-1 hidden shrink-0 text-brand opacity-0 transition-opacity group-hover:opacity-100 sm:block" />
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+          )}
         </Panel>
-      )}
+
+        <div className="flex min-w-0 flex-col gap-4 sm:gap-6 @5xl:col-span-5">
+          <SentimentSnapshot trends={trends.data} loading={trends.loading && !trends.data} />
+          {/* secondary detail: engine quality sits last in reading order */}
+          <EngineQuality dev={dev} loading={loadingMetrics} />
+        </div>
+      </div>
     </>
+  );
+}
+
+/** The one hero card: what a launch team should act on, with the scale it was drawn from. */
+function HeroActionable({ actionable, cards, items }: { actionable: number; cards: number; items: number }) {
+  const pct = cards ? Math.round((actionable / cards) * 100) : null;
+  return (
+    <Panel tone="hero" className="@container relative h-full min-h-[280px] overflow-hidden p-6 sm:p-7">
+      <div className="grid h-full gap-6 @xl:grid-cols-[minmax(0,1fr)_minmax(220px,0.75fr)] @xl:gap-10">
+      <div className="flex flex-col">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="font-display text-[18px] font-semibold text-on-hero">Actionable signals</h2>
+            <p className="mt-1 max-w-[34ch] text-support text-on-hero-2">Insight cards marked actionable, each routed to an owner team.</p>
+          </div>
+          <IconBadge tone="hero" size="lg" className="@xl:hidden"><Target size={22} /></IconBadge>
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-end gap-x-5 gap-y-2 @xl:mt-auto @xl:pt-6">
+          <div className="font-display text-[64px] leading-[0.9] font-semibold tracking-[-0.04em] text-on-hero sm:text-[84px]">{actionable}</div>
+          <div className="pb-2 text-support text-on-hero-2">
+            {pct === null ? "no cards yet" : <><span className="font-semibold text-on-hero">{pct}%</span> of cards</>}
+          </div>
+        </div>
+      </div>
+
+      <div className="flex flex-col @xl:justify-between">
+        <span className="hidden self-end @xl:block"><IconBadge tone="hero" size="lg"><Target size={22} /></IconBadge></span>
+        <div className="mt-auto">
+        <dl className="grid grid-cols-2 gap-4 border-t border-on-hero/15 pt-4">
+          <div>
+            <dt className="text-caption text-on-hero-2">Items analysed</dt>
+            <dd className="mt-1 font-display text-[22px] font-semibold text-on-hero">{items}</dd>
+          </div>
+          <div>
+            <dt className="text-caption text-on-hero-2">Insight cards</dt>
+            <dd className="mt-1 font-display text-[22px] font-semibold text-on-hero">{cards}</dd>
+          </div>
+        </dl>
+        <Link
+          to="/signals?actionable=yes"
+          className="press group mt-5 inline-flex h-10 items-center gap-2 rounded-full bg-on-hero px-4 text-body font-semibold text-hero hover:bg-on-hero/90"
+        >
+          Browse actionable signals
+          <ArrowRight size={15} className="transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+        </Link>
+        </div>
+      </div>
+      </div>
+    </Panel>
+  );
+}
+
+/** Open cases + the nearest reporting clock. Replaces the separate "Safety Inbox" call-out. */
+function SafetyTile({ cases, open, loading, failed }: { cases: SafetyCase[]; open: SafetyCase[]; loading: boolean; failed: boolean }) {
+  const next = open.filter((c) => c.due).sort((a, b) => (a.due! < b.due! ? -1 : 1))[0];
+  const valid = cases.filter((c) => c.valid_case_candidate).length;
+  return (
+    <Stat
+      to="/safety"
+      label="Open safety cases"
+      value={failed ? "—" : loading ? "…" : open.length}
+      icon={open.length ? <ShieldAlert size={17} /> : <ShieldCheck size={17} />}
+      tone={open.length ? "crit" : "good"}
+      sub={loading || failed ? "Safety Inbox" : open.length === 0 ? "No open cases for this view." : `${valid} valid case candidates`}
+    >
+      {next?.due && (
+        <div className="mt-3 flex flex-wrap items-center gap-2 text-caption text-ink-3">
+          Next due <CountdownBadge due={next.due} />
+        </div>
+      )}
+    </Stat>
   );
 }
 
@@ -204,36 +271,6 @@ function topSignals(cards: Card[]): { cards: Card[]; label: string } {
   return { cards: picked.slice(0, 6), label: `No new evidence in ${thisWeek} yet · showing the latest weeks with data (${span})` };
 }
 
-function SafetyCallout({ open, loading }: { open: { case_id: string; due?: string | null; valid_case_candidate: boolean }[]; loading: boolean }) {
-  const next = open.filter((c) => c.due).sort((a, b) => (a.due! < b.due! ? -1 : 1))[0];
-  return (
-    <Panel>
-      <PanelTitle hint="Possible reportable adverse-event cases">Safety Inbox</PanelTitle>
-      {loading ? <Skeleton className="h-16" /> : open.length === 0 ? (
-        <div className="flex items-center gap-3 text-[13px] text-ink-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-good-soft text-good"><Inbox size={16} /></div>
-          No open cases for this view.
-        </div>
-      ) : (
-        <div>
-          <div className="flex items-baseline gap-2">
-            <span className="tnum text-[32px] font-semibold leading-none text-ink">{open.length}</span>
-            <span className="text-[13px] text-ink-3">open {open.length === 1 ? "case" : "cases"}</span>
-          </div>
-          {next?.due && (
-            <div className="mt-3 flex items-center gap-2 text-[12.5px] text-ink-3">
-              Next due <CountdownBadge due={next.due} />
-            </div>
-          )}
-          <Link to="/safety" className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold text-ink hover:underline">
-            Open Safety Inbox <ArrowRight size={13} />
-          </Link>
-        </div>
-      )}
-    </Panel>
-  );
-}
-
 function SentimentSnapshot({ trends, loading }: { trends?: TrendPoint[]; loading: boolean }) {
   const rows = useMemo(() => {
     const acc: Record<string, { s: number; n: number }> = {};
@@ -252,40 +289,41 @@ function SentimentSnapshot({ trends, loading }: { trends?: TrendPoint[]; loading
   }, [trends]);
 
   return (
-    <Panel>
+    <Panel className="h-full">
       <PanelTitle
         hint="Mean polarity, all weeks · n = quotes"
-        right={<Link to="/trends" className="inline-flex items-center gap-1 text-[12.5px] font-medium text-ink-2 hover:text-ink">Trends <ArrowRight size={13} /></Link>}
+        right={<TextLink to="/trends">Trends</TextLink>}
       >
         Sentiment snapshot
       </PanelTitle>
-      {loading ? <Skeleton className="h-40" /> : (
-        <table className="w-full text-[12.5px]">
+      {loading ? <Skeleton className="h-[236px] rounded-panel" /> : (
+        <table className="w-full table-fixed border-separate border-spacing-x-1.5 border-spacing-y-1.5 text-caption">
+          <caption className="sr-only">Mean sentiment polarity per aspect for Tagrisso and Rybrevant, on a −2 to +2 scale, with the number of quotes</caption>
           <thead>
             <tr className="text-ink-3">
-              <th className="pb-2 text-left font-medium">Aspect</th>
-              <th className="pb-2 text-center font-medium"><span className="inline-flex items-center gap-1.5"><ProductDot product="A" />Tagrisso</span></th>
-              <th className="pb-2 text-center font-medium"><span className="inline-flex items-center gap-1.5"><ProductDot product="B" />Rybrevant</span></th>
+              <th scope="col" className="w-[36%] pb-1 text-left font-medium">Aspect</th>
+              <th scope="col" className="pb-1 text-center font-medium"><span className="inline-flex items-center gap-1.5"><ProductDot product="A" />Tagrisso</span></th>
+              <th scope="col" className="pb-1 text-center font-medium"><span className="inline-flex items-center gap-1.5"><ProductDot product="B" />Rybrevant</span></th>
             </tr>
           </thead>
           <tbody>
             {rows.map((r) => (
               <tr key={r.aspect}>
-                <td className="py-1 pr-2 text-ink-2">{ASPECT_LABELS[r.aspect]}</td>
+                <th scope="row" className="truncate pr-1 text-left text-[13px] font-medium text-ink-2">{ASPECT_LABELS[r.aspect]}</th>
                 {(["A", "B"] as const).map((p) => {
                   const v = r[p];
                   return (
-                    <td key={p} className="px-1 py-1">
+                    <td key={p}>
                       {v ? (
                         <div
-                          className="tnum flex h-8 items-center justify-center gap-1 rounded-lg font-semibold"
+                          className="tnum flex h-10 items-center justify-center gap-1.5 rounded-control text-[13px] font-semibold"
                           style={{ background: polarityFill(v.m), color: polarityInk(v.m) }}
                           title={`${fmtPolarity(v.m, 2)} from ${v.n} quote${v.n === 1 ? "" : "s"}`}
                         >
-                          {fmtPolarity(v.m)}<span className="text-[11px] font-medium opacity-75">n={v.n}</span>
+                          {fmtPolarity(v.m)}<span className="text-micro font-medium opacity-80">n={v.n}</span>
                         </div>
                       ) : (
-                        <div className="hatch flex h-8 items-center justify-center rounded-lg text-[11.5px] text-ink-3" title="No data: not the same as neutral">no data</div>
+                        <div className="hatch flex h-10 items-center justify-center rounded-control border border-line text-micro text-ink-3" title="No data: not the same as neutral">no data</div>
                       )}
                     </td>
                   );
@@ -294,6 +332,54 @@ function SentimentSnapshot({ trends, loading }: { trends?: TrendPoint[]; loading
             ))}
           </tbody>
         </table>
+      )}
+    </Panel>
+  );
+}
+
+function EngineQuality({ dev, loading }: { dev?: Metrics; loading: boolean }) {
+  const scores = Object.entries(dev?.scores ?? {});
+  return (
+    <Panel className="@container" aria-label="Engine quality">
+      {loading ? <Skeleton className="h-[140px] rounded-panel" /> : (
+        <div className="grid gap-5 @xl:grid-cols-[minmax(190px,230px)_minmax(0,1fr)] @xl:gap-8">
+          <div className="flex flex-col">
+            <div className="flex items-start justify-between gap-3">
+              <div className="pt-1 text-support font-medium text-ink-2">Composite score · {dev?.split ?? "dev"} split</div>
+              <IconBadge tone="brand"><Gauge size={17} /></IconBadge>
+            </div>
+            <div className="mt-3 font-display text-[40px] leading-none font-semibold tracking-[-0.03em] text-ink">
+              {dev?.composite != null ? dev.composite.toFixed(2) : "unknown"}
+            </div>
+            <div className="mt-2 break-words text-caption text-ink-3">
+              {dev ? `${dev.items} labelled items · ${dev.model || "model unknown"}` : "No metrics yet"}
+            </div>
+          </div>
+
+          {scores.length > 0 && (
+            <div className="min-w-0 border-t border-line pt-5 @xl:border-l @xl:border-t-0 @xl:pl-8 @xl:pt-0">
+              <div className="mb-4">
+                <h2 className="font-display text-heading font-semibold text-ink">Engine quality ({dev!.split} split)</h2>
+                <p className="mt-1 text-caption text-ink-3">
+                  Scored against the organisers' labels · {dev!.measured_at ? `measured ${dev!.measured_at}` : "measurement time not recorded"}
+                </p>
+              </div>
+              <dl className="grid grid-cols-1 gap-x-6 gap-y-3.5 @xs:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4">
+                {scores.map(([k, v]) => (
+                  <div key={k} className="min-w-0">
+                    <dt className="truncate text-caption text-ink-3">{SCORE_LABELS[k] ?? k}</dt>
+                    <dd className="mt-1 flex items-center gap-3">
+                      <span className="tnum w-10 text-[16px] font-semibold text-ink">{v == null ? "unknown" : v.toFixed(2)}</span>
+                      <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-3" aria-hidden>
+                        {v != null && <span className="block h-full rounded-full bg-brand" style={{ width: `${Math.max(2, Math.min(1, v) * 100)}%` }} />}
+                      </span>
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
+        </div>
       )}
     </Panel>
   );
