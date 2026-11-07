@@ -11,8 +11,8 @@ import random
 from datetime import date, timedelta
 
 from engine.config import FIXTURES
-from engine.schema import (ASPECTS, AspectMeta, Card, Citation, EnrichedPrediction, Meta, Metrics, PrivacyStatus,
-                           DataFileHash, TrendPoint, TrendQuote, iso_week)
+from engine.schema import (ASPECTS, AspectMeta, Card, Citation, Criterion, EnrichedPrediction, Meta, Metrics,
+                           PrivacyStatus, DataFileHash, SafetyCase, TrendPoint, TrendQuote, iso_week)
 
 random.seed(7)
 SYN = [  # (source, product, signal, actionable, aspect, polarity, speaker, sentence)
@@ -95,7 +95,44 @@ def main() -> None:
                        scores={"signal_macro_f1": 0.33, "actionable_f1": 0.0, "aspect_f1": 0.30, "polarity_qwk": 1.0,
                                "speaker_accuracy": 1.0, "span_f1": 0.86, "citation_validity": 1.0})]
 
+    # ---- safety inbox: built from the SYNTHETIC transcript, quotes located by offset (verbatim)
+    tx = (FIXTURES / "transcripts" / "synthetic_advisory_board_01.txt").read_text(encoding="utf-8")
+
+    def crit(q):
+        i = tx.find(q)
+        assert i >= 0, q
+        return Criterion(present=True, quote=q, start=i, end=i + len(q))
+
+    today = date(2026, 11, 7)
+    safety = [
+        SafetyCase(case_id="SC-TX-001", item_id="TX-SYN-01", source="transcript", product="B",
+                   title="Advisory board (synthetic): PE on amivantamab + lazertinib",
+                   patient=crit("a 71-year-old woman"), reporter=crit("DR. PRIYA MADEUP"),
+                   suspect_drug=crit("amivantamab plus lazertinib"), adverse_event=crit("developed a pulmonary embolism"),
+                   events=["pulmonary embolism"], serious="unknown", seriousness_quote=None,
+                   valid_case_candidate=True, day0=today.isoformat(), due=(today + timedelta(days=15)).isoformat(),
+                   confidence=0.86, caveats=["Seriousness not stated; PV to confirm.",
+                                             "Raised during market research: route per AE-reporting SOP."]),
+        SafetyCase(case_id="SC-TX-002", item_id="TX-SYN-01", source="transcript", product="A",
+                   title="Advisory board (synthetic): off-label osimertinib, short response",
+                   patient=Criterion(present=True, quote="a patient with an uncommon mutation",
+                                     start=tx.find("a patient with an uncommon mutation"),
+                                     end=tx.find("a patient with an uncommon mutation") + 35),
+                   reporter=crit("DR. ALAN FAKENAME"), suspect_drug=crit("osimertinib off-label"),
+                   adverse_event=Criterion(present=False), events=[], serious="unknown",
+                   valid_case_candidate=False, day0=today.isoformat(), due=None, confidence=0.55,
+                   caveats=["No adverse event stated; off-label use noted: route to Medical Affairs."]),
+        SafetyCase(case_id="SC-SYN-003", item_id="SYN-003", source="fda_event", product="A",
+                   title="FAERS report (synthetic)", patient=Criterion(present=True, quote=None),
+                   reporter=Criterion(present=True, quote="physician"), suspect_drug=Criterion(present=True, quote="osimertinib"),
+                   adverse_event=Criterion(present=True, quote="Rash, Diarrhoea"), events=["Rash", "Diarrhoea"],
+                   serious="yes", seriousness_quote="Serious: yes", valid_case_candidate=True, already_reported=True,
+                   day0=today.isoformat(), due=None, status="not_a_case", confidence=0.95,
+                   caveats=["Already in FDA FAERS; no new report needed. Causality not established."]),
+    ]
+
     FIXTURES.mkdir(exist_ok=True)
+    (FIXTURES / "safety.sample.json").write_text(json.dumps([s.model_dump() for s in safety], indent=1), encoding="utf-8")
     (FIXTURES / "enriched.sample.jsonl").write_text("".join(p.model_dump_json() + "\n" for p in preds), encoding="utf-8")
     for name, obj in [("cards", [c.model_dump() for c in cards]), ("trends", [t.model_dump() for t in trends]),
                       ("privacy", privacy.model_dump()), ("metrics", [m.model_dump() for m in metrics]),

@@ -55,6 +55,11 @@ ASPECT_MIN_CONF = 0.5     # below this an aspect is abstained (null)
 REVIEW_CONF = 0.7         # below this a card goes to the review queue
 FUZZY_MIN = 90            # rapidfuzz partial_ratio needed to snap a near-verbatim span
 
+# ---- safety inbox: reporting clock policy (calendar days from day 0). PENDING VERIFICATION against
+# EU GVP Module VI / 21 CFR 314.80 — see docs/SAFETY_RULES.md once written.
+SERIOUS_DUE_DAYS = 15
+NONSERIOUS_DUE_DAYS = 90
+
 # ---- cost model for "cost per 100 items"
 LAPTOP_WATTS = float(os.getenv("LAPTOP_WATTS", "150"))
 USD_PER_KWH = float(os.getenv("USD_PER_KWH", "0.184"))

@@ -1,0 +1,143 @@
+[
+ {
+  "case_id": "SC-TX-001",
+  "item_id": "TX-SYN-01",
+  "source": "transcript",
+  "product": "B",
+  "title": "Advisory board (synthetic): PE on amivantamab + lazertinib",
+  "url": null,
+  "patient": {
+   "present": true,
+   "quote": "a 71-year-old woman",
+   "start": 836,
+   "end": 855
+  },
+  "reporter": {
+   "present": true,
+   "quote": "DR. PRIYA MADEUP",
+   "start": 496,
+   "end": 512
+  },
+  "suspect_drug": {
+   "present": true,
+   "quote": "amivantamab plus lazertinib",
+   "start": 909,
+   "end": 936
+  },
+  "adverse_event": {
+   "present": true,
+   "quote": "developed a pulmonary embolism",
+   "start": 857,
+   "end": 887
+  },
+  "events": [
+   "pulmonary embolism"
+  ],
+  "serious": "unknown",
+  "seriousness_quote": null,
+  "valid_case_candidate": true,
+  "already_reported": false,
+  "day0": "2026-11-07",
+  "due": "2026-11-22",
+  "status": "new",
+  "restricted": true,
+  "confidence": 0.86,
+  "caveats": [
+   "Seriousness not stated; PV to confirm.",
+   "Raised during market research: route per AE-reporting SOP."
+  ]
+ },
+ {
+  "case_id": "SC-TX-002",
+  "item_id": "TX-SYN-01",
+  "source": "transcript",
+  "product": "A",
+  "title": "Advisory board (synthetic): off-label osimertinib, short response",
+  "url": null,
+  "patient": {
+   "present": true,
+   "quote": "a patient with an uncommon mutation",
+   "start": 1473,
+   "end": 1508
+  },
+  "reporter": {
+   "present": true,
+   "quote": "DR. ALAN FAKENAME",
+   "start": 293,
+   "end": 310
+  },
+  "suspect_drug": {
+   "present": true,
+   "quote": "osimertinib off-label",
+   "start": 1448,
+   "end": 1469
+  },
+  "adverse_event": {
+   "present": false,
+   "quote": null,
+   "start": null,
+   "end": null
+  },
+  "events": [],
+  "serious": "unknown",
+  "seriousness_quote": null,
+  "valid_case_candidate": false,
+  "already_reported": false,
+  "day0": "2026-11-07",
+  "due": null,
+  "status": "new",
+  "restricted": true,
+  "confidence": 0.55,
+  "caveats": [
+   "No adverse event stated; off-label use noted: route to Medical Affairs."
+  ]
+ },
+ {
+  "case_id": "SC-SYN-003",
+  "item_id": "SYN-003",
+  "source": "fda_event",
+  "product": "A",
+  "title": "FAERS report (synthetic)",
+  "url": null,
+  "patient": {
+   "present": true,
+   "quote": null,
+   "start": null,
+   "end": null
+  },
+  "reporter": {
+   "present": true,
+   "quote": "physician",
+   "start": null,
+   "end": null
+  },
+  "suspect_drug": {
+   "present": true,
+   "quote": "osimertinib",
+   "start": null,
+   "end": null
+  },
+  "adverse_event": {
+   "present": true,
+   "quote": "Rash, Diarrhoea",
+   "start": null,
+   "end": null
+  },
+  "events": [
+   "Rash",
+   "Diarrhoea"
+  ],
+  "serious": "yes",
+  "seriousness_quote": "Serious: yes",
+  "valid_case_candidate": true,
+  "already_reported": true,
+  "day0": "2026-11-07",
+  "due": null,
+  "status": "not_a_case",
+  "restricted": true,
+  "confidence": 0.95,
+  "caveats": [
+   "Already in FDA FAERS; no new report needed. Causality not established."
+  ]
+ }
+]

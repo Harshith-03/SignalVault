@@ -49,3 +49,6 @@ app/web/dist/
 Thumbs.db
 .idea/
 *.log
+
+# ---- agent worktrees / local tool state
+.claude/

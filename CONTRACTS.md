@@ -74,6 +74,27 @@ A Prediction plus `meta`:
 
 Interactive docs are at `http://127.0.0.1:8000/api/docs`.
 
+## 6b. Safety Inbox (pharmacovigilance case triage)
+`SafetyCase` (see `engine/schema.py`) records a **possible** reportable adverse-event case, found in literature, news or a transcript.
+
+**The four minimum criteria:** `patient`, `reporter`, `suspect_drug` and `adverse_event`. Each is a `Criterion {present, quote, start, end}`, and every quote is verbatim with offsets.
+
+**Other fields:**
+- `valid_case_candidate`: true only when all four criteria are present.
+- `serious`: yes, no or unknown.
+- `day0`: the awareness date, which starts the clock.
+- `due`: `day0` + 15 days for serious cases, + 90 for non-serious. **Pending verification.**
+- `status`: one of `new | in_triage | sent_to_pv | not_a_case`.
+- `already_reported`: true for FAERS records, which are already in the FDA database.
+
+**Endpoints:**
+| Method | Path | Rules |
+|---|---|---|
+| GET | `/api/safety?status=` | Header `X-SV-Role`: brand, medical_affairs, pharmacovigilance or market_access (default brand). **Only `pharmacovigilance` sees patient and reporter quotes.** Every other role gets `"[restricted: pharmacovigilance only]"`. This is enforced server-side. |
+| POST | `/api/safety/{case_id}` with body `SafetyUpdate {status, note}` | Pharmacovigilance role only; any other role gets 403. |
+
+The role is a demo-grade header with no login. Real deployments would use SSO. Say this honestly in the UI.
+
 ## 7. Privacy functions
 - `privacy.redact.redact(text, source) -> RedactionResult`. Redacts text for display and storage only; the engine always scores the original text.
 - `privacy.netguard.install(allow_hosts)` and `status()`. A socket-level guard for the Python process.

@@ -32,7 +32,12 @@ PRODUCT_NAMES = {"A": "Tagrisso", "B": "Rybrevant / Lazcluze", "both": "Tagrisso
 Owner = Literal["brand", "medical_affairs", "pharmacovigilance", "market_access", "clinical_ops"]
 ReviewStatus = Literal["auto", "review", "abstained"]
 Flag = Literal["pv_possible_ae", "off_label", "single_report_no_causality",
-               "case_report_demographics", "pii_redacted", "competitor"]
+               "case_report_demographics", "pii_redacted", "competitor", "reportable_case_candidate"]
+# Who is looking. The API enforces this server-side (header X-SV-Role): only pharmacovigilance
+# sees patient-level details in the Safety Inbox; everyone else gets them masked.
+Role = Literal["brand", "medical_affairs", "pharmacovigilance", "market_access"]
+CaseStatus = Literal["new", "in_triage", "sent_to_pv", "not_a_case"]
+RESTRICTED_MASK = "[restricted: pharmacovigilance only]"
 
 
 # ---------------------------------------------------------------- input
@@ -151,6 +156,50 @@ class TrendPoint(BaseModel):
     quotes: list[TrendQuote] = Field(description="up to 3, strongest |polarity| first")
 
 
+# ---------------------------------------------------------------- safety inbox (pharmacovigilance case triage)
+class Criterion(BaseModel):
+    """One of the four minimum criteria of a reportable individual case. Quote is verbatim or None."""
+    present: bool
+    quote: Optional[str] = None
+    start: Optional[int] = None
+    end: Optional[int] = None
+
+
+class SafetyCase(BaseModel):
+    """A POSSIBLE reportable adverse-event case found in literature, news or a transcript.
+
+    Triage aid only: a human in pharmacovigilance decides. The four criteria (identifiable patient,
+    identifiable reporter, suspect drug, adverse event) each carry a verified quote.
+    `restricted=True` means patient-level fields are masked for every role except pharmacovigilance.
+    """
+    case_id: str
+    item_id: str
+    source: str
+    product: Optional[Product] = None
+    title: str = ""
+    url: Optional[str] = None
+    patient: Criterion
+    reporter: Criterion
+    suspect_drug: Criterion
+    adverse_event: Criterion
+    events: list[str] = Field(default_factory=list, description="verbatim event terms")
+    serious: Literal["yes", "no", "unknown"] = "unknown"
+    seriousness_quote: Optional[str] = None
+    valid_case_candidate: bool = Field(description="True only if all four criteria are present")
+    already_reported: bool = Field(False, description="e.g. an FDA FAERS record: already in a regulator database")
+    day0: str = Field(description="YYYY-MM-DD the system became aware (ingest date) — the clock start")
+    due: Optional[str] = Field(None, description="YYYY-MM-DD reporting due date under the configured policy")
+    status: CaseStatus = "new"
+    restricted: bool = True
+    confidence: float = Field(0.0, ge=0, le=1)
+    caveats: list[str] = Field(default_factory=list)
+
+
+class SafetyUpdate(BaseModel):
+    status: CaseStatus
+    note: str = ""
+
+
 # ---------------------------------------------------------------- privacy
 class RedactionSpan(BaseModel):
     start: int
@@ -212,6 +261,7 @@ class AnalyzeResponse(BaseModel):
     redaction: RedactionResult
     prediction: EnrichedPrediction
     cards: list[Card]
+    safety_case: Optional[SafetyCase] = None
 
 
 class Metrics(BaseModel):
