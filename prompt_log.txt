@@ -21,3 +21,10 @@ Scores = official scoring/score.py composite on dev. Dev is small: treat differe
 
 [v1] v0 + V1_RULES (quote length 4-12 words; secondary judgments; milder polarity; pubmed actionable; lab studies)
   -> results below
+  v1  (all 5 rules)                composite 0.820  aspect 0.723  span 0.624  HR 0.797
+  v0 + rules (no extra prompt)     composite 0.822  aspect 0.757  span 0.556  HR 0.817   <- best
+  Ablations (one change at a time):
+  v1a (quote length only)          composite 0.813  aspect 0.639  span 0.627  HR 0.789
+  v1b (quote length + milder pol.) composite 0.816  aspect 0.687  span 0.604  HR 0.792
+  Finding: telling the 4B model to quote shorter makes it DROP aspects (aspect F1 -0.07..-0.12) more than
+  span F1 gains (+0.05..+0.07). Decision: ship v0 prompt + the three measured guide rules. (2026-11-07 ~14:35)

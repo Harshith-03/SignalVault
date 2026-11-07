@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 
-PROMPT_VERSION = os.getenv("SIGNALVAULT_PROMPT", "v1")
+PROMPT_VERSION = os.getenv("SIGNALVAULT_PROMPT", "v0")
 
 SYSTEM_PROMPT = """You label public evidence items for drug-launch teams. Products: A = Tagrisso (osimertinib). B = Rybrevant / Rybrevant Faspro (amivantamab) and Lazcluze (lazertinib). Setting: EGFR-mutated NSCLC.
 Label what the TEXT says, never outside knowledge.
