@@ -1,12 +1,14 @@
-import { motion } from "framer-motion";
-import { BadgeCheck, Database, Info, Lock, LockOpen, ShieldAlert, Timer } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { BadgeCheck, Database, Inbox, Info, Lock, LockOpen, ShieldAlert, Timer } from "lucide-react";
 import { useState } from "react";
 import { api, ApiError } from "../api/client";
 import type { CaseStatus, SafetyCase } from "../api/types";
 import { useApi } from "../api/useApi";
 import { SafetyCaseCard } from "../components/safety";
 import { useToast } from "../components/Toast";
-import { Button, EmptyState, ErrorState, PageHeader, SkeletonCards, Stat, cx } from "../components/ui";
+import {
+  Button, EmptyState, ErrorState, IconBadge, Note, PageHeader, ShowMore, SkeletonCards, Stat, Tabs, cx, useIncremental,
+} from "../components/ui";
 import { ROLE_LABELS, STATUS_LABELS, daysUntil } from "../lib/format";
 import { matchesProduct, useApp } from "../state/app";
 import { SAFETY_CHANGED } from "../state/reviews";
@@ -28,6 +30,7 @@ export default function Safety() {
     .sort((a, b) => Number(OPEN(b)) - Number(OPEN(a)) || (a.due ?? "9999").localeCompare(b.due ?? "9999"));
   const count = (t: Tab) => (t === "all" ? inView.length : inView.filter((c) => c.status === t).length);
   const dueSoon = inView.filter((c) => OPEN(c) && c.due && daysUntil(c.due) <= 7).length;
+  const page = useIncremental(shown, 10, `${tab}|${product}`);
 
   const setStatus = async (sc: SafetyCase, status: CaseStatus) => {
     setBusy(sc.case_id);
@@ -53,33 +56,42 @@ export default function Safety() {
         subtitle="Possible reportable adverse-event cases found in literature, news and transcripts. Each of the four minimum criteria carries a verbatim quote."
       />
 
+      {/* Role banner: the unlock is a calm colour + icon transition, enforced by the API. */}
       <motion.div
         key={isPv ? "pv" : "masked"}
-        initial={{ opacity: 0.4 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0.5, y: 2 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25, ease: "easeOut" }}
         className={cx(
-          "mb-6 flex items-center gap-4 rounded-2xl border px-5 py-4",
-          isPv ? "border-good/30 bg-good-soft" : "border-line bg-surface-2",
+          "mb-5 flex flex-col gap-4 rounded-card border p-4 sm:mb-6 sm:flex-row sm:items-center sm:px-5",
+          isPv ? "border-good/25 bg-good-soft" : "border-line bg-surface-3/60",
         )}
       >
-        <div className={cx("flex h-10 w-10 shrink-0 items-center justify-center rounded-xl", isPv ? "bg-surface text-good" : "bg-surface text-ink-2")}>
-          {isPv ? <LockOpen size={18} /> : <Lock size={18} />}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="text-[14px] font-semibold text-ink">
-            Viewing as {ROLE_LABELS[role]} · {isPv ? "patient-level detail visible" : "patient-level detail masked"}
-          </div>
-          <div className="mt-0.5 text-[12.5px] leading-snug text-ink-3">
-            {isPv
-              ? "Pharmacovigilance sees patient and reporter quotes and can change case status."
-              : "The API masks patient and reporter quotes for this role before they leave the server (need-to-know). Status changes are pharmacovigilance-only."}
-            {" "}Role is a demo header (<span className="font-mono">X-SV-Role</span>); production would use SSO.
+        <div className="flex min-w-0 flex-1 items-start gap-3.5 sm:items-center">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span key={isPv ? "open" : "locked"} initial={{ rotate: -12, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
+              <IconBadge size="lg" tone={isPv ? "onTintGood" : "onTint"}>
+                {isPv ? <LockOpen size={19} /> : <Lock size={19} />}
+              </IconBadge>
+            </motion.span>
+          </AnimatePresence>
+          <div className="min-w-0">
+            <div className="text-[14px] font-semibold text-ink">
+              Viewing as {ROLE_LABELS[role]} · {isPv ? "patient-level detail visible" : "patient-level detail masked"}
+            </div>
+            <div className="mt-0.5 text-caption text-ink-2">
+              {isPv
+                ? "Pharmacovigilance sees patient and reporter quotes and can change case status."
+                : "The API masks patient and reporter quotes for this role before they leave the server (need-to-know). Status changes are pharmacovigilance-only."}
+              {" "}Role is a demo header (<span className="font-mono">X-SV-Role</span>); production would use SSO.
+            </div>
           </div>
         </div>
         <Button
           variant={isPv ? "secondary" : "primary"}
           icon={isPv ? <Lock size={14} /> : <LockOpen size={14} />}
           onClick={() => setRole(isPv ? "brand" : "pharmacovigilance")}
+          className="w-full sm:w-auto"
         >
           {isPv ? "Switch to Brand" : "Switch to Pharmacovigilance"}
         </Button>
@@ -89,48 +101,42 @@ export default function Safety() {
         <ErrorState error={cases.error} onRetry={cases.reload} />
       ) : (
         <>
-          <div className="mb-6 grid grid-cols-4 gap-4">
-            <Stat label="Open cases" value={inView.filter(OPEN).length} icon={<ShieldAlert size={16} />} tone={inView.some(OPEN) ? "crit" : "neutral"} sub="New or in triage" />
-            <Stat label="Valid case candidates" value={inView.filter((c) => c.valid_case_candidate).length} icon={<BadgeCheck size={16} />} sub="All four criteria present" />
-            <Stat label="Due within 7 days" value={dueSoon} icon={<Timer size={16} />} tone={dueSoon ? "warn" : "neutral"} sub="Open cases only" />
-            <Stat label="Already reported" value={inView.filter((c) => c.already_reported).length} icon={<Database size={16} />} sub="FAERS: no new report needed" />
-          </div>
+          <section aria-label="Case summary" className="mb-5 grid grid-cols-2 gap-3 sm:mb-6 sm:gap-4 @4xl:grid-cols-4">
+            <Stat label="Open cases" value={inView.filter(OPEN).length} icon={<ShieldAlert size={17} />} tone={inView.some(OPEN) ? "crit" : "neutral"} sub="New or in triage" />
+            <Stat label="Valid case candidates" value={inView.filter((c) => c.valid_case_candidate).length} icon={<BadgeCheck size={17} />} tone="brand" sub="All four criteria present" />
+            <Stat label="Due within 7 days" value={dueSoon} icon={<Timer size={17} />} tone={dueSoon ? "warn" : "neutral"} sub="Open cases only" />
+            <Stat label="Already reported" value={inView.filter((c) => c.already_reported).length} icon={<Database size={17} />} tone="info" sub="FAERS: no new report needed" />
+          </section>
 
-          <div role="tablist" aria-label="Case status" className="mb-5 flex items-center gap-1 border-b border-line">
-            {(["all", "new", "in_triage", "sent_to_pv", "not_a_case"] as Tab[]).map((t) => (
-              <button
-                key={t}
-                role="tab"
-                aria-selected={tab === t}
-                onClick={() => setTab(t)}
-                className={cx(
-                  "relative -mb-px inline-flex h-10 items-center gap-2 px-3 text-[13px] font-medium",
-                  tab === t ? "text-ink" : "text-ink-3 hover:text-ink",
-                )}
-              >
-                {t === "all" ? "All" : STATUS_LABELS[t]}
-                <span className="tnum rounded-full bg-surface-3 px-1.5 text-[11px] leading-5 text-ink-2">{count(t)}</span>
-                {tab === t && <motion.span layoutId="safety-tab" className="absolute inset-x-2 -bottom-px h-0.5 rounded-full bg-ink" />}
-              </button>
-            ))}
+          <div className="mb-4">
+            <Tabs<Tab>
+              label="Case status"
+              value={tab}
+              onChange={setTab}
+              options={(["all", "new", "in_triage", "sent_to_pv", "not_a_case"] as Tab[]).map((t) => ({
+                value: t, label: t === "all" ? "All" : STATUS_LABELS[t], count: count(t),
+              }))}
+            />
           </div>
 
           {shown.length === 0 ? (
-            <EmptyState title="No cases here">Nothing in this status for the current product view.</EmptyState>
+            <EmptyState title="No cases here" icon={<Inbox size={20} />}>Nothing in this status for the current product view.</EmptyState>
           ) : (
-            <div className="space-y-5">
-              {shown.map((c) => (
-                <SafetyCaseCard key={c.case_id} sc={c} canAct={isPv} busy={busy === c.case_id} onStatus={(s) => setStatus(c, s)} />
-              ))}
-            </div>
+            <>
+              <div className="space-y-4 sm:space-y-5">
+                {page.visible.map((c) => (
+                  <SafetyCaseCard key={c.case_id} sc={c} canAct={isPv} busy={busy === c.case_id} onStatus={(s) => setStatus(c, s)} />
+                ))}
+              </div>
+              <ShowMore {...page} noun="cases" />
+            </>
           )}
         </>
       )}
 
-      <div className="mt-8 flex items-start gap-2.5 rounded-xl border border-line bg-surface px-4 py-3 text-[12.5px] text-ink-2">
-        <Info size={14} className="mt-0.5 shrink-0 text-ink-3" />
+      <Note className="mt-8" icon={<Info size={15} />}>
         <span><strong className="font-semibold text-ink">Triage aid only</strong> — a pharmacovigilance professional makes every reporting decision.</span>
-      </div>
+      </Note>
     </>
   );
 }

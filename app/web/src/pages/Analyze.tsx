@@ -8,7 +8,9 @@ import { HighlightedText, type Span } from "../components/HighlightedText";
 import { InsightCard } from "../components/InsightCard";
 import { AspectTable, FlagList, LabelSummary, Provenance, aspectSpans, verifyAspects } from "../components/Prediction";
 import { SafetyCaseCard } from "../components/safety";
-import { Button, EmptyState, ErrorState, PageHeader, Panel, PanelTitle, Segmented, Select, Skeleton, cx } from "../components/ui";
+import {
+  Button, EmptyState, ErrorState, Field, PageHeader, Panel, PanelTitle, SectionTitle, Segmented, Select, Skeleton, TextInput, cx,
+} from "../components/ui";
 import { SAMPLE_TITLE, SAMPLE_TRANSCRIPT } from "../lib/sample";
 import { ROLE_LABELS } from "../lib/format";
 import { useApp } from "../state/app";
@@ -66,12 +68,15 @@ export default function Analyze() {
       />
 
       <Panel>
-        <div className="grid grid-cols-[minmax(0,1fr)_280px] gap-6">
+        <div className="grid gap-5 @4xl:grid-cols-[minmax(0,1fr)_280px] @4xl:gap-6">
           <div
             onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
             onDragLeave={() => setDragging(false)}
             onDrop={onDrop}
-            className={cx("relative self-start rounded-xl border transition-colors", dragging ? "border-focus bg-info-soft" : "border-line")}
+            className={cx(
+              "relative min-w-0 self-start rounded-panel border bg-surface-2 transition-colors focus-within:border-brand",
+              dragging ? "border-brand bg-brand-tint" : "border-line-strong",
+            )}
           >
             <textarea
               value={text}
@@ -79,58 +84,55 @@ export default function Analyze() {
               placeholder="Paste a transcript, abstract, label excerpt or news article…  (or drop a .txt file here)"
               spellCheck={false}
               aria-label="Text to analyze"
-              className="scroll-thin block h-[300px] w-full resize-y rounded-xl bg-transparent px-4 py-3.5 text-[13.5px] leading-relaxed text-ink outline-none placeholder:text-ink-3"
+              className="scroll-thin block h-[240px] w-full resize-y rounded-t-panel bg-transparent px-4 py-3.5 text-[13.5px] leading-relaxed text-ink outline-none placeholder:text-ink-3 focus-visible:outline-none sm:h-[300px]"
             />
             {dragging && (
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-xl text-[14px] font-semibold text-info">
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded-panel text-[14px] font-semibold text-brand">
                 <Upload size={18} className="mr-2" />Drop to load the file
               </div>
             )}
-            <div className="flex items-center gap-2 border-t border-line px-3 py-2">
-              <Button size="sm" icon={<Sparkles size={13} />} onClick={() => { setText(SAMPLE_TRANSCRIPT); setTitle(SAMPLE_TITLE); setSource("transcript"); setProduct("unknown"); }}>
+            <div className="flex flex-wrap items-center gap-2 border-t border-line px-3 py-2.5">
+              <Button size="sm" variant="subtle" icon={<Sparkles size={13} />} onClick={() => { setText(SAMPLE_TRANSCRIPT); setTitle(SAMPLE_TITLE); setSource("transcript"); setProduct("unknown"); }}>
                 Load sample transcript
               </Button>
               <Button size="sm" variant="ghost" icon={<Upload size={13} />} onClick={() => fileRef.current?.click()}>Upload .txt</Button>
               <input ref={fileRef} type="file" accept=".txt,.md,text/plain" className="hidden" onChange={(e) => { loadFile(e.target.files?.[0]); e.target.value = ""; }} />
               {text && <Button size="sm" variant="ghost" icon={<X size={13} />} onClick={() => { setText(""); setResult(undefined); }}>Clear</Button>}
-              <span className="tnum ml-auto text-[12px] text-ink-3">{text.length.toLocaleString()} chars</span>
+              <span className="tnum ml-auto text-caption text-ink-3">{text.length.toLocaleString()} chars</span>
             </div>
           </div>
 
           <div className="flex flex-col gap-4">
-            <label className="block">
-              <span className="text-[12.5px] font-medium text-ink-3">Title</span>
-              <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Optional"
-                className="mt-1 h-9 w-full rounded-lg border border-line bg-surface px-3 text-[13px] text-ink outline-none focus:border-focus" />
-            </label>
-            <Select label="Source" stacked value={source} onChange={setSource} options={SOURCES.map((s) => ({ value: s, label: SOURCE_NAMES[s] }))} />
-            <div>
-              <div className="mb-1 text-[12.5px] font-medium text-ink-3">Product</div>
-              <Segmented<ProductPick>
-                label="Product"
-                size="sm"
-                value={product}
-                onChange={setProduct}
-                options={[
-                  { value: "unknown", label: "Auto" },
-                  { value: "A", label: <><ProductDot product="A" size={7} />A</> },
-                  { value: "B", label: <><ProductDot product="B" size={7} />B</> },
-                  { value: "both", label: "Both" },
-                ]}
-              />
+            <div className="grid gap-4 min-[520px]:grid-cols-2 @4xl:grid-cols-1">
+              <Field label="Title">
+                <TextInput value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Optional" />
+              </Field>
+              <Select label="Source" stacked value={source} onChange={setSource} options={SOURCES.map((s) => ({ value: s, label: SOURCE_NAMES[s] }))} />
+              <div>
+                <div className="mb-1.5 text-caption font-medium text-ink-3">Product</div>
+                <Segmented<ProductPick>
+                  label="Product"
+                  size="sm"
+                  value={product}
+                  onChange={setProduct}
+                  options={[
+                    { value: "unknown", label: "Auto" },
+                    { value: "A", label: <><ProductDot product="A" size={7} />A</> },
+                    { value: "B", label: <><ProductDot product="B" size={7} />B</> },
+                    { value: "both", label: "Both" },
+                  ]}
+                />
+              </div>
+              <Field label="Published" hint="Defaults to today.">
+                <TextInput type="date" value={published} onChange={(e) => setPublished(e.target.value)} />
+              </Field>
             </div>
-            <label className="block">
-              <span className="text-[12.5px] font-medium text-ink-3">Published</span>
-              <input type="date" value={published} onChange={(e) => setPublished(e.target.value)}
-                className="mt-1 h-9 w-full rounded-lg border border-line bg-surface px-3 text-[13px] text-ink outline-none focus:border-focus" />
-              <span className="mt-1 block text-[11.5px] text-ink-3">Defaults to today.</span>
-            </label>
-            <div className="mt-auto">
-              <Button variant="primary" className="w-full" disabled={!text.trim() || busy} onClick={run}
+            <div className="mt-auto pt-1">
+              <Button variant="primary" className="h-10 w-full" disabled={!text.trim() || busy} onClick={run}
                 icon={busy ? <Loader2 size={15} className="animate-spin" /> : <Play size={14} />}>
                 {busy ? "Analysing locally…" : "Analyze"}
               </Button>
-              <div className="mt-2 flex items-center justify-center gap-1.5 text-[11.5px] text-ink-3">
+              <div className="mt-2 flex items-center justify-center gap-1.5 text-micro text-ink-3">
                 <Lock size={11} />Sent only to 127.0.0.1 as {ROLE_LABELS[role]}
               </div>
             </div>
@@ -141,7 +143,7 @@ export default function Analyze() {
       <div ref={resultRef} className="scroll-mt-24">
         {error && <div className="mt-6"><ErrorState error={error} onRetry={run} /></div>}
         {busy && !result && (
-          <div className="mt-6 grid grid-cols-[minmax(0,1fr)_400px] gap-6"><Skeleton className="h-80 rounded-2xl" /><Skeleton className="h-80 rounded-2xl" /></div>
+          <div className="mt-6 grid gap-6 @5xl:grid-cols-[minmax(0,1fr)_380px]" aria-busy="true"><Skeleton className="h-80 rounded-card" /><Skeleton className="h-80 rounded-card" /></div>
         )}
         {result && <Result res={result.res} original={result.original} />}
       </div>
@@ -186,15 +188,15 @@ function Result({ res, original }: { res: AnalyzeResponse; original: string }) {
   const unchanged = res.redaction.text === original;
 
   return (
-    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-8 space-y-6">
-      <div className="flex items-center gap-3">
-        <h2 className="text-[18px] font-semibold tracking-[-0.01em] text-ink">Result</h2>
-        <span className="font-mono text-[12px] text-ink-3">{res.prediction.item_id}</span>
-        <span className="ml-auto inline-flex items-center gap-1.5 text-[12px] text-ink-3"><ShieldCheck size={13} className="text-good" />Processed on this device</span>
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-8 space-y-4 sm:space-y-6">
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <h2 className="font-display text-[20px] font-semibold tracking-[-0.01em] text-ink">Result</h2>
+        <span className="font-mono text-caption text-ink-3">{res.prediction.item_id}</span>
+        <span className="ml-auto inline-flex items-center gap-1.5 rounded-full bg-good-soft px-2.5 py-1 text-caption font-medium text-good"><ShieldCheck size={13} />Processed on this device</span>
       </div>
 
       {flags.length > 0 && (
-        <Panel className="border-warn/40">
+        <Panel className="border-warn/40 bg-warn-soft/40">
           <PanelTitle hint="Routed for human review. These are triage prompts, not conclusions.">Flags</PanelTitle>
           <FlagList flags={flags} large />
         </Panel>
@@ -202,27 +204,27 @@ function Result({ res, original }: { res: AnalyzeResponse; original: string }) {
 
       {res.safety_case && (
         <div>
-          <h3 className="mb-3 text-[14px] font-semibold text-ink">Possible reportable case</h3>
+          <h3 className="mb-3 font-display text-heading font-semibold text-ink">Possible reportable case</h3>
           <SafetyCaseCard sc={res.safety_case} canAct={false} />
         </div>
       )}
 
-      <div className="grid grid-cols-[minmax(0,1fr)_400px] gap-6">
+      <div className="grid items-start gap-4 sm:gap-6 @5xl:grid-cols-[minmax(0,1fr)_380px]">
         <Panel>
           <PanelTitle
             hint={nSpans ? `${nSpans} identifier${nSpans === 1 ? "" : "s"} replaced. Highlighted tokens are redactions.` : "Redacted for display and storage only; the engine scored the original."}
-            right={<span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-info-soft px-2.5 py-1 text-[12px] font-medium text-info"><EyeOff size={12} />Redacted view</span>}
+            right={<span className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-info-soft px-2.5 py-1 text-caption font-medium text-info"><EyeOff size={12} />Redacted view</span>}
           >
             Redacted text
           </PanelTitle>
           {nSpans === 0 && unchanged && (
-            <div className="mb-4 flex items-start gap-2 rounded-lg bg-warn-soft px-3 py-2.5 text-[12.5px] text-ink">
+            <div className="mb-4 flex items-start gap-2 rounded-control bg-warn-soft px-3 py-2.5 text-caption text-ink">
               <AlertTriangle size={14} className="mt-0.5 shrink-0 text-warn" />
               The redactor returned no spans and the text is unchanged. If this text contains names, ages, emails or phone numbers, the redaction module may not be wired yet.
             </div>
           )}
           {!view.mapped && (
-            <div className="mb-4 flex items-start gap-2 rounded-lg bg-surface-2 px-3 py-2.5 text-[12.5px] text-ink-3">
+            <div className="mb-4 flex items-start gap-2 rounded-control bg-surface-3/60 px-3 py-2.5 text-caption text-ink-3">
               <AlertTriangle size={14} className="mt-0.5 shrink-0" />Redaction offsets could not be mapped onto the text, so the redacted text is shown without highlights.
             </div>
           )}
@@ -232,13 +234,13 @@ function Result({ res, original }: { res: AnalyzeResponse; original: string }) {
           {counts.length > 0 && (
             <div className="mt-4 flex flex-wrap gap-1.5 border-t border-line pt-4">
               {counts.map(([k, n]) => (
-                <span key={k} className="tnum inline-flex items-center gap-1.5 rounded-md bg-info-soft px-2 py-1 font-mono text-[11.5px] font-semibold text-info">{k} × {n}</span>
+                <span key={k} className="tnum inline-flex items-center gap-1.5 rounded-full bg-info-soft px-2.5 py-1 font-mono text-micro font-semibold text-info">{k} × {n}</span>
               ))}
             </div>
           )}
         </Panel>
 
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           <Panel><PanelTitle>Prediction</PanelTitle><LabelSummary pred={res.prediction} /></Panel>
           <Panel>
             <PanelTitle hint="Quotes are matched verbatim against the redacted text; a quote containing a redacted name is not highlighted.">Aspects</PanelTitle>
@@ -249,9 +251,9 @@ function Result({ res, original }: { res: AnalyzeResponse; original: string }) {
       </div>
 
       <div>
-        <h3 className="mb-3 text-[14px] font-semibold text-ink">Insight cards</h3>
+        <SectionTitle>Insight cards</SectionTitle>
         {res.cards.length ? (
-          <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
+          <div className="grid grid-cols-1 items-start gap-4 @5xl:grid-cols-2">
             {res.cards.map((c) => <InsightCard key={c.card_id} card={c} hideItemLink />)}
           </div>
         ) : (

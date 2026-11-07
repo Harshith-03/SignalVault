@@ -6,7 +6,7 @@ import {
 import { useEffect, useState, type ReactNode } from "react";
 import { api } from "../api/client";
 import { useApi } from "../api/useApi";
-import { CopyButton, ErrorState, PageHeader, Panel, PanelTitle, Skeleton, cx } from "../components/ui";
+import { CopyButton, ErrorState, IconBadge, PageHeader, Panel, PanelTitle, SectionTitle, Skeleton, cx } from "../components/ui";
 
 /** Hosts this browser tab has actually requested, from the Resource Timing API: a live, local proof. */
 function useBrowserHosts() {
@@ -46,7 +46,7 @@ export default function Privacy() {
       />
 
       {p.loading && !p.data ? (
-        <div className="space-y-6"><Skeleton className="h-48 rounded-2xl" /><div className="grid grid-cols-3 gap-6"><Skeleton className="h-48 rounded-2xl" /><Skeleton className="h-48 rounded-2xl" /><Skeleton className="h-48 rounded-2xl" /></div></div>
+        <div className="space-y-6" aria-busy="true"><Skeleton className="h-48 rounded-card" /><div className="grid gap-6 @4xl:grid-cols-3"><Skeleton className="h-48 rounded-card" /><Skeleton className="h-48 rounded-card" /><Skeleton className="h-48 rounded-card" /></div></div>
       ) : p.error ? (
         <ErrorState error={p.error} onRetry={p.reload} />
       ) : p.data && (
@@ -55,24 +55,22 @@ export default function Privacy() {
           <motion.section
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative overflow-hidden rounded-3xl border border-line bg-surface p-8 shadow-md"
+            className={cx(
+              "rounded-card border p-5 sm:p-7",
+              p.data.offline_mode ? "border-good/20 bg-good-soft" : "border-warn/25 bg-warn-soft",
+            )}
           >
-            <div
-              aria-hidden
-              className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full opacity-60 blur-3xl"
-              style={{ background: p.data.offline_mode ? "color-mix(in srgb, var(--good) 22%, transparent)" : "color-mix(in srgb, var(--warn) 22%, transparent)" }}
-            />
-            <div className="relative grid grid-cols-[1.3fr_1fr_1fr] items-center gap-8">
-              <div className="flex items-center gap-5">
-                <div className={cx("flex h-16 w-16 items-center justify-center rounded-2xl", p.data.offline_mode ? "bg-good-soft text-good" : "bg-warn-soft text-warn")}>
-                  {p.data.offline_mode ? <WifiOff size={30} /> : <Globe2 size={30} />}
-                </div>
-                <div>
-                  <div className="text-[13px] font-medium text-ink-3">Network status</div>
-                  <div className={cx("text-[44px] font-semibold leading-none tracking-[-0.03em]", p.data.offline_mode ? "text-good" : "text-warn")}>
+            <div className="grid gap-6 @4xl:grid-cols-[1.3fr_1fr_1fr] @4xl:items-center @4xl:gap-8">
+              <div className="flex items-center gap-4 sm:gap-5">
+                <IconBadge size="xl" tone={p.data.offline_mode ? "onTintGood" : "onTint"}>
+                  {p.data.offline_mode ? <WifiOff size={28} /> : <Globe2 size={28} />}
+                </IconBadge>
+                <div className="min-w-0">
+                  <div className="text-support font-medium text-ink-2">Network status</div>
+                  <div className={cx("font-display text-[40px] leading-none font-semibold tracking-[-0.03em] sm:text-[48px]", p.data.offline_mode ? "text-good" : "text-warn")}>
                     {p.data.offline_mode ? "Offline" : "Guard off"}
                   </div>
-                  <div className="mt-2 text-[13px] text-ink-2">
+                  <div className="mt-2 text-support text-ink-2">
                     {p.data.offline_mode ? "Network guard installed · nothing leaves the vault" : "The network guard is not installed in the API process"}
                   </div>
                 </div>
@@ -94,12 +92,12 @@ export default function Privacy() {
           </motion.section>
 
           {/* ---------------------------------------------------------------- facts */}
-          <div className="mt-6 grid grid-cols-3 gap-6">
+          <div className="mt-4 grid gap-4 sm:mt-6 sm:gap-6 @3xl:grid-cols-2 @5xl:grid-cols-3">
             <Panel>
               <PanelTitle hint="The only hosts the API process may connect to">Allowed hosts</PanelTitle>
               <div className="flex flex-wrap gap-1.5">
                 {p.data.allowed_hosts.length ? p.data.allowed_hosts.map((h) => (
-                  <span key={h} className="inline-flex items-center gap-1.5 rounded-lg border border-line bg-surface-2 px-2.5 py-1 font-mono text-[12px] text-ink">
+                  <span key={h} className="inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-2 px-2.5 py-1 font-mono text-caption text-ink">
                     <Lock size={11} className="text-good" />{h}
                   </span>
                 )) : <span className="text-[13px] text-ink-3">None listed</span>}
@@ -108,8 +106,8 @@ export default function Privacy() {
 
             <Panel>
               <PanelTitle hint="Runs locally through Ollama">Model</PanelTitle>
-              <div className="flex items-center gap-2 font-mono text-[14px] font-semibold text-ink"><Cpu size={15} className="text-ink-3" />{p.data.model || "unknown"}</div>
-              <div className="mt-3 text-[12px] text-ink-3">Weights digest</div>
+              <div className="flex min-w-0 items-center gap-2 break-all font-mono text-[14px] font-semibold text-ink"><Cpu size={15} className="shrink-0 text-ink-3" />{p.data.model || "unknown"}</div>
+              <div className="mt-4 text-caption text-ink-3">Weights digest</div>
               <div className="mt-1 flex items-center gap-1">
                 <code className="min-w-0 truncate font-mono text-[12px] text-ink-2" title={p.data.model_digest ?? undefined}>{p.data.model_digest ?? "unknown"}</code>
                 {p.data.model_digest && <CopyButton text={p.data.model_digest} label="Copy digest" />}
@@ -122,13 +120,13 @@ export default function Privacy() {
             </Panel>
           </div>
 
-          <div className="mt-6 grid grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] gap-6">
+          <div className="mt-4 grid items-start gap-4 sm:mt-6 sm:gap-6 @5xl:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
             <Panel>
               <PanelTitle hint="SHA-256 of every input file the engine scored, so a run can be reproduced and checked">Data-file hashes</PanelTitle>
               {(p.data.data_files ?? []).length === 0 ? <div className="text-[13px] text-ink-3">No data files recorded yet.</div> : (
-                <ul className="divide-y divide-line rounded-xl border border-line">
+                <ul className="scroll-thin max-h-[460px] divide-y divide-line overflow-y-auto rounded-panel border border-line" tabIndex={0} aria-label="Data-file hashes">
                   {p.data.data_files!.map((f) => (
-                    <li key={f.path} className="flex items-center gap-3 px-3.5 py-2.5">
+                    <li key={f.path} className="flex items-center gap-3 px-3.5 py-2.5 hover:bg-surface-2">
                       <HardDrive size={14} className="shrink-0 text-ink-3" />
                       <div className="min-w-0 flex-1">
                         <div className="truncate font-mono text-[12.5px] text-ink">{f.path}</div>
@@ -144,9 +142,7 @@ export default function Privacy() {
             <Panel>
               <PanelTitle hint="Read live from this tab's Resource Timing; refreshes every 3 s">This browser tab</PanelTitle>
               <div className="flex items-center gap-3">
-                <div className={cx("flex h-10 w-10 items-center justify-center rounded-xl", browserLocal ? "bg-good-soft text-good" : "bg-crit-soft text-crit")}>
-                  <MonitorSmartphone size={18} />
-                </div>
+                <IconBadge tone={browserLocal ? "good" : "crit"}><MonitorSmartphone size={18} /></IconBadge>
                 <div>
                   <div className="text-[14px] font-semibold text-ink">{browserLocal ? "Local requests only" : "External request detected"}</div>
                   <div className="tnum text-[12.5px] text-ink-3">{requests} requests to {hosts.length} host{hosts.length === 1 ? "" : "s"}</div>
@@ -154,14 +150,14 @@ export default function Privacy() {
               </div>
               <ul className="mt-4 space-y-1.5">
                 {hosts.map((h) => (
-                  <li key={h.host} className="flex items-center gap-2 text-[12.5px]">
+                  <li key={h.host} className="flex items-center gap-2 rounded-control px-2 py-1 text-[12.5px] odd:bg-surface-2">
                     {isLocal(h.host) ? <CheckCircle2 size={13} className="text-good" /> : <XCircle size={13} className="text-crit" />}
-                    <span className="font-mono text-ink">{h.host}</span>
+                    <span className="min-w-0 truncate font-mono text-ink">{h.host}</span>
                     <span className="tnum ml-auto text-ink-3">{h.n}</span>
                   </li>
                 ))}
               </ul>
-              <div className="mt-3 text-[11.5px] leading-snug text-ink-3">Fonts, icons and scripts are bundled. No CDN, analytics or telemetry.</div>
+              <div className="mt-3 text-caption text-ink-3">Fonts, icons and scripts are bundled. No CDN, analytics or telemetry.</div>
             </Panel>
           </div>
 
@@ -174,10 +170,10 @@ export default function Privacy() {
 
 function HeroStat({ icon, label, value, sub, tone }: { icon: ReactNode; label: string; value: ReactNode; sub: string; tone?: "good" | "crit" }) {
   return (
-    <div className="border-l border-line pl-8">
-      <div className="flex items-center gap-2 text-[13px] font-medium text-ink-3">{icon}{label}</div>
-      <div className={cx("tnum mt-2 text-[36px] font-semibold leading-none tracking-[-0.02em]", tone === "good" ? "text-good" : tone === "crit" ? "text-crit" : "text-ink")}>{value}</div>
-      <div className="mt-2 text-[12.5px] text-ink-3">{sub}</div>
+    <div className="border-t border-ink/10 pt-5 @4xl:border-l @4xl:border-t-0 @4xl:pl-8 @4xl:pt-0">
+      <div className="flex items-center gap-2 text-support font-medium text-ink-2">{icon}{label}</div>
+      <div className={cx("mt-2 font-display text-[34px] font-semibold leading-none tracking-[-0.02em]", tone === "good" ? "text-good" : tone === "crit" ? "text-crit" : "text-ink")}>{value}</div>
+      <div className="mt-2 text-caption text-ink-2">{sub}</div>
     </div>
   );
 }
@@ -189,11 +185,11 @@ function RedactionBars({ counts }: { counts: Record<string, number> }) {
   return (
     <ul className="space-y-2">
       {entries.map(([k, n]) => (
-        <li key={k} className="grid grid-cols-[80px_1fr_32px] items-center gap-3 text-[12.5px]">
-          <span className="font-mono text-ink-2">{k}</span>
+        <li key={k} className="grid grid-cols-[minmax(64px,88px)_1fr_36px] items-center gap-3 text-[12.5px]">
+          <span className="truncate font-mono text-ink-2">{k}</span>
           <span className="h-2 overflow-hidden rounded-full bg-surface-3">
             <motion.span
-              className="block h-full rounded-full bg-info"
+              className="block h-full rounded-full bg-brand"
               initial={{ width: 0 }}
               animate={{ width: `${(n / max) * 100}%` }}
               transition={{ duration: 0.6, ease: "easeOut" }}
@@ -246,31 +242,30 @@ const PROOFS: { icon: ReactNode; title: string; body: string; scope: string }[] 
 
 function Explainer() {
   return (
-    <section className="mt-10">
-      <div className="mb-5 flex items-end justify-between">
-        <div>
-          <h2 className="text-[18px] font-semibold tracking-[-0.01em] text-ink">What leaves this device: nothing</h2>
-          <p className="mt-1 text-[13.5px] text-ink-3">In plain English, with the honest limits of each guarantee.</p>
-        </div>
-        <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-good"><ShieldCheck size={15} />Nothing leaves the vault</span>
-      </div>
-      <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
+    <section className="mt-10 sm:mt-12">
+      <SectionTitle
+        hint="In plain English, with the honest limits of each guarantee."
+        right={<span className="inline-flex items-center gap-1.5 rounded-full bg-good-soft px-3 py-1 text-caption font-semibold text-good"><ShieldCheck size={14} />Nothing leaves the vault</span>}
+      >
+        What leaves this device: nothing
+      </SectionTitle>
+      <div className="grid gap-4 @2xl:grid-cols-2 @5xl:grid-cols-3">
         {PROOFS.map((p) => (
-          <div key={p.title} className="rounded-2xl border border-line bg-surface p-5 shadow-sm">
-            <div className="flex items-center gap-2.5">
-              <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface-2 text-ink-2">{p.icon}</span>
-              <h3 className="text-[14px] font-semibold text-ink">{p.title}</h3>
+          <div key={p.title} className="flex flex-col rounded-card border border-line bg-surface p-[var(--pad-card)] shadow-xs">
+            <div className="flex items-center gap-3">
+              <IconBadge tone="brand">{p.icon}</IconBadge>
+              <h3 className="font-display text-heading font-semibold text-ink">{p.title}</h3>
             </div>
-            <p className="mt-3 text-[13px] leading-relaxed text-ink-2">{p.body}</p>
-            <p className="mt-3 flex items-start gap-1.5 border-t border-line pt-3 text-[12px] leading-snug text-ink-3">
+            <p className="mt-3 flex-1 text-[13px] leading-relaxed text-ink-2">{p.body}</p>
+            <p className="mt-3 flex items-start gap-1.5 border-t border-line pt-3 text-caption text-ink-3">
               <Link2 size={12} className="mt-0.5 shrink-0" />{p.scope}
             </p>
           </div>
         ))}
-        <div className="rounded-2xl border border-dashed border-line-strong bg-surface-2/50 p-5">
-          <div className="flex items-center gap-2.5">
-            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface text-ink-3"><CircleHelp size={16} /></span>
-            <h3 className="text-[14px] font-semibold text-ink">What this does not claim</h3>
+        <div className="rounded-card border border-dashed border-line-strong bg-surface-3/40 p-[var(--pad-card)]">
+          <div className="flex items-center gap-3">
+            <IconBadge tone="onTint"><CircleHelp size={16} /></IconBadge>
+            <h3 className="font-display text-heading font-semibold text-ink">What this does not claim</h3>
           </div>
           <ul className="mt-3 list-disc space-y-1.5 pl-4 text-[13px] leading-relaxed text-ink-2">
             <li>It is not a formal certification (HIPAA, GDPR, GxP).</li>
