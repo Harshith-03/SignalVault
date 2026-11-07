@@ -64,6 +64,8 @@ Notes on the numbers:
 - One finding from the ablations: telling the 4B model to quote shorter made it drop aspects. That cost more than the shorter quotes gained, so we didn't ship it.
 - Dev has only 60 items, so treat differences under about 0.01 as noise.
 
+**Full run:** 2,114 items analysed (1,733 unlabeled + 240 test + 60 dev + 81 live Radar items) with 0 model fallbacks. The trend report spans 97 weeks (2025-W01 to 2026-W45). The Safety Inbox holds 55 possible cases from published case reports; 43 meet all four minimum criteria. The dev re-run reproduces 0.8218 exactly (deterministic decoding + request cache).
+
 **Cost (measured, full 240-item test run on an RTX 4070 Laptop GPU):** 2.77 s per item, and about **$0.002 per 100 items** in electricity (assuming 150 W and $0.184/kWh). There is no API spend.
 
 ## Run it
