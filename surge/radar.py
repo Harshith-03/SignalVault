@@ -131,7 +131,8 @@ def discover(days: int = 30, max_results: int = 10, replay: bool = False, record
 
 
 # ---------------------------------------------------------------- analyze (offline)
-def analyze(limit: int | None = None, model: str | None = None, quiet: bool = False) -> dict:
+def analyze(limit: int | None = None, model: str | None = None, quiet: bool = False,
+            ids: set[str] | None = None) -> dict:
     """Label radar items with the LOCAL engine. The netguard goes on first: from here, loopback only."""
     from privacy import netguard
     netguard.install(("127.0.0.1", "localhost", "::1"))
@@ -143,7 +144,7 @@ def analyze(limit: int | None = None, model: str | None = None, quiet: bool = Fa
     rows = read_jsonl(radar_dir() / "items.jsonl")
     out_path = config.OUTPUTS / "enriched_radar.jsonl"
     done = {e["item_id"]: e for e in read_jsonl(out_path)}
-    todo = [r for r in rows if r["item_id"] not in done][: limit or None]
+    todo = [r for r in rows if r["item_id"] not in done and (not ids or r["item_id"] in ids)][: limit or None]
     safety_path = config.OUTPUTS / "safety_radar.json"
     cases = {c["case_id"]: c for c in (json.loads(safety_path.read_text(encoding="utf-8"))
                                        if safety_path.exists() else [])}
@@ -214,12 +215,13 @@ def main(argv: list[str] | None = None) -> int:
     a = sub.add_parser("analyze", help="OFFLINE: label new radar items with the local engine")
     a.add_argument("--limit", type=int)
     a.add_argument("--model")
+    a.add_argument("--ids", help="comma-separated RD-* ids to analyse (default: all new items)")
     sub.add_parser("status", help="print counts")
     args = ap.parse_args(argv)
     if args.cmd == "discover":
         discover(args.days, args.max, args.replay, args.record, args.fresh)
     elif args.cmd == "analyze":
-        analyze(args.limit, args.model)
+        analyze(args.limit, args.model, ids=set(args.ids.split(",")) if args.ids else None)
     else:
         status()
     return 0
